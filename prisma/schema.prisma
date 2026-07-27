@@ -1,0 +1,154 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DirectoryCategory {
+  BUSINESS_DIRECTORY
+  AGENCY_DIRECTORY
+  REVIEW_PLATFORM
+  PORTFOLIO_PLATFORM
+  SOCIAL_PROFILE
+  CONTENT_PLATFORM
+  GOVERNMENT_RESOURCE
+  PARTNER_DIRECTORY
+  CITATION_AGGREGATOR
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum AutomationLevel {
+  EASY
+  MEDIUM
+  HARD
+  MANUAL
+}
+
+enum TaskStatus {
+  PENDING
+  AI_PREPARED
+  READY
+  IN_PROGRESS
+  VERIFICATION_REQUIRED
+  COMPLETED
+  REJECTED
+  PAYMENT_REQUIRED
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  legalName   String?
+  website     String?
+  email       String?
+  phone       String?
+  address     String?
+  city        String?
+  state       String?
+  country     String?
+  founded     String?
+  category    String?
+  serviceArea String?
+  services    String?
+  keywords    String?
+  descriptionShort  String?
+  descriptionMedium String?
+  descriptionLong   String?
+  logo        String?
+
+  directories   Directory[]
+  campaigns     Campaign[]
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String?
+  status      String   @default("ACTIVE")
+
+  companyId   String
+  company     Company   @relation(fields: [companyId], references: [id])
+
+  directories Directory[]
+}
+
+model Directory {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  platform    String
+  url         String?
+  priority    Priority @default(MEDIUM)
+  category    String?
+  notes       String?
+  status      TaskStatus @default(PENDING)
+  liveUrl     String?
+
+  campaignId  String?
+  campaign    Campaign? @relation(fields: [campaignId], references: [id])
+  companyId   String?
+  company     Company?  @relation(fields: [companyId], references: [id])
+
+  seoAudit        SeoAudit?
+  submission      Submission?
+  generatedContent GeneratedContent?
+}
+
+model SeoAudit {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  platformType    DirectoryCategory?
+  seoScore        Int?
+  priority        Priority?
+  automationLevel AutomationLevel?
+  automationReason String?
+  valueReason     String?
+  requiredAssets  String?
+  duplicateWarning String?
+  recommendation String?
+
+  directoryId   String   @unique
+  directory     Directory @relation(fields: [directoryId], references: [id])
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  login       String?
+  password    String?
+  listingUrl  String?
+  notes       String?
+  completedAt DateTime?
+
+  directoryId   String   @unique
+  directory     Directory @relation(fields: [directoryId], references: [id])
+}
+
+model GeneratedContent {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  shortDescription  String?
+  mediumDescription String?
+  longDescription   String?
+  serviceDescription String?
+  socialBio         String?
+  keywords          String?
+
+  directoryId   String   @unique
+  directory     Directory @relation(fields: [directoryId], references: [id])
+}
