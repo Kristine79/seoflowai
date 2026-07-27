@@ -65,7 +65,13 @@ export async function POST(request: Request) {
     }
 
     const { headerRow, dataStart } = found;
-    const dataRows = filtered.slice(dataStart);
+
+    function isHeaderLike(row: string[]): boolean {
+      const norm = row.map((c) => normalize(c));
+      return norm.filter((c) => KNOWN_HEADERS.some((h) => c.includes(h))).length >= 2;
+    }
+
+    const dataRows = filtered.slice(dataStart).filter((r) => !isHeaderLike(r));
     const headerNormalized = headerRow.map((h) => normalize(h));
 
     const extract = (row: Record<string, string>, ...keys: string[]): string => {
@@ -127,6 +133,8 @@ export async function POST(request: Request) {
       }
     }
 
+    const platformNames = directories.map((d) => d.platform);
+
     return NextResponse.json({
       total: directories.length,
       imported: directories.length,
@@ -135,6 +143,11 @@ export async function POST(request: Request) {
       columns: headerRow,
       filename: file.name,
       rowsDetected: dataRows.length,
+      headerFound: headerRow,
+      sample: {
+        first5: platformNames.slice(0, 5),
+        last5: platformNames.slice(-5),
+      },
     });
   } catch (error) {
     console.error("[XLSX] Import error:", error);

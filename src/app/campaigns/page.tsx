@@ -37,6 +37,8 @@ type UploadResult = {
   failed: number;
   errors?: string[];
   columns?: string[];
+  headerFound?: string[];
+  sample?: { first5: string[]; last5: string[] };
   filename?: string;
   rowsDetected?: number;
   error?: string;
@@ -217,11 +219,17 @@ export default function CampaignsPage() {
                     {uploadResult.rowsDetected && (
                       <p className="text-sm text-zinc-600">Rows detected: {uploadResult.rowsDetected}</p>
                     )}
-                    {uploadResult.columns && uploadResult.columns.length > 0 && (
-                      <p className="text-sm text-zinc-600">
-                        Columns: {uploadResult.columns.join(", ")}
-                      </p>
-                    )}
+                  {uploadResult.headerFound && uploadResult.headerFound.length > 0 && (
+                    <p className="text-sm text-zinc-600">
+                      Header: {uploadResult.headerFound.join(" | ")}
+                    </p>
+                  )}
+                  {uploadResult.sample && (
+                    <div className="mt-1 text-sm text-zinc-600">
+                      <p>First: {uploadResult.sample.first5.join(", ")}</p>
+                      <p>Last: {uploadResult.sample.last5.join(", ")}</p>
+                    </div>
+                  )}
                     {uploadResult.failed > 0 && (
                       <p className="mt-1 text-sm font-medium text-amber-700">
                         Failed: {uploadResult.failed}
