@@ -51,4 +51,7 @@ declare module "lucide-react" {
   export const Eye: Icon;
   export const EyeOff: Icon;
   export const Check: Icon;
+  export const Clock: Icon;
+  export const Gauge: Icon;
+  export const Activity: Icon;
 }

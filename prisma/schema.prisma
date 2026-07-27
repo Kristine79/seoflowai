@@ -119,6 +119,9 @@ model SeoAudit {
   requiredAssets  String?
   duplicateWarning String?
   recommendation String?
+  estimatedTime   Int?
+  seoScoreBreakdown String?
+  quickWin        String?
 
   directoryId   String   @unique
   directory     Directory @relation(fields: [directoryId], references: [id])
