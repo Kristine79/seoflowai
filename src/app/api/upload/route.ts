@@ -100,6 +100,11 @@ export async function POST(request: Request) {
         continue;
       }
 
+      const hasOnlyPlatform = !url && !category && !notes && !priorityRaw && !statusRaw;
+      if (hasOnlyPlatform) {
+        continue;
+      }
+
       const validPriorities = ["HIGH", "MEDIUM", "LOW"];
       const finalPriority = validPriorities.includes(priorityRaw) ? priorityRaw : "MEDIUM";
       const validStatuses = [
@@ -107,8 +112,7 @@ export async function POST(request: Request) {
         "VERIFICATION_REQUIRED", "COMPLETED", "REJECTED", "PAYMENT_REQUIRED",
       ];
       const finalStatus = validStatuses.includes(statusRaw) ? statusRaw : "PENDING";
-      const seoScore = parseInt(extract(row, "SEO Score", "SEO Value", "Score"));
-      const estimatedMinutes = parseInt(extract(row, "Time", "Minutes", "Est. Time", "Estimated Time"));
+
 
       try {
         const dir = await prisma.directory.create({
