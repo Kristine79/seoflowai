@@ -57,6 +57,12 @@ Analyze this platform and return JSON (no markdown, no code fences):
 
       const result = JSON.parse(content);
 
+      const toStr = (v: unknown): string | null => {
+        if (!v) return null;
+        if (Array.isArray(v)) return v.join("\n");
+        return String(v);
+      };
+
       await prisma.seoAudit.create({
         data: {
           directoryId: dir.id,
@@ -64,11 +70,11 @@ Analyze this platform and return JSON (no markdown, no code fences):
           seoScore: typeof result.seoScore === "number" ? result.seoScore : parseInt(result.seoScore) || null,
           priority: result.priority || null,
           automationLevel: result.automationLevel || null,
-          automationReason: result.automationReason || null,
-          valueReason: result.valueReason || null,
-          requiredAssets: result.requiredAssets || null,
-          duplicateWarning: result.duplicateWarning || null,
-          recommendation: result.recommendation || null,
+          automationReason: toStr(result.automationReason),
+          valueReason: toStr(result.valueReason),
+          requiredAssets: toStr(result.requiredAssets),
+          duplicateWarning: toStr(result.duplicateWarning),
+          recommendation: toStr(result.recommendation),
         },
       });
 

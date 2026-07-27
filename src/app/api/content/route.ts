@@ -59,24 +59,30 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
 
     const result = JSON.parse(content);
 
+    const toStr = (v: unknown): string | null => {
+      if (!v) return null;
+      if (Array.isArray(v)) return v.join("\n");
+      return String(v);
+    };
+
     const generated = await prisma.generatedContent.upsert({
       where: { directoryId: directory.id },
       update: {
-        shortDescription: result.shortDescription || null,
-        mediumDescription: result.mediumDescription || null,
-        longDescription: result.longDescription || null,
-        serviceDescription: result.serviceDescription || null,
-        socialBio: result.socialBio || null,
-        keywords: result.keywords || null,
+        shortDescription: toStr(result.shortDescription),
+        mediumDescription: toStr(result.mediumDescription),
+        longDescription: toStr(result.longDescription),
+        serviceDescription: toStr(result.serviceDescription),
+        socialBio: toStr(result.socialBio),
+        keywords: toStr(result.keywords),
       },
       create: {
         directoryId: directory.id,
-        shortDescription: result.shortDescription || null,
-        mediumDescription: result.mediumDescription || null,
-        longDescription: result.longDescription || null,
-        serviceDescription: result.serviceDescription || null,
-        socialBio: result.socialBio || null,
-        keywords: result.keywords || null,
+        shortDescription: toStr(result.shortDescription),
+        mediumDescription: toStr(result.mediumDescription),
+        longDescription: toStr(result.longDescription),
+        serviceDescription: toStr(result.serviceDescription),
+        socialBio: toStr(result.socialBio),
+        keywords: toStr(result.keywords),
       },
     });
 
