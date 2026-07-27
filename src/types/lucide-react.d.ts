@@ -6,7 +6,6 @@ declare module "lucide-react" {
   export const Building2: Icon;
   export const ListTree: Icon;
   export const Search: Icon;
-  export const FileText: Icon;
   export const Settings: Icon;
   export const ChevronRight: Icon;
   export const Globe: Icon;
@@ -42,7 +41,6 @@ declare module "lucide-react" {
   export const MoreHorizontal: Icon;
   export const Edit: Icon;
   export const Trash2: Icon;
-  export const AlertCircle: Icon;
   export const Info: Icon;
   export const HelpCircle: Icon;
   export const RefreshCw: Icon;
@@ -54,4 +52,6 @@ declare module "lucide-react" {
   export const Clock: Icon;
   export const Gauge: Icon;
   export const Activity: Icon;
+  export const AlertCircle: Icon;
+  export const FileText: Icon;
 }

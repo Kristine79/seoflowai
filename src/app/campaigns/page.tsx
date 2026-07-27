@@ -13,10 +13,14 @@ import {
   FileSpreadsheet,
   ArrowUpRight,
   Loader2,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { formatDate } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type Campaign = {
   id: string;
@@ -27,6 +31,17 @@ type Campaign = {
   _count: { directories: number };
 };
 
+type UploadResult = {
+  total: number;
+  imported: number;
+  failed: number;
+  errors?: string[];
+  columns?: string[];
+  filename?: string;
+  rowsDetected?: number;
+  error?: string;
+};
+
 export default function CampaignsPage() {
   const queryClient = useQueryClient();
   const [showNew, setShowNew] = useState(false);
@@ -35,6 +50,7 @@ export default function CampaignsPage() {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
 
   const { data: campaigns, isLoading } = useQuery<Campaign[]>({
     queryKey: ["campaigns"],
@@ -64,19 +80,41 @@ export default function CampaignsPage() {
   const handleUpload = async () => {
     if (!file) return;
     setUploading(true);
+    setUploadResult(null);
+
     const formData = new FormData();
     formData.append("file", file);
     if (selectedCampaign) formData.append("campaignId", selectedCampaign);
 
-    await fetch("/api/upload", { method: "POST", body: formData });
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const result: UploadResult = await res.json();
+
+      if (!res.ok) {
+        setUploadResult({ total: 0, imported: 0, failed: 0, error: result.error || "Upload failed" });
+      } else {
+        setUploadResult(result);
+      }
+    } catch (err) {
+      setUploadResult({
+        total: 0,
+        imported: 0,
+        failed: 0,
+        error: err instanceof Error ? err.message : "Network error",
+      });
+    }
+
     setFile(null);
     setUploading(false);
     queryClient.invalidateQueries({ queryKey: ["campaigns"] });
+    queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    queryClient.invalidateQueries({ queryKey: ["directories"] });
   };
 
   const runAudit = async () => {
     await fetch("/api/audit", { method: "POST" });
     queryClient.invalidateQueries({ queryKey: ["directories"] });
+    queryClient.invalidateQueries({ queryKey: ["audit-summary"] });
   };
 
   if (isLoading) {
@@ -142,6 +180,68 @@ export default function CampaignsPage() {
         </Card>
       )}
 
+      {uploadResult && (
+        <Card
+          className={cn(
+            uploadResult.error
+              ? "border-red-200 bg-red-50"
+              : uploadResult.failed > 0
+              ? "border-amber-200 bg-amber-50"
+              : "border-emerald-200 bg-emerald-50"
+          )}
+        >
+          <CardContent className="py-4">
+            {uploadResult.error ? (
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-medium text-red-800">Upload failed</p>
+                  <p className="text-sm text-red-600">{uploadResult.error}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-start gap-3">
+                  {uploadResult.failed === 0 ? (
+                    <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />
+                  ) : (
+                    <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
+                  )}
+                  <div>
+                    <p className="font-medium text-emerald-800">
+                      {uploadResult.imported} directories imported successfully
+                    </p>
+                    {uploadResult.filename && (
+                      <p className="text-sm text-zinc-600">File: {uploadResult.filename}</p>
+                    )}
+                    {uploadResult.rowsDetected && (
+                      <p className="text-sm text-zinc-600">Rows detected: {uploadResult.rowsDetected}</p>
+                    )}
+                    {uploadResult.columns && uploadResult.columns.length > 0 && (
+                      <p className="text-sm text-zinc-600">
+                        Columns: {uploadResult.columns.join(", ")}
+                      </p>
+                    )}
+                    {uploadResult.failed > 0 && (
+                      <p className="mt-1 text-sm font-medium text-amber-700">
+                        Failed: {uploadResult.failed}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {uploadResult.errors && uploadResult.errors.length > 0 && (
+                  <div className="mt-2 max-h-32 overflow-auto rounded bg-white/50 p-2 text-xs text-zinc-600">
+                    {uploadResult.errors.map((err, i) => (
+                      <p key={i}>{err}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid gap-4">
         {!campaigns || campaigns.length === 0 ? (
           <Card>
@@ -181,11 +281,17 @@ export default function CampaignsPage() {
                   <label className="cursor-pointer">
                     <input
                       type="file"
-                      accept=".xlsx,.xls"
+                      accept=".xlsx,.xls,.csv"
                       className="hidden"
                       onChange={(e) => {
-                        setFile(e.target.files?.[0] || null);
+                        const f = e.target.files?.[0] || null;
+                        setFile(f);
                         setSelectedCampaign(campaign.id);
+                        setUploadResult(null);
+
+                        if (f) {
+                          console.log(`[Upload] File selected: ${f.name}, size: ${f.size}, type: ${f.type}`);
+                        }
                       }}
                     />
                     <Button variant="outline" size="sm" className="gap-2" asChild>
@@ -210,12 +316,17 @@ export default function CampaignsPage() {
       {file && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Upload {file.name}</CardTitle>
+            <CardTitle className="text-base flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Upload {file.name}
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="mb-4 text-sm text-zinc-500">
-              The file will be parsed and directories will be created for the campaign.
-            </p>
+          <CardContent className="space-y-4">
+            <div className="rounded-lg bg-zinc-50 p-4 text-sm">
+              <p><span className="font-medium text-zinc-500">Filename:</span> {file.name}</p>
+              <p><span className="font-medium text-zinc-500">Size:</span> {(file.size / 1024).toFixed(1)} KB</p>
+              <p><span className="font-medium text-zinc-500">Type:</span> {file.type || "Unknown"}</p>
+            </div>
             <Button onClick={handleUpload} disabled={uploading} className="gap-2">
               {uploading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
