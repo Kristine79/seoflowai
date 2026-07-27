@@ -19,8 +19,9 @@ export function translateStatus(status: string): string {
     AI_PREPARED: "AI подготовлен",
     READY: "Готов",
     IN_PROGRESS: "В процессе",
-    COMPLETED: "Завершён",
+    WAITING_VERIFICATION: "Ожидает верификации",
     VERIFICATION_REQUIRED: "Требуется проверка",
+    COMPLETED: "Завершён",
     REJECTED: "Отклонён",
     PAYMENT_REQUIRED: "Требуется оплата",
   };
@@ -59,6 +60,8 @@ export function getStatusColor(status: string) {
       return "bg-emerald-50 text-emerald-700 border-emerald-200";
     case "IN_PROGRESS":
       return "bg-amber-50 text-amber-700 border-amber-200";
+    case "WAITING_VERIFICATION":
+      return "bg-orange-50 text-orange-700 border-orange-200";
     case "VERIFICATION_REQUIRED":
       return "bg-orange-50 text-orange-700 border-orange-200";
     case "COMPLETED":

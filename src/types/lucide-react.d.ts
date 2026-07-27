@@ -56,6 +56,10 @@ declare module "lucide-react" {
   export const Hash: Icon;
   export const FolderTree: Icon;
   export const Tags: Icon;
+  export const Play: Icon;
+  export const ListChecks: Icon;
+  export const Bot: Icon;
+  export const Square: Icon;
   export const AlertCircle: Icon;
   export const FileText: Icon;
 }

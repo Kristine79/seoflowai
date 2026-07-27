@@ -37,6 +37,7 @@ enum TaskStatus {
   AI_PREPARED
   READY
   IN_PROGRESS
+  WAITING_VERIFICATION
   VERIFICATION_REQUIRED
   COMPLETED
   REJECTED
@@ -95,6 +96,10 @@ model Directory {
   notes       String?
   status      TaskStatus @default(PENDING)
   liveUrl     String?
+  startedAt   DateTime?
+  completedAt DateTime?
+  checklistProgress String?
+  automationMode    String  @default("MANUAL")
 
   campaignId  String?
   campaign    Campaign? @relation(fields: [campaignId], references: [id])
@@ -136,6 +141,7 @@ model Submission {
   listingUrl  String?
   notes       String?
   completedAt DateTime?
+  verificationStatus String @default("PENDING")
 
   directoryId   String   @unique
   directory     Directory @relation(fields: [directoryId], references: [id])

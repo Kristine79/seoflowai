@@ -22,11 +22,20 @@ import {
   Hash,
   FolderTree,
   Tags,
+  Play,
+  ListChecks,
+  Bot,
+  Square,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useState } from "react";
-import { cn, getStatusColor, getAutomationColor, translateStatus, translatePriority } from "@/lib/utils";
+import { useState, useCallback } from "react";
+import { cn, getStatusColor, getAutomationColor, translateStatus, translatePriority, formatDate } from "@/lib/utils";
+
+type ChecklistItem = {
+  task: string;
+  completed: boolean;
+};
 
 type DirectoryDetail = {
   id: string;
@@ -37,6 +46,10 @@ type DirectoryDetail = {
   notes: string | null;
   status: string;
   liveUrl: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  checklistProgress: string | null;
+  automationMode: string | null;
   createdAt: string;
   seoAudit: {
     seoScore: number | null;
@@ -54,6 +67,7 @@ type DirectoryDetail = {
     password: string | null;
     listingUrl: string | null;
     notes: string | null;
+    verificationStatus: string | null;
   } | null;
   generatedContent: {
     shortDescription: string | null;
@@ -75,7 +89,28 @@ type DirectoryDetail = {
   } | null;
 };
 
-const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "VERIFICATION_REQUIRED", "REJECTED", "PAYMENT_REQUIRED", "COMPLETED"];
+const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "WAITING_VERIFICATION", "VERIFICATION_REQUIRED", "REJECTED", "PAYMENT_REQUIRED", "COMPLETED"];
+
+const VERIFICATION_STATUSES = ["PENDING", "VERIFIED", "FAILED"];
+
+const DEFAULT_CHECKLIST: ChecklistItem[] = [
+  { task: "Create account", completed: false },
+  { task: "Add business name", completed: false },
+  { task: "Select category", completed: false },
+  { task: "Upload logo", completed: false },
+  { task: "Add description", completed: false },
+  { task: "Add services", completed: false },
+  { task: "Add website", completed: false },
+  { task: "Verify email", completed: false },
+  { task: "Save listing URL", completed: false },
+];
+
+const AUTOMATION_LABELS: Record<string, string> = {
+  MANUAL: "Ручная подача",
+  AI_ASSISTED: "С помощью AI",
+  AUTO_FILL_READY: "AI автозаполнение",
+  NOT_SUPPORTED: "Не поддерживается",
+};
 
 function parseSuggestedCategories(json: string | null): { primary: string; secondary: string[] } | null {
   if (!json) return null;
@@ -95,6 +130,15 @@ function splitLines(text: string | null): string[] {
   return text.split("\n").filter(Boolean);
 }
 
+function parseChecklist(json: string | null): ChecklistItem[] {
+  if (!json) return [];
+  try {
+    const parsed = JSON.parse(json);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed as ChecklistItem[];
+  } catch {}
+  return [];
+}
+
 export default function DirectoryDetailPage() {
   const params = useParams();
   const queryClient = useQueryClient();
@@ -110,11 +154,11 @@ export default function DirectoryDetailPage() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async (data: Record<string, unknown>) => {
+    mutationFn: async (patch: Record<string, unknown>) => {
       const res = await fetch(`/api/directories/${params.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(patch),
       });
       return res.json();
     },
@@ -141,6 +185,27 @@ export default function DirectoryDetailPage() {
     setTimeout(() => setCopied(null), 2000);
   };
 
+  const handleStartSubmission = () => {
+    updateMutation.mutate({
+      status: "IN_PROGRESS",
+      checklistProgress: DEFAULT_CHECKLIST,
+    });
+  };
+
+  const handleToggleChecklist = useCallback(
+    (index: number) => {
+      const current = parseChecklist(dir?.checklistProgress || null);
+      const list = current.length > 0 ? current : DEFAULT_CHECKLIST;
+      list[index].completed = !list[index].completed;
+      updateMutation.mutate({ checklistProgress: list });
+    },
+    [dir?.checklistProgress, updateMutation]
+  );
+
+  const handleCompleteSubmission = () => {
+    updateMutation.mutate({ status: "COMPLETED" });
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-32">
@@ -158,14 +223,16 @@ export default function DirectoryDetailPage() {
   const primaryKeywords = splitLines(dir.generatedContent?.primaryKeywords);
   const secondaryKeywords = splitLines(dir.generatedContent?.secondaryKeywords);
 
-  const checklist = [
-    { label: "Создать аккаунт", done: dir.status !== "PENDING" },
-    { label: "Добавить название компании", done: dir.status !== "PENDING" },
-    { label: "Добавить описание", done: !!dir.generatedContent?.shortDescription },
-    { label: "Добавить услуги", done: serviceItems.length > 0 },
-    { label: "Добавить сайт", done: true },
-    { label: "Подтвердить email", done: dir.status === "COMPLETED" },
-  ];
+  const checklistItems = parseChecklist(dir.checklistProgress || null);
+  const activeChecklist = checklistItems.length > 0 ? checklistItems : DEFAULT_CHECKLIST;
+  const completedCount = activeChecklist.filter((i) => i.completed).length;
+  const totalCount = activeChecklist.length;
+  const progressPct = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const allDone = completedCount === totalCount && totalCount > 0;
+  const isInProgress = dir.status === "IN_PROGRESS" || dir.status === "WAITING_VERIFICATION";
+  const isReady = dir.status === "READY";
+  const isCompleted = dir.status === "COMPLETED";
+  const isReadonly = dir.status === "COMPLETED" || dir.status === "REJECTED";
 
   return (
     <div className="space-y-8">
@@ -175,16 +242,14 @@ export default function DirectoryDetailPage() {
             <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
-        <div className="flex-1">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold tracking-tight">{dir.platform}</h1>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-2xl font-semibold tracking-tight truncate">{dir.platform}</h1>
             <Select
               value={dir.status}
-              onValueChange={(value) =>
-                updateMutation.mutate({ status: value })
-              }
+              onValueChange={(value) => updateMutation.mutate({ status: value })}
             >
-              <SelectTrigger className={cn("h-7 text-xs w-[160px]", getStatusColor(dir.status))}>
+              <SelectTrigger className={cn("h-7 text-xs w-[170px]", getStatusColor(dir.status))}>
                 <SelectValue>{translateStatus(dir.status)}</SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -193,6 +258,11 @@ export default function DirectoryDetailPage() {
                 ))}
               </SelectContent>
             </Select>
+            {dir.automationMode && (
+              <Badge variant="outline" className="text-xs text-zinc-500">
+                {AUTOMATION_LABELS[dir.automationMode] || dir.automationMode}
+              </Badge>
+            )}
           </div>
           {dir.url && (
             <a
@@ -205,7 +275,7 @@ export default function DirectoryDetailPage() {
             </a>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {dir.url && (
             <Button variant="outline" size="sm" className="gap-2" asChild>
               <a href={dir.url} target="_blank" rel="noopener noreferrer">
@@ -214,15 +284,29 @@ export default function DirectoryDetailPage() {
               </a>
             </Button>
           )}
-          <Button
-            variant="primary"
-            size="sm"
-            onClick={() => updateMutation.mutate({ status: "COMPLETED" })}
-            className="gap-2"
-          >
-            <CheckCircle2 className="h-4 w-4" />
-            Завершить
-          </Button>
+          {isReady && (
+            <Button size="sm" className="gap-2" onClick={handleStartSubmission}>
+              <Play className="h-4 w-4" />
+              Start Submission
+            </Button>
+          )}
+          {isInProgress && dir.automationMode === "AI_ASSISTED" && (
+            <Button variant="secondary" size="sm" className="gap-2">
+              <Bot className="h-4 w-4" />
+              Run AI Submission
+            </Button>
+          )}
+          {!isCompleted && !isReady && (
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => updateMutation.mutate({ status: "COMPLETED" })}
+              className="gap-2"
+            >
+              <CheckCircle2 className="h-4 w-4" />
+              Завершить
+            </Button>
+          )}
         </div>
       </div>
 
@@ -520,32 +604,145 @@ export default function DirectoryDetailPage() {
         </div>
 
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Чеклист подачи</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {checklist.map((item) => (
-                  <div key={item.label} className="flex items-center gap-3">
+          {isReady && (
+            <Card>
+              <CardContent className="flex flex-col items-center gap-4 py-8">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100">
+                  <Play className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="text-center">
+                  <p className="font-medium">Готов к размещению</p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    AI контент подготовлен. Начните процесс подачи заявки на этой платформе.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                  <Button size="lg" className="gap-3 w-full" onClick={handleStartSubmission}>
+                    <Play className="h-5 w-5" />
+                    Start Submission
+                  </Button>
+                  {dir.automationMode === "AI_ASSISTED" && (
+                    <Button variant="secondary" size="sm" className="gap-2 w-full">
+                      <Bot className="h-4 w-4" />
+                      Run AI Submission
+                    </Button>
+                  )}
+                </div>
+                {dir.startedAt && (
+                  <p className="text-xs text-zinc-400">
+                    Начато: {formatDate(dir.startedAt)}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {isInProgress && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <ListChecks className="h-4 w-4" />
+                  Submission Progress
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-zinc-500">{completedCount} / {totalCount} завершено</span>
+                  <span className="font-semibold">{progressPct}%</span>
+                </div>
+                <Progress value={progressPct} className="h-2" />
+
+                <div className="space-y-2">
+                  {activeChecklist.map((item, i) => (
                     <div
+                      key={item.task}
                       className={cn(
-                        "flex h-5 w-5 items-center justify-center rounded border",
-                        item.done
-                          ? "border-emerald-500 bg-emerald-50"
-                          : "border-zinc-200"
+                        "flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors cursor-pointer",
+                        item.completed
+                          ? "border-emerald-200 bg-emerald-50/50"
+                          : "border-zinc-200 hover:bg-zinc-50"
                       )}
+                      onClick={() => handleToggleChecklist(i)}
                     >
-                      {item.done && <CheckSquare className="h-3 w-3 text-emerald-600" />}
+                      <div
+                        className={cn(
+                          "flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-colors",
+                          item.completed
+                            ? "border-emerald-500 bg-emerald-500"
+                            : "border-zinc-300"
+                        )}
+                      >
+                        {item.completed && (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                        )}
+                      </div>
+                      <span
+                        className={cn(
+                          "text-sm",
+                          item.completed ? "text-zinc-400 line-through" : "text-zinc-700"
+                        )}
+                      >
+                        {item.task}
+                      </span>
                     </div>
-                    <span className={cn("text-sm", item.done ? "text-zinc-400 line-through" : "")}>
-                      {item.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+
+                {allDone && !isCompleted && (
+                  <Button
+                    className="w-full gap-2 mt-2"
+                    size="lg"
+                    onClick={handleCompleteSubmission}
+                  >
+                    <CheckCircle2 className="h-5 w-5" />
+                    Complete Submission
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {isCompleted && (
+            <Card>
+              <CardContent className="flex flex-col items-center gap-3 py-8">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
+                  <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                </div>
+                <p className="font-medium">Размещение завершено</p>
+                {dir.completedAt && (
+                  <p className="text-xs text-zinc-400">
+                    Завершено: {formatDate(dir.completedAt)}
+                  </p>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {dir.status === "REJECTED" && (
+            <Card>
+              <CardContent className="flex flex-col items-center gap-3 py-8">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-100">
+                  <Square className="h-6 w-6 text-red-600" />
+                </div>
+                <p className="font-medium">Отклонено</p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => updateMutation.mutate({ status: "IN_PROGRESS" })}
+                >
+                  Возобновить
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {dir.status === "PAYMENT_REQUIRED" && (
+            <Card>
+              <CardContent className="flex flex-col items-center gap-3 py-8">
+                <p className="font-medium">Требуется оплата</p>
+              </CardContent>
+            </Card>
+          )}
 
           <Card>
             <CardHeader>
@@ -553,67 +750,120 @@ export default function DirectoryDetailPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="login">Логин</Label>
+                <Label htmlFor="login">Account Login</Label>
                 <Input
                   id="login"
                   value={dir.submission?.login || ""}
                   onChange={(e) =>
                     updateMutation.mutate({
-                      submission: {
-                        upsert: { ...dir.submission, login: e.target.value },
-                      },
+                      submission: { ...dir.submission, login: e.target.value },
                     })
                   }
                   placeholder="username@example.com"
+                  readOnly={isReadonly}
                 />
               </div>
               <div>
-                <Label htmlFor="password">Пароль</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
                   value={dir.submission?.password || ""}
                   onChange={(e) =>
                     updateMutation.mutate({
-                      submission: {
-                        upsert: { ...dir.submission, password: e.target.value },
-                      },
+                      submission: { ...dir.submission, password: e.target.value },
                     })
                   }
+                  readOnly={isReadonly}
                 />
               </div>
               <div>
-                <Label htmlFor="listingUrl">URL листинга</Label>
+                <Label htmlFor="listingUrl">Listing URL</Label>
                 <Input
                   id="listingUrl"
                   value={dir.submission?.listingUrl || ""}
                   onChange={(e) =>
                     updateMutation.mutate({
-                      submission: {
-                        upsert: { ...dir.submission, listingUrl: e.target.value },
-                      },
+                      submission: { ...dir.submission, listingUrl: e.target.value },
                     })
                   }
                   placeholder="https://platform.com/company/itllect"
+                  readOnly={isReadonly}
                 />
               </div>
               <div>
-                <Label htmlFor="notes">Заметки</Label>
+                <Label htmlFor="verificationStatus">Verification Status</Label>
+                <Select
+                  value={dir.submission?.verificationStatus || "PENDING"}
+                  onValueChange={(value) =>
+                    updateMutation.mutate({
+                      submission: { ...dir.submission, verificationStatus: value },
+                    })
+                  }
+                  disabled={isReadonly}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {VERIFICATION_STATUSES.map((vs) => (
+                      <SelectItem key={vs} value={vs}>
+                        {vs === "PENDING" ? "Pending" : vs === "VERIFIED" ? "Verified" : "Failed"}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="notes">Notes</Label>
                 <textarea
                   id="notes"
                   className="mt-1 flex min-h-[80px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm"
                   value={dir.submission?.notes || ""}
                   onChange={(e) =>
                     updateMutation.mutate({
-                      submission: {
-                        upsert: { ...dir.submission, notes: e.target.value },
-                      },
+                      submission: { ...dir.submission, notes: e.target.value },
                     })
                   }
+                  readOnly={isReadonly}
                 />
               </div>
             </CardContent>
           </Card>
+
+          {isInProgress && dir.automationMode === "AI_ASSISTED" && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Bot className="h-4 w-4" />
+                  AI Submission
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-zinc-500">
+                  Подготовленные данные для автоматической подачи.
+                </p>
+                {dir.generatedContent?.shortDescription && (
+                  <div>
+                    <p className="text-xs font-medium text-zinc-500">Description</p>
+                    <p className="text-sm">{dir.generatedContent.shortDescription}</p>
+                  </div>
+                )}
+                {serviceItems.length > 0 && (
+                  <div>
+                    <p className="text-xs font-medium text-zinc-500">Services</p>
+                    <ul className="list-disc list-inside text-sm">
+                      {serviceItems.map((s, i) => <li key={i}>{s}</li>)}
+                    </ul>
+                  </div>
+                )}
+                <Button variant="secondary" size="sm" className="gap-2 w-full">
+                  <Bot className="h-4 w-4" />
+                  Run AI Submission
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
