@@ -66,7 +66,15 @@ export async function GET() {
       });
 
       const result = JSON.parse(response.choices[0]?.message?.content || "{}");
-      recommendations = result.recommendations || [];
+      const raw = result.recommendations || [];
+      recommendations = raw.map((r: unknown) => {
+        if (typeof r === "string") return r;
+        if (r && typeof r === "object") {
+          const obj = r as Record<string, unknown>;
+          return obj.action ? `${obj.action}: ${obj.description || ""}` : JSON.stringify(r);
+        }
+        return String(r);
+      });
     } catch {
       recommendations = ["Complete high-value directory profiles first", "Ensure NAP consistency across all platforms"];
     }
