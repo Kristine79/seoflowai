@@ -70,29 +70,29 @@ export default function CompanyPage() {
   }
 
   const fields: { key: keyof Company; label: string; placeholder?: string }[] = [
-    { key: "name", label: "Business Name", placeholder: "ITllect" },
-    { key: "legalName", label: "Legal Name", placeholder: "ITllect LLC" },
-    { key: "website", label: "Website", placeholder: "https://itllect.com" },
+    { key: "name", label: "Название компании", placeholder: "ITllect" },
+    { key: "legalName", label: "Юридическое название", placeholder: "ITllect LLC" },
+    { key: "website", label: "Веб-сайт", placeholder: "https://itllect.com" },
     { key: "email", label: "Email", placeholder: "info@itllect.com" },
-    { key: "phone", label: "Phone", placeholder: "+1 (954) 555-0123" },
-    { key: "address", label: "Address", placeholder: "100 N University Dr" },
-    { key: "city", label: "City", placeholder: "Plantation" },
-    { key: "state", label: "State", placeholder: "Florida" },
-    { key: "country", label: "Country", placeholder: "USA" },
-    { key: "founded", label: "Founded", placeholder: "2015" },
-    { key: "category", label: "Category", placeholder: "Digital Marketing Agency" },
-    { key: "serviceArea", label: "Service Area", placeholder: "United States, Global" },
-    { key: "services", label: "Services", placeholder: "SEO, PPC, Social Media Marketing" },
-    { key: "keywords", label: "Keywords", placeholder: "digital marketing agency, SEO" },
+    { key: "phone", label: "Телефон", placeholder: "+1 (954) 555-0123" },
+    { key: "address", label: "Адрес", placeholder: "100 N University Dr" },
+    { key: "city", label: "Город", placeholder: "Plantation" },
+    { key: "state", label: "Штат", placeholder: "Florida" },
+    { key: "country", label: "Страна", placeholder: "USA" },
+    { key: "founded", label: "Год основания", placeholder: "2015" },
+    { key: "category", label: "Категория", placeholder: "Digital Marketing Agency" },
+    { key: "serviceArea", label: "Регион услуг", placeholder: "United States, Global" },
+    { key: "services", label: "Услуги", placeholder: "SEO, PPC, Social Media Marketing" },
+    { key: "keywords", label: "Ключевые слова", placeholder: "digital marketing agency, SEO" },
   ];
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Company Profile</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Компания</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Your business information used for directory submissions
+            Данные вашего бизнеса для подачи заявок в каталоги
           </p>
         </div>
         <Button
@@ -105,7 +105,7 @@ export default function CompanyPage() {
           ) : (
             <Save className="h-4 w-4" />
           )}
-          Save Profile
+          Сохранить
         </Button>
       </div>
 
@@ -114,7 +114,7 @@ export default function CompanyPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Building2 className="h-4 w-4" />
-              Business Information
+              Информация о компании
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -137,7 +137,7 @@ export default function CompanyPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Classification</CardTitle>
+              <CardTitle className="text-base">Классификация</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -158,11 +158,11 @@ export default function CompanyPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Descriptions</CardTitle>
+              <CardTitle className="text-base">Описания</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="descriptionShort">Short Description (50 words)</Label>
+                <Label htmlFor="descriptionShort">Короткое описание (~50 слов)</Label>
                 <textarea
                   id="descriptionShort"
                   className="mt-1 flex min-h-[80px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
@@ -172,7 +172,7 @@ export default function CompanyPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="descriptionMedium">Medium Description (100 words)</Label>
+                <Label htmlFor="descriptionMedium">Среднее описание (~100 слов)</Label>
                 <textarea
                   id="descriptionMedium"
                   className="mt-1 flex min-h-[100px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"
@@ -181,7 +181,7 @@ export default function CompanyPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="descriptionLong">Long Description (200-300 words)</Label>
+                <Label htmlFor="descriptionLong">Полное описание (~200-300 слов)</Label>
                 <textarea
                   id="descriptionLong"
                   className="mt-1 flex min-h-[120px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-2"

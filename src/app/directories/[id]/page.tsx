@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
 import {
   Globe,
@@ -21,7 +22,7 @@ import {
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { cn, getStatusColor, getAutomationColor } from "@/lib/utils";
+import { cn, getStatusColor, getAutomationColor, translateStatus, translatePriority } from "@/lib/utils";
 
 type DirectoryDetail = {
   id: string;
@@ -65,6 +66,8 @@ type DirectoryDetail = {
     };
   } | null;
 };
+
+const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "VERIFICATION_REQUIRED", "REJECTED", "PAYMENT_REQUIRED", "COMPLETED"];
 
 export default function DirectoryDetailPage() {
   const params = useParams();
@@ -121,16 +124,16 @@ export default function DirectoryDetailPage() {
   }
 
   if (!dir) {
-    return <div className="py-16 text-center text-zinc-500">Directory not found</div>;
+    return <div className="py-16 text-center text-zinc-500">Каталог не найден</div>;
   }
 
   const checklist = [
-    { label: "Create account", done: dir.status !== "PENDING" },
-    { label: "Add business name", done: dir.status !== "PENDING" },
-    { label: "Add description", done: !!dir.generatedContent?.shortDescription },
-    { label: "Add services", done: !!dir.generatedContent?.serviceDescription },
-    { label: "Add website", done: true },
-    { label: "Verify email", done: dir.status === "COMPLETED" },
+    { label: "Создать аккаунт", done: dir.status !== "PENDING" },
+    { label: "Добавить название компании", done: dir.status !== "PENDING" },
+    { label: "Добавить описание", done: !!dir.generatedContent?.shortDescription },
+    { label: "Добавить услуги", done: !!dir.generatedContent?.serviceDescription },
+    { label: "Добавить сайт", done: true },
+    { label: "Подтвердить email", done: dir.status === "COMPLETED" },
   ];
 
   return (
@@ -144,9 +147,21 @@ export default function DirectoryDetailPage() {
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-semibold tracking-tight">{dir.platform}</h1>
-            <span className={cn("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium", getStatusColor(dir.status))}>
-              {dir.status.replace("_", " ")}
-            </span>
+            <Select
+              value={dir.status}
+              onValueChange={(value) =>
+                updateMutation.mutate({ status: value })
+              }
+            >
+              <SelectTrigger className={cn("h-7 text-xs w-[160px]", getStatusColor(dir.status))}>
+                <SelectValue>{translateStatus(dir.status)}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {STATUSES.map((s) => (
+                  <SelectItem key={s} value={s}>{translateStatus(s)}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           {dir.url && (
             <a
@@ -164,7 +179,7 @@ export default function DirectoryDetailPage() {
             <Button variant="outline" size="sm" className="gap-2" asChild>
               <a href={dir.url} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4" />
-                Open Website
+                Открыть сайт
               </a>
             </Button>
           )}
@@ -175,7 +190,7 @@ export default function DirectoryDetailPage() {
             className="gap-2"
           >
             <CheckCircle2 className="h-4 w-4" />
-            Complete Task
+            Завершить
           </Button>
         </div>
       </div>
@@ -187,34 +202,38 @@ export default function DirectoryDetailPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <Globe className="h-4 w-4" />
-                  SEO Audit
+                  SEO Аудит
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-zinc-500">SEO Value Score</p>
+                    <p className="text-xs text-zinc-500">SEO оценка</p>
                     <p className={cn("text-2xl font-bold", (dir.seoAudit.seoScore || 0) >= 80 ? "text-emerald-500" : (dir.seoAudit.seoScore || 0) >= 60 ? "text-amber-500" : "text-zinc-400")}>
                       {dir.seoAudit.seoScore || "—"}/100
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500">Platform Type</p>
+                    <p className="text-xs text-zinc-500">Тип платформы</p>
                     <p className="text-sm font-medium">
                       {dir.seoAudit.platformType?.replace(/_/g, " ") || "—"}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500">Automation</p>
+                    <p className="text-xs text-zinc-500">Автоматизация</p>
                     <span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium mt-1", getAutomationColor(dir.seoAudit.automationLevel || ""))}>
-                      {dir.seoAudit.automationLevel || "—"}
+                      {dir.seoAudit.automationLevel === "EASY" ? "Легко" :
+                       dir.seoAudit.automationLevel === "MEDIUM" ? "Средне" :
+                       dir.seoAudit.automationLevel === "HARD" ? "Сложно" :
+                       dir.seoAudit.automationLevel === "MANUAL" ? "Вручную" :
+                       dir.seoAudit.automationLevel || "—"}
                     </span>
                     {dir.seoAudit.automationReason && (
                       <p className="mt-1 text-xs text-zinc-400">{dir.seoAudit.automationReason}</p>
                     )}
                   </div>
                   <div>
-                    <p className="text-xs text-zinc-500">Priority</p>
+                    <p className="text-xs text-zinc-500">Приоритет</p>
                     <Badge
                       variant={
                         dir.seoAudit.priority === "HIGH"
@@ -225,21 +244,21 @@ export default function DirectoryDetailPage() {
                       }
                       className="mt-1"
                     >
-                      {dir.seoAudit.priority}
+                      {translatePriority(dir.seoAudit.priority)}
                     </Badge>
                   </div>
                 </div>
 
                 {dir.seoAudit.valueReason && (
                   <div>
-                    <p className="text-xs text-zinc-500">Value Assessment</p>
+                    <p className="text-xs text-zinc-500">Оценка ценности</p>
                     <p className="mt-1 text-sm">{dir.seoAudit.valueReason}</p>
                   </div>
                 )}
 
                 {dir.seoAudit.recommendation && (
                   <div>
-                    <p className="text-xs text-zinc-500">Recommendation</p>
+                    <p className="text-xs text-zinc-500">Рекомендация</p>
                     <p className="mt-1 text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
                       {dir.seoAudit.recommendation}
                     </p>
@@ -248,7 +267,7 @@ export default function DirectoryDetailPage() {
 
                 {dir.seoAudit.duplicateWarning && (
                   <div>
-                    <p className="text-xs text-zinc-500">Duplicate Warning</p>
+                    <p className="text-xs text-zinc-500">Предупреждение о дубликатах</p>
                     <p className="mt-1 text-sm text-amber-700 bg-amber-50 rounded-lg p-3">
                       {dir.seoAudit.duplicateWarning}
                     </p>
@@ -257,7 +276,7 @@ export default function DirectoryDetailPage() {
 
                 {dir.seoAudit.requiredAssets && (
                   <div>
-                    <p className="text-xs text-zinc-500">Required Assets</p>
+                    <p className="text-xs text-zinc-500">Необходимые материалы</p>
                     <p className="mt-1 text-sm">{dir.seoAudit.requiredAssets}</p>
                   </div>
                 )}
@@ -270,25 +289,23 @@ export default function DirectoryDetailPage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-blue-500" />
-                  AI Generated Content
+                  AI Контент
                 </CardTitle>
-                {!dir.generatedContent && (
-                  <Button onClick={generateContent} disabled={generating} size="sm" className="gap-2">
-                    {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                    Generate
-                  </Button>
-                )}
+                <Button onClick={generateContent} disabled={generating} size="sm" variant="outline" className="gap-2">
+                  {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                  {generating ? "Генерация..." : "Сгенерировать"}
+                </Button>
               </CardHeader>
               <CardContent className="space-y-4">
                 {dir.generatedContent.shortDescription && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Short Description (50 words)</p>
+                      <p className="text-xs font-medium text-zinc-500">Короткое описание (~50 слов)</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.shortDescription!, "short")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "short" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "short" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.shortDescription}</p>
@@ -297,12 +314,12 @@ export default function DirectoryDetailPage() {
                 {dir.generatedContent.mediumDescription && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Medium Description (100 words)</p>
+                      <p className="text-xs font-medium text-zinc-500">Среднее описание (~100 слов)</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.mediumDescription!, "medium")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "medium" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "medium" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.mediumDescription}</p>
@@ -311,12 +328,12 @@ export default function DirectoryDetailPage() {
                 {dir.generatedContent.longDescription && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Long Description (300 words)</p>
+                      <p className="text-xs font-medium text-zinc-500">Полное описание (~300 слов)</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.longDescription!, "long")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "long" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "long" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.longDescription}</p>
@@ -325,12 +342,12 @@ export default function DirectoryDetailPage() {
                 {dir.generatedContent.serviceDescription && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Services</p>
+                      <p className="text-xs font-medium text-zinc-500">Услуги</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.serviceDescription!, "services")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "services" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "services" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.serviceDescription}</p>
@@ -339,12 +356,12 @@ export default function DirectoryDetailPage() {
                 {dir.generatedContent.socialBio && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Social Bio</p>
+                      <p className="text-xs font-medium text-zinc-500">Социальная био</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.socialBio!, "bio")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "bio" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "bio" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.socialBio}</p>
@@ -353,12 +370,12 @@ export default function DirectoryDetailPage() {
                 {dir.generatedContent.keywords && (
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Keywords</p>
+                      <p className="text-xs font-medium text-zinc-500">Ключевые слова</p>
                       <button
                         onClick={() => copyToClipboard(dir.generatedContent!.keywords!, "keywords")}
                         className="text-xs text-blue-600 hover:underline flex items-center gap-1"
                       >
-                        {copied === "keywords" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "keywords" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
                     <p className="mt-1 text-sm text-zinc-600">{dir.generatedContent.keywords}</p>
@@ -373,9 +390,9 @@ export default function DirectoryDetailPage() {
               <CardContent className="flex flex-col items-center gap-4 py-8">
                 <Sparkles className="h-8 w-8 text-zinc-300" />
                 <div className="text-center">
-                  <p className="font-medium">AI content not generated yet</p>
+                  <p className="font-medium">AI контент ещё не создан</p>
                   <p className="mt-1 text-sm text-zinc-500">
-                    Generate optimized descriptions and keywords for this platform.
+                    Сгенерируйте оптимизированные описания и ключевые слова для этой платформы.
                   </p>
                 </div>
                 <Button onClick={generateContent} disabled={generating} className="gap-2">
@@ -384,7 +401,7 @@ export default function DirectoryDetailPage() {
                   ) : (
                     <Sparkles className="h-4 w-4" />
                   )}
-                  {generating ? "Generating..." : "Generate Content with AI"}
+                  {generating ? "Генерация..." : "Создать контент с AI"}
                 </Button>
               </CardContent>
             </Card>
@@ -394,7 +411,7 @@ export default function DirectoryDetailPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Submission Checklist</CardTitle>
+              <CardTitle className="text-base">Чеклист подачи</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -421,11 +438,11 @@ export default function DirectoryDetailPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Submission Details</CardTitle>
+              <CardTitle className="text-base">Данные для подачи</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="login">Login</Label>
+                <Label htmlFor="login">Логин</Label>
                 <Input
                   id="login"
                   value={dir.submission?.login || ""}
@@ -440,7 +457,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Пароль</Label>
                 <Input
                   id="password"
                   type="password"
@@ -455,7 +472,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="listingUrl">Listing URL</Label>
+                <Label htmlFor="listingUrl">URL листинга</Label>
                 <Input
                   id="listingUrl"
                   value={dir.submission?.listingUrl || ""}
@@ -470,7 +487,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="notes">Notes</Label>
+                <Label htmlFor="notes">Заметки</Label>
                 <textarea
                   id="notes"
                   className="mt-1 flex min-h-[80px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm"

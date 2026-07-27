@@ -19,9 +19,9 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Настройки</h1>
         <p className="mt-1 text-sm text-zinc-500">
-          Manage your account and integration settings
+          Управление настройками аккаунта и интеграций
         </p>
       </div>
 
@@ -30,7 +30,7 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Key className="h-4 w-4" />
-              API Keys
+              API Ключи
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -38,11 +38,11 @@ export default function SettingsPage() {
               <Label>OpenAI API Key</Label>
               <Input type="password" placeholder="sk-..." />
               <p className="mt-1 text-xs text-zinc-400">
-                Used for AI audit, content generation, and recommendations
+                Используется для AI аудита, генерации контента и рекомендаций
               </p>
             </div>
             <Button onClick={handleSave} className="gap-2">
-              {saved ? "Saved" : "Save API Key"}
+              {saved ? "Сохранено" : "Сохранить API ключ"}
             </Button>
           </CardContent>
         </Card>
@@ -51,19 +51,19 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Database className="h-4 w-4" />
-              Database
+              База данных
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>Database URL</Label>
+              <Label>URL базы данных</Label>
               <Input type="password" placeholder="postgresql://..." />
               <p className="mt-1 text-xs text-zinc-400">
-                PostgreSQL connection string
+                Строка подключения PostgreSQL
               </p>
             </div>
             <Button onClick={handleSave} className="gap-2">
-              {saved ? "Saved" : "Save"}
+              {saved ? "Сохранено" : "Сохранить"}
             </Button>
           </CardContent>
         </Card>
@@ -72,14 +72,14 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Bell className="h-4 w-4" />
-              Notifications
+              Уведомления
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">Email Notifications</p>
-                <p className="text-xs text-zinc-400">Receive updates about directory submissions</p>
+                <p className="text-sm font-medium">Email уведомления</p>
+                <p className="text-xs text-zinc-400">Получать обновления о статусе подач</p>
               </div>
               <label className="relative inline-flex cursor-pointer items-center">
                 <input type="checkbox" className="peer sr-only" defaultChecked />
@@ -89,8 +89,8 @@ export default function SettingsPage() {
             <Separator />
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium">Weekly Audit Reports</p>
-                <p className="text-xs text-zinc-400">Get weekly AI audit summaries</p>
+                <p className="text-sm font-medium">Еженедельные отчёты аудита</p>
+                <p className="text-xs text-zinc-400">Получать еженедельные сводки AI аудита</p>
               </div>
               <label className="relative inline-flex cursor-pointer items-center">
                 <input type="checkbox" className="peer sr-only" defaultChecked />
@@ -104,12 +104,12 @@ export default function SettingsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <User className="h-4 w-4" />
-              Account
+              Аккаунт
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label>Name</Label>
+              <Label>Имя</Label>
               <Input defaultValue="Admin" />
             </div>
             <div>
@@ -117,7 +117,7 @@ export default function SettingsPage() {
               <Input defaultValue="admin@seoflowai.com" />
             </div>
             <Button onClick={handleSave} className="gap-2">
-              {saved ? "Saved" : "Update Profile"}
+              {saved ? "Сохранено" : "Обновить профиль"}
             </Button>
           </CardContent>
         </Card>

@@ -93,7 +93,7 @@ export default function CampaignsPage() {
       const result: UploadResult = await res.json();
 
       if (!res.ok) {
-        setUploadResult({ total: 0, imported: 0, failed: 0, error: result.error || "Upload failed" });
+        setUploadResult({ total: 0, imported: 0, failed: 0, error: result.error || "Ошибка загрузки" });
       } else {
         setUploadResult(result);
       }
@@ -102,7 +102,7 @@ export default function CampaignsPage() {
         total: 0,
         imported: 0,
         failed: 0,
-        error: err instanceof Error ? err.message : "Network error",
+        error: err instanceof Error ? err.message : "Сетевая ошибка",
       });
     }
 
@@ -131,19 +131,19 @@ export default function CampaignsPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Campaigns</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Кампании</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Manage your SEO directory submission campaigns
+            Управляйте кампаниями по подаче заявок в SEO-каталоги
           </p>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="outline" onClick={runAudit} className="gap-2">
             <Rocket className="h-4 w-4" />
-            Run AI Audit
+            Запустить AI аудит
           </Button>
           <Button onClick={() => setShowNew(true)} className="gap-2">
             <Plus className="h-4 w-4" />
-            New Campaign
+            Новая кампания
           </Button>
         </div>
       </div>
@@ -151,31 +151,31 @@ export default function CampaignsPage() {
       {showNew && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Create Campaign</CardTitle>
+            <CardTitle className="text-base">Создать кампанию</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Campaign Name</Label>
+                <Label htmlFor="name">Название кампании</Label>
                 <Input
                   id="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Q3 2026 Directory Submission"
+                  placeholder="Q3 2026 Подача в каталоги"
                 />
               </div>
               <div>
-                <Label htmlFor="desc">Description</Label>
+                <Label htmlFor="desc">Описание</Label>
                 <Input
                   id="desc"
                   value={desc}
                   onChange={(e) => setDesc(e.target.value)}
-                  placeholder="Main directory listing campaign"
+                  placeholder="Основная кампания по каталогам"
                 />
               </div>
               <Button onClick={() => createMutation.mutate()} className="gap-2">
                 <Plus className="h-4 w-4" />
-                Create Campaign
+                Создать кампанию
               </Button>
             </div>
           </CardContent>
@@ -197,7 +197,7 @@ export default function CampaignsPage() {
               <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
                 <div>
-                  <p className="font-medium text-red-800">Upload failed</p>
+                  <p className="font-medium text-red-800">Ошибка загрузки</p>
                   <p className="text-sm text-red-600">{uploadResult.error}</p>
                 </div>
               </div>
@@ -211,28 +211,28 @@ export default function CampaignsPage() {
                   )}
                   <div>
                     <p className="font-medium text-emerald-800">
-                      {uploadResult.imported} directories imported successfully
+                      {uploadResult.imported} каталогов импортировано
                     </p>
                     {uploadResult.filename && (
-                      <p className="text-sm text-zinc-600">File: {uploadResult.filename}</p>
+                      <p className="text-sm text-zinc-600">Файл: {uploadResult.filename}</p>
                     )}
                     {uploadResult.rowsDetected && (
-                      <p className="text-sm text-zinc-600">Rows detected: {uploadResult.rowsDetected}</p>
+                      <p className="text-sm text-zinc-600">Строк обнаружено: {uploadResult.rowsDetected}</p>
                     )}
                   {uploadResult.headerFound && uploadResult.headerFound.length > 0 && (
                     <p className="text-sm text-zinc-600">
-                      Header: {uploadResult.headerFound.join(" | ")}
+                      Заголовки: {uploadResult.headerFound.join(" | ")}
                     </p>
                   )}
                   {uploadResult.sample && (
                     <div className="mt-1 text-sm text-zinc-600">
-                      <p>First: {uploadResult.sample.first5.join(", ")}</p>
-                      <p>Last: {uploadResult.sample.last5.join(", ")}</p>
+                      <p>Первые: {uploadResult.sample.first5.join(", ")}</p>
+                      <p>Последние: {uploadResult.sample.last5.join(", ")}</p>
                     </div>
                   )}
                     {uploadResult.failed > 0 && (
                       <p className="mt-1 text-sm font-medium text-amber-700">
-                        Failed: {uploadResult.failed}
+                        Ошибок: {uploadResult.failed}
                       </p>
                     )}
                   </div>
@@ -256,14 +256,14 @@ export default function CampaignsPage() {
             <CardContent className="flex flex-col items-center gap-4 py-12">
               <FileSpreadsheet className="h-12 w-12 text-zinc-300" />
               <div className="text-center">
-                <p className="font-medium">No campaigns yet</p>
+                <p className="font-medium">Ещё нет кампаний</p>
                 <p className="mt-1 text-sm text-zinc-500">
-                  Create your first campaign to get started with directory submissions.
+                  Создайте первую кампанию для начала работы с каталогами.
                 </p>
               </div>
               <Button onClick={() => setShowNew(true)} className="gap-2">
                 <Plus className="h-4 w-4" />
-                Create Campaign
+                Создать кампанию
               </Button>
             </CardContent>
           </Card>
@@ -275,14 +275,14 @@ export default function CampaignsPage() {
                   <div className="flex items-center gap-3">
                     <h3 className="font-medium">{campaign.name}</h3>
                     <Badge variant={campaign.status === "ACTIVE" ? "success" : "secondary"}>
-                      {campaign.status}
+                      {campaign.status === "ACTIVE" ? "Активна" : campaign.status}
                     </Badge>
                   </div>
                   {campaign.description && (
                     <p className="mt-1 text-sm text-zinc-500">{campaign.description}</p>
                   )}
                   <p className="mt-2 text-xs text-zinc-400">
-                    Created {formatDate(campaign.createdAt)} • {campaign._count.directories} directories
+                    Создана {formatDate(campaign.createdAt)} • {campaign._count.directories} каталогов
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -298,20 +298,20 @@ export default function CampaignsPage() {
                         setUploadResult(null);
 
                         if (f) {
-                          console.log(`[Upload] File selected: ${f.name}, size: ${f.size}, type: ${f.type}`);
+                          console.log(`[Upload] Файл выбран: ${f.name}, размер: ${f.size}, тип: ${f.type}`);
                         }
                       }}
                     />
                     <Button variant="outline" size="sm" className="gap-2" asChild>
                       <span>
                         <Upload className="h-4 w-4" />
-                        Upload Excel
+                        Загрузить Excel
                       </span>
                     </Button>
                   </label>
                   <Link href={`/directories?campaignId=${campaign.id}`}>
                     <Button variant="ghost" size="sm" className="gap-1">
-                      View <ArrowUpRight className="h-3 w-3" />
+                      Смотреть <ArrowUpRight className="h-3 w-3" />
                     </Button>
                   </Link>
                 </div>
@@ -326,14 +326,14 @@ export default function CampaignsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Upload {file.name}
+              Загрузка {file.name}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-lg bg-zinc-50 p-4 text-sm">
-              <p><span className="font-medium text-zinc-500">Filename:</span> {file.name}</p>
-              <p><span className="font-medium text-zinc-500">Size:</span> {(file.size / 1024).toFixed(1)} KB</p>
-              <p><span className="font-medium text-zinc-500">Type:</span> {file.type || "Unknown"}</p>
+              <p><span className="font-medium text-zinc-500">Имя:</span> {file.name}</p>
+              <p><span className="font-medium text-zinc-500">Размер:</span> {(file.size / 1024).toFixed(1)} KB</p>
+              <p><span className="font-medium text-zinc-500">Тип:</span> {file.type || "Неизвестно"}</p>
             </div>
             <Button onClick={handleUpload} disabled={uploading} className="gap-2">
               {uploading ? (
@@ -341,7 +341,7 @@ export default function CampaignsPage() {
               ) : (
                 <Upload className="h-4 w-4" />
               )}
-              {uploading ? "Uploading..." : "Upload & Parse"}
+              {uploading ? "Загрузка..." : "Загрузить и обработать"}
             </Button>
           </CardContent>
         </Card>

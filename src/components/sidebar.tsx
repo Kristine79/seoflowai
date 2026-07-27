@@ -15,13 +15,13 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/campaigns", label: "Campaigns", icon: Briefcase },
-  { href: "/company", label: "Company Profile", icon: Building2 },
-  { href: "/directories", label: "Directories", icon: ListTree },
-  { href: "/audit", label: "AI Audit", icon: Search },
-  { href: "/content", label: "Content Generator", icon: FileText },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/", label: "Главная", icon: LayoutDashboard },
+  { href: "/campaigns", label: "Кампании", icon: Briefcase },
+  { href: "/company", label: "Компания", icon: Building2 },
+  { href: "/directories", label: "Каталоги", icon: ListTree },
+  { href: "/audit", label: "SEO Аудит", icon: Search },
+  { href: "/content", label: "Генератор контента", icon: FileText },
+  { href: "/settings", label: "Настройки", icon: Settings },
 ];
 
 export function Sidebar() {
@@ -60,8 +60,8 @@ export function Sidebar() {
 
       <div className="border-t border-zinc-100 p-4">
         <div className="rounded-lg bg-blue-50 p-3">
-          <p className="text-xs font-medium text-blue-700">AI Credits</p>
-          <p className="mt-1 text-lg font-semibold text-blue-900">2,450</p>
+          <p className="text-xs font-medium text-blue-700">AI Кредиты</p>
+          <p className="mt-1 text-lg font-semibold text-blue-900">2 450</p>
           <div className="mt-2 h-1.5 rounded-full bg-blue-200">
             <div className="h-1.5 w-3/4 rounded-full bg-blue-600" />
           </div>

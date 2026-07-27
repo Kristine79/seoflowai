@@ -134,9 +134,9 @@ export default function AuditPage() {
   };
 
   const priorityChart = [
-    { name: "High", value: s.highValue, color: "#22c55e" },
-    { name: "Medium", value: s.mediumValue, color: "#f59e0b" },
-    { name: "Low", value: s.lowValue, color: "#a1a1aa" },
+    { name: "Высокий", value: s.highValue, color: "#22c55e" },
+    { name: "Средний", value: s.mediumValue, color: "#f59e0b" },
+    { name: "Низкий", value: s.lowValue, color: "#a1a1aa" },
   ];
 
   const categoryChart = Object.entries(s.byCategory).map(([name, value], i) => ({
@@ -153,19 +153,19 @@ export default function AuditPage() {
   ];
 
   const impactEffortData = [
-    { name: "High Impact\nLow Effort", value: s.impactEffortMatrix.highImpactLowEffort, color: "#22c55e" },
-    { name: "High Impact\nHigh Effort", value: s.impactEffortMatrix.highImpactHighEffort, color: "#f59e0b" },
-    { name: "Low Impact\nLow Effort", value: s.impactEffortMatrix.lowImpactLowEffort, color: "#3b82f6" },
-    { name: "Low Impact\nHigh Effort", value: s.impactEffortMatrix.lowImpactHighEffort, color: "#ef4444" },
+    { name: "Высокий эффект\nНизкие усилия", value: s.impactEffortMatrix.highImpactLowEffort, color: "#22c55e" },
+    { name: "Высокий эффект\nВысокие усилия", value: s.impactEffortMatrix.highImpactHighEffort, color: "#f59e0b" },
+    { name: "Низкий эффект\nНизкие усилия", value: s.impactEffortMatrix.lowImpactLowEffort, color: "#3b82f6" },
+    { name: "Низкий эффект\nВысокие усилия", value: s.impactEffortMatrix.lowImpactHighEffort, color: "#ef4444" },
   ];
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">AI SEO Audit</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">AI SEO Аудит</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Comprehensive analysis of your directory submission opportunities
+            Комплексный анализ возможностей подачи в каталоги
           </p>
         </div>
         <Button
@@ -178,7 +178,7 @@ export default function AuditPage() {
           ) : (
             <Rocket className="h-4 w-4" />
           )}
-          {runAuditMutation.isPending ? "Auditing..." : "Run AI Audit"}
+          {runAuditMutation.isPending ? "Анализ..." : "Запустить AI аудит"}
         </Button>
       </div>
 
@@ -187,7 +187,7 @@ export default function AuditPage() {
           <CardContent className="flex items-center gap-3 py-4">
             <Zap className="h-5 w-5 text-blue-600" />
             <p className="text-sm text-blue-800">
-              Audit complete! {runAuditMutation.data.audited} platforms analyzed.
+              Аудит завершён! Проанализировано {runAuditMutation.data.audited} платформ.
             </p>
           </CardContent>
         </Card>
@@ -196,7 +196,7 @@ export default function AuditPage() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Total Platforms</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Всего платформ</CardTitle>
             <Search className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
@@ -206,7 +206,7 @@ export default function AuditPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">SEO Opportunity Score</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">SEO-возможности</CardTitle>
             <Gauge className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
@@ -219,23 +219,23 @@ export default function AuditPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Quick Wins</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Быстрые победы</CardTitle>
             <Zap className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-emerald-500">{s.quickWins.length}</div>
-            <p className="mt-1 text-xs text-zinc-500">High impact, low effort</p>
+            <p className="mt-1 text-xs text-zinc-500">Высокий эффект, низкие усилия</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Automation Ready</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Готово к автоматизации</CardTitle>
             <Activity className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-blue-500">{s.automationReady}</div>
-            <p className="mt-1 text-xs text-zinc-500">{s.needManualWork} need manual work</p>
+            <p className="mt-1 text-xs text-zinc-500">{s.needManualWork} требуют ручной работы</p>
           </CardContent>
         </Card>
       </div>
@@ -245,7 +245,7 @@ export default function AuditPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">SEO Score Distribution</CardTitle>
+                <CardTitle className="text-base">Распределение SEO-баллов</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-64">
@@ -268,7 +268,7 @@ export default function AuditPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Platform Categories</CardTitle>
+                <CardTitle className="text-base">Категории платформ</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-64">
@@ -299,7 +299,7 @@ export default function AuditPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Priority Breakdown</CardTitle>
+                <CardTitle className="text-base">Распределение по приоритетам</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-64">
@@ -325,7 +325,7 @@ export default function AuditPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Impact vs Effort Matrix</CardTitle>
+                <CardTitle className="text-base">Матрица эффект vs усилия</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="h-64">
@@ -352,7 +352,7 @@ export default function AuditPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <Zap className="h-4 w-4 text-emerald-500" />
-                  Quick Wins — High Impact, Low Effort
+                  Быстрые победы — высокий эффект, низкие усилия
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -370,7 +370,7 @@ export default function AuditPage() {
                           )}
                           {qw.time && (
                             <span className="flex items-center gap-1 text-xs text-zinc-400">
-                              <Clock className="h-3 w-3" /> ~{qw.time}min
+                              <Clock className="h-3 w-3" /> ~{qw.time}мин
                             </span>
                           )}
                         </div>
@@ -389,7 +389,7 @@ export default function AuditPage() {
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
-                Top Value Platforms
+                Лучшие платформы
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -407,7 +407,7 @@ export default function AuditPage() {
                           <p className="text-sm font-medium">{p.platform}</p>
                           {p.time && (
                             <span className="flex items-center gap-1 text-xs text-zinc-400">
-                              <Clock className="h-3 w-3" /> ~{p.time}min
+                              <Clock className="h-3 w-3" /> ~{p.time}мин
                             </span>
                           )}
                         </div>
@@ -463,7 +463,7 @@ export default function AuditPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-blue-500" />
-                  7-Day SEO Action Plan
+                  7-дневный SEO план
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -489,7 +489,7 @@ export default function AuditPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <Lightbulb className="h-4 w-4 text-amber-500" />
-                  Strategic Recommendations
+                  Стратегические рекомендации
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -514,9 +514,9 @@ export default function AuditPage() {
           <CardContent className="flex flex-col items-center gap-4 py-16">
             <Search className="h-12 w-12 text-zinc-300" />
             <div className="text-center">
-              <p className="font-medium">No audit data yet</p>
+              <p className="font-medium">Нет данных аудита</p>
               <p className="mt-1 text-sm text-zinc-500">
-                Import directories and run AI Audit to see the analysis.
+                Импортируйте каталоги и запустите AI аудит для анализа.
               </p>
             </div>
             <Button
@@ -525,7 +525,7 @@ export default function AuditPage() {
               className="gap-2"
             >
               <Rocket className="h-4 w-4" />
-              Run AI Audit
+              Запустить AI аудит
             </Button>
           </CardContent>
         </Card>

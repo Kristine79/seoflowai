@@ -6,11 +6,34 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: Date | string) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
+  return new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
+    month: "long",
     year: "numeric",
   }).format(new Date(date));
+}
+
+export function translateStatus(status: string): string {
+  const map: Record<string, string> = {
+    PENDING: "Ожидает",
+    AI_PREPARED: "AI подготовлен",
+    READY: "Готов",
+    IN_PROGRESS: "В процессе",
+    COMPLETED: "Завершён",
+    VERIFICATION_REQUIRED: "Требуется проверка",
+    REJECTED: "Отклонён",
+    PAYMENT_REQUIRED: "Требуется оплата",
+  };
+  return map[status] || status;
+}
+
+export function translatePriority(priority: string): string {
+  const map: Record<string, string> = {
+    HIGH: "Высокий",
+    MEDIUM: "Средний",
+    LOW: "Низкий",
+  };
+  return map[priority] || priority;
 }
 
 export function getPriorityColor(priority: string) {

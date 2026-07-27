@@ -14,7 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn, translateStatus } from "@/lib/utils";
 
 type Directory = {
   id: string;
@@ -72,21 +72,21 @@ export default function ContentPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Content Generator</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Генератор контента</h1>
         <p className="mt-1 text-sm text-zinc-500">
-          AI-powered content generation for directory listings
+          AI-генерация контента для листингов в каталогах
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="md:col-span-1">
           <CardHeader>
-            <CardTitle className="text-base">Select Platform</CardTitle>
+            <CardTitle className="text-base">Выберите платформу</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Select value={selectedDir} onValueChange={setSelectedDir}>
               <SelectTrigger>
-                <SelectValue placeholder="Choose a platform..." />
+                <SelectValue placeholder="Выберите платформу..." />
               </SelectTrigger>
               <SelectContent>
                 {directories?.map((d) => (
@@ -105,14 +105,14 @@ export default function ContentPage() {
             {dir && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-zinc-500">Status</span>
+                  <span className="text-zinc-500">Статус</span>
                   <Badge variant={dir.status === "READY" ? "success" : "secondary"}>
-                    {dir.status.replace("_", " ")}
+                    {translateStatus(dir.status)}
                   </Badge>
                 </div>
                 {dir.seoAudit?.seoScore && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-zinc-500">SEO Score</span>
+                    <span className="text-zinc-500">SEO балл</span>
                     <span className={cn("font-semibold", dir.seoAudit.seoScore >= 80 ? "text-emerald-600" : dir.seoAudit.seoScore >= 60 ? "text-amber-600" : "text-zinc-400")}>
                       {dir.seoAudit.seoScore}/100
                     </span>
@@ -120,7 +120,7 @@ export default function ContentPage() {
                 )}
                 {dir.seoAudit?.platformType && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-zinc-500">Type</span>
+                    <span className="text-zinc-500">Тип</span>
                     <span>{dir.seoAudit.platformType.replace(/_/g, " ")}</span>
                   </div>
                 )}
@@ -135,7 +135,7 @@ export default function ContentPage() {
                   ) : (
                     <Sparkles className="h-4 w-4" />
                   )}
-                  {dir.generatedContent ? "Regenerate" : "Generate Content"}
+                  {dir.generatedContent ? "Обновить" : "Создать контент"}
                 </Button>
               </div>
             )}
@@ -146,24 +146,24 @@ export default function ContentPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Generated Content
+              Сгенерированный контент
             </CardTitle>
           </CardHeader>
           <CardContent>
             {!dir ? (
               <div className="flex flex-col items-center gap-3 py-16 text-center">
                 <FileText className="h-10 w-10 text-zinc-300" />
-                <p className="text-sm text-zinc-500">Select a platform to generate content</p>
+                <p className="text-sm text-zinc-500">Выберите платформу для генерации контента</p>
               </div>
             ) : !dir.generatedContent ? (
               <div className="flex flex-col items-center gap-3 py-16 text-center">
                 <Sparkles className="h-10 w-10 text-zinc-300" />
                 <p className="text-sm text-zinc-500">
-                  No content generated yet for {dir.platform}
+                  Контент ещё не создан для {dir.platform}
                 </p>
                 <Button onClick={generateContent} disabled={generating} variant="outline" className="gap-2">
                   {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                  Generate with AI
+                  Создать с AI
                 </Button>
               </div>
             ) : (
@@ -172,8 +172,8 @@ export default function ContentPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <p className="text-sm font-medium">Short Description</p>
-                        <p className="text-xs text-zinc-400">~50 words</p>
+                        <p className="text-sm font-medium">Короткое описание</p>
+                        <p className="text-xs text-zinc-400">~50 слов</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -181,7 +181,7 @@ export default function ContentPage() {
                         onClick={() => copyToClipboard(dir.generatedContent!.shortDescription!, "short")}
                         className="gap-1"
                       >
-                        {copied === "short" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "short" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
@@ -194,8 +194,8 @@ export default function ContentPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <p className="text-sm font-medium">Medium Description</p>
-                        <p className="text-xs text-zinc-400">~100 words</p>
+                        <p className="text-sm font-medium">Среднее описание</p>
+                        <p className="text-xs text-zinc-400">~100 слов</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -203,7 +203,7 @@ export default function ContentPage() {
                         onClick={() => copyToClipboard(dir.generatedContent!.mediumDescription!, "medium")}
                         className="gap-1"
                       >
-                        {copied === "medium" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "medium" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
@@ -216,8 +216,8 @@ export default function ContentPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
-                        <p className="text-sm font-medium">Long Description</p>
-                        <p className="text-xs text-zinc-400">~300 words</p>
+                        <p className="text-sm font-medium">Полное описание</p>
+                        <p className="text-xs text-zinc-400">~300 слов</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -225,7 +225,7 @@ export default function ContentPage() {
                         onClick={() => copyToClipboard(dir.generatedContent!.longDescription!, "long")}
                         className="gap-1"
                       >
-                        {copied === "long" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "long" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
@@ -237,14 +237,14 @@ export default function ContentPage() {
                 {dir.generatedContent.serviceDescription && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Services Description</p>
+                      <p className="text-sm font-medium">Описание услуг</p>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(dir.generatedContent!.serviceDescription!, "services")}
                         className="gap-1"
                       >
-                        {copied === "services" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "services" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
@@ -256,14 +256,14 @@ export default function ContentPage() {
                 {dir.generatedContent.socialBio && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Social Bio</p>
+                      <p className="text-sm font-medium">Социальная био</p>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(dir.generatedContent!.socialBio!, "bio")}
                         className="gap-1"
                       >
-                        {copied === "bio" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "bio" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
@@ -275,14 +275,14 @@ export default function ContentPage() {
                 {dir.generatedContent.keywords && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Keywords</p>
+                      <p className="text-sm font-medium">Ключевые слова</p>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(dir.generatedContent!.keywords!, "keywords")}
                         className="gap-1"
                       >
-                        {copied === "keywords" ? "Copied!" : "Copy"} <Copy className="h-3 w-3" />
+                        {copied === "keywords" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">

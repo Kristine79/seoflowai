@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SeoFlowAI — AI SEO Directory Manager",
-  description: "AI-powered SEO Directory Submission Manager",
+  title: "SeoFlowAI — AI управление SEO-каталогами",
+  description: "AI-менеджер для подачи заявок в SEO-каталоги",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="ru" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="h-full bg-zinc-50 font-sans text-zinc-900">
         <Providers>
           <div className="flex h-full">

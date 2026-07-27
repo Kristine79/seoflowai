@@ -17,6 +17,7 @@ import {
   FileSpreadsheet,
 } from "lucide-react";
 import Link from "next/link";
+import { translateStatus } from "@/lib/utils";
 
 type DashboardData = {
   totalDirectories: number;
@@ -80,15 +81,15 @@ export default function Dashboard() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">Главная</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Overview of your SEO directory campaigns
+            Обзор ваших SEO-кампаний по каталогам
           </p>
         </div>
         <Link href="/campaigns">
           <Button className="gap-2">
             <Zap className="h-4 w-4" />
-            New Campaign
+            Новая кампания
           </Button>
         </Link>
       </div>
@@ -96,54 +97,54 @@ export default function Dashboard() {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">Total Platforms</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Всего платформ</CardTitle>
             <Globe className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats.totalDirectories}</div>
             <div className="mt-1 flex items-center gap-1 text-xs text-emerald-500">
               <ArrowUpRight className="h-3 w-3" />
-              <span>SEO Campaign Active</span>
+              <span>SEO-кампания активна</span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">SEO Opportunity Score</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Средний SEO-балл</CardTitle>
             <Target className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats.averageSeoScore}/100</div>
             <div className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
               <TrendingUp className="h-3 w-3" />
-              <span>{stats.highPriority} high-value platforms</span>
+              <span>{stats.highPriority} высокоценных платформ</span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">High Priority</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">Высокий приоритет</CardTitle>
             <BarChart3 className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-emerald-500">{stats.highPriority}</div>
             <div className="mt-1 text-xs text-zinc-500">
-              Ready for submission
+              Готовы к подаче
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-zinc-500">AI Prepared</CardTitle>
+            <CardTitle className="text-sm font-medium text-zinc-500">AI подготовлено</CardTitle>
             <Layers className="h-4 w-4 text-zinc-400" />
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold text-blue-500">{stats.aiPrepared}</div>
             <div className="mt-1 text-xs text-zinc-500">
-              Content ready for {stats.automationEasy + stats.automationMedium} auto-ready platforms
+              Контент готов для {stats.automationEasy + stats.automationMedium} платформ
             </div>
           </CardContent>
         </Card>
@@ -152,13 +153,13 @@ export default function Dashboard() {
       <div className="grid gap-6 md:grid-cols-3">
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle className="text-base">Priority Breakdown</CardTitle>
+            <CardTitle className="text-base">Распределение по приоритетам</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex items-center justify-between text-sm">
-                  <span>High Priority</span>
+                  <span>Высокий приоритет</span>
                   <span className="font-medium">{stats.highPriority}</span>
                 </div>
                 <Progress
@@ -168,7 +169,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <div className="flex items-center justify-between text-sm">
-                  <span>Medium Priority</span>
+                  <span>Средний приоритет</span>
                   <span className="font-medium">{stats.mediumPriority}</span>
                 </div>
                 <Progress
@@ -178,7 +179,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <div className="flex items-center justify-between text-sm">
-                  <span>Low Priority</span>
+                  <span>Низкий приоритет</span>
                   <span className="font-medium">{stats.lowPriority}</span>
                 </div>
                 <Progress
@@ -192,24 +193,24 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Status Overview</CardTitle>
+            <CardTitle className="text-base">Статусы</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">Pending</span>
+                <span className="text-zinc-500">{translateStatus("PENDING")}</span>
                 <span className="font-medium">{stats.pending}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">AI Prepared</span>
+                <span className="text-zinc-500">{translateStatus("AI_PREPARED")}</span>
                 <span className="font-medium text-blue-600">{stats.aiPrepared}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">In Progress</span>
+                <span className="text-zinc-500">{translateStatus("IN_PROGRESS")}</span>
                 <span className="font-medium text-amber-600">{stats.inProgress}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">Completed</span>
+                <span className="text-zinc-500">{translateStatus("COMPLETED")}</span>
                 <span className="font-medium text-emerald-600">{stats.completed}</span>
               </div>
             </div>
@@ -219,10 +220,10 @@ export default function Dashboard() {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-base">Recent Directories</CardTitle>
+          <CardTitle className="text-base">Последние каталоги</CardTitle>
           <Link href="/directories">
             <Button variant="ghost" size="sm" className="gap-1 text-xs">
-              View all <ArrowUpRight className="h-3 w-3" />
+              Все <ArrowUpRight className="h-3 w-3" />
             </Button>
           </Link>
         </CardHeader>
@@ -231,10 +232,10 @@ export default function Dashboard() {
             {stats.recentDirectories.length === 0 ? (
               <div className="flex flex-col items-center gap-2 py-8 text-center">
                 <FileSpreadsheet className="h-8 w-8 text-zinc-300" />
-                <p className="text-sm text-zinc-500">No directories yet. Import an Excel file to get started.</p>
+                <p className="text-sm text-zinc-500">Ещё нет каталогов. Импортируйте Excel-файл.</p>
                 <Link href="/campaigns">
                   <Button variant="outline" size="sm" className="mt-2">
-                    Create Campaign
+                    Создать кампанию
                   </Button>
                 </Link>
               </div>
@@ -264,7 +265,7 @@ export default function Dashboard() {
                           : "secondary"
                       }
                     >
-                      {dir.status.replace("_", " ")}
+                      {translateStatus(dir.status)}
                     </Badge>
                   </div>
                 </div>
