@@ -39,9 +39,15 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
   "shortDescription": "50 words max",
   "mediumDescription": "100-150 words",
   "longDescription": "200-300 words",
-  "serviceDescription": "list of services in paragraph",
+  "serviceList": ["Service bullet 1", "Service bullet 2", "Service bullet 3", "Service bullet 4", "Service bullet 5"],
+  "serviceDescription": "2-3 sentence paragraph describing services in detail",
   "socialBio": "150 chars max social bio",
-  "keywords": "comma-separated keywords optimized for this platform"
+  "primaryKeywords": ["primary keyword 1", "primary keyword 2", "primary keyword 3"],
+  "secondaryKeywords": ["secondary keyword 1", "secondary keyword 2", "secondary keyword 3"],
+  "suggestedCategories": {
+    "primary": "Main category name for this platform",
+    "secondary": ["Category 1", "Category 2", "Category 3"]
+  }
 }`;
 
     const response = await openai.chat.completions.create({
@@ -65,6 +71,12 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
       return String(v);
     };
 
+    const toSuggested = (v: unknown): string | null => {
+      if (!v) return null;
+      if (typeof v === "object") return JSON.stringify(v);
+      return String(v);
+    };
+
     const generated = await prisma.generatedContent.upsert({
       where: { directoryId: directory.id },
       update: {
@@ -72,8 +84,12 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
         mediumDescription: toStr(result.mediumDescription),
         longDescription: toStr(result.longDescription),
         serviceDescription: toStr(result.serviceDescription),
+        serviceList: toStr(result.serviceList),
         socialBio: toStr(result.socialBio),
         keywords: toStr(result.keywords),
+        primaryKeywords: toStr(result.primaryKeywords),
+        secondaryKeywords: toStr(result.secondaryKeywords),
+        suggestedCategories: toSuggested(result.suggestedCategories),
       },
       create: {
         directoryId: directory.id,
@@ -81,8 +97,12 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
         mediumDescription: toStr(result.mediumDescription),
         longDescription: toStr(result.longDescription),
         serviceDescription: toStr(result.serviceDescription),
+        serviceList: toStr(result.serviceList),
         socialBio: toStr(result.socialBio),
         keywords: toStr(result.keywords),
+        primaryKeywords: toStr(result.primaryKeywords),
+        secondaryKeywords: toStr(result.secondaryKeywords),
+        suggestedCategories: toSuggested(result.suggestedCategories),
       },
     });
 

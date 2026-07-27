@@ -18,6 +18,10 @@ import {
   Sparkles,
   ArrowLeft,
   CheckSquare,
+  List,
+  Hash,
+  FolderTree,
+  Tags,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -56,8 +60,12 @@ type DirectoryDetail = {
     mediumDescription: string | null;
     longDescription: string | null;
     serviceDescription: string | null;
+    serviceList: string | null;
     socialBio: string | null;
     keywords: string | null;
+    primaryKeywords: string | null;
+    secondaryKeywords: string | null;
+    suggestedCategories: string | null;
   } | null;
   campaign: {
     name: string;
@@ -68,6 +76,24 @@ type DirectoryDetail = {
 };
 
 const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "VERIFICATION_REQUIRED", "REJECTED", "PAYMENT_REQUIRED", "COMPLETED"];
+
+function parseSuggestedCategories(json: string | null): { primary: string; secondary: string[] } | null {
+  if (!json) return null;
+  try {
+    const parsed = JSON.parse(json);
+    return {
+      primary: parsed.primary || "",
+      secondary: Array.isArray(parsed.secondary) ? parsed.secondary : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+function splitLines(text: string | null): string[] {
+  if (!text) return [];
+  return text.split("\n").filter(Boolean);
+}
 
 export default function DirectoryDetailPage() {
   const params = useParams();
@@ -127,11 +153,16 @@ export default function DirectoryDetailPage() {
     return <div className="py-16 text-center text-zinc-500">Каталог не найден</div>;
   }
 
+  const categories = parseSuggestedCategories(dir.generatedContent?.suggestedCategories || null);
+  const serviceItems = splitLines(dir.generatedContent?.serviceList);
+  const primaryKeywords = splitLines(dir.generatedContent?.primaryKeywords);
+  const secondaryKeywords = splitLines(dir.generatedContent?.secondaryKeywords);
+
   const checklist = [
     { label: "Создать аккаунт", done: dir.status !== "PENDING" },
     { label: "Добавить название компании", done: dir.status !== "PENDING" },
     { label: "Добавить описание", done: !!dir.generatedContent?.shortDescription },
-    { label: "Добавить услуги", done: !!dir.generatedContent?.serviceDescription },
+    { label: "Добавить услуги", done: serviceItems.length > 0 },
     { label: "Добавить сайт", done: true },
     { label: "Подтвердить email", done: dir.status === "COMPLETED" },
   ];
@@ -296,7 +327,7 @@ export default function DirectoryDetailPage() {
                   {generating ? "Генерация..." : "Сгенерировать"}
                 </Button>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6">
                 {dir.generatedContent.shortDescription && (
                   <div>
                     <div className="flex items-center justify-between">
@@ -339,20 +370,114 @@ export default function DirectoryDetailPage() {
                     <p className="mt-1 text-sm">{dir.generatedContent.longDescription}</p>
                   </div>
                 )}
+
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <List className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Список услуг</p>
+                  </div>
+                  {serviceItems.length > 0 ? (
+                    <ul className="space-y-1.5">
+                      {serviceItems.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
                 {dir.generatedContent.serviceDescription && (
                   <div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Услуги</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-xs font-medium text-zinc-500">Описание услуг</p>
                       <button
-                        onClick={() => copyToClipboard(dir.generatedContent!.serviceDescription!, "services")}
-                        className="text-xs text-blue-600 hover:underline flex items-center gap-1"
+                        onClick={() => copyToClipboard(dir.generatedContent!.serviceDescription!, "servdesc")}
+                        className="text-xs text-blue-600 hover:underline flex items-center gap-1 ml-auto"
                       >
-                        {copied === "services" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
+                        {copied === "servdesc" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </button>
                     </div>
-                    <p className="mt-1 text-sm">{dir.generatedContent.serviceDescription}</p>
+                    <p className="text-sm">{dir.generatedContent.serviceDescription}</p>
                   </div>
                 )}
+
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Hash className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Основные ключевые слова</p>
+                  </div>
+                  {primaryKeywords.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {primaryKeywords.map((kw, i) => (
+                        <Badge key={i} variant="info" className="text-xs">
+                          {kw}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Tags className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Вторичные ключевые слова</p>
+                  </div>
+                  {secondaryKeywords.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {secondaryKeywords.map((kw, i) => (
+                        <Badge key={i} variant="outline" className="text-xs text-zinc-600">
+                          {kw}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <FolderTree className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Рекомендуемые категории</p>
+                  </div>
+                  {categories ? (
+                    <div className="space-y-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                      <div>
+                        <p className="text-xs font-medium text-zinc-500 mb-1">Основная категория</p>
+                        <Badge variant="info" className="text-xs">
+                          {categories.primary}
+                        </Badge>
+                      </div>
+                      {categories.secondary.length > 0 && (
+                        <div>
+                          <p className="text-xs font-medium text-zinc-500 mb-1">Дополнительные категории</p>
+                          <div className="flex flex-wrap gap-2">
+                            {categories.secondary.map((cat, i) => (
+                              <Badge key={i} variant="secondary" className="text-xs">
+                                {cat}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
                 {dir.generatedContent.socialBio && (
                   <div>
                     <div className="flex items-center justify-between">
@@ -365,20 +490,6 @@ export default function DirectoryDetailPage() {
                       </button>
                     </div>
                     <p className="mt-1 text-sm">{dir.generatedContent.socialBio}</p>
-                  </div>
-                )}
-                {dir.generatedContent.keywords && (
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <p className="text-xs font-medium text-zinc-500">Ключевые слова</p>
-                      <button
-                        onClick={() => copyToClipboard(dir.generatedContent!.keywords!, "keywords")}
-                        className="text-xs text-blue-600 hover:underline flex items-center gap-1"
-                      >
-                        {copied === "keywords" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
-                      </button>
-                    </div>
-                    <p className="mt-1 text-sm text-zinc-600">{dir.generatedContent.keywords}</p>
                   </div>
                 )}
               </CardContent>

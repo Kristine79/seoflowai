@@ -149,8 +149,12 @@ model GeneratedContent {
   mediumDescription String?
   longDescription   String?
   serviceDescription String?
+  serviceList       String?
   socialBio         String?
   keywords          String?
+  primaryKeywords   String?
+  secondaryKeywords String?
+  suggestedCategories String?
 
   directoryId   String   @unique
   directory     Directory @relation(fields: [directoryId], references: [id])

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   Sparkles,
@@ -12,6 +13,10 @@ import {
   CheckCircle2,
   FileText,
   ChevronRight,
+  List,
+  Hash,
+  FolderTree,
+  Tags,
 } from "lucide-react";
 import { useState } from "react";
 import { cn, translateStatus } from "@/lib/utils";
@@ -26,14 +31,36 @@ type Directory = {
     mediumDescription: string | null;
     longDescription: string | null;
     serviceDescription: string | null;
+    serviceList: string | null;
     socialBio: string | null;
     keywords: string | null;
+    primaryKeywords: string | null;
+    secondaryKeywords: string | null;
+    suggestedCategories: string | null;
   } | null;
   seoAudit: {
     seoScore: number | null;
     platformType: string | null;
   } | null;
 };
+
+function parseSuggestedCategories(json: string | null): { primary: string; secondary: string[] } | null {
+  if (!json) return null;
+  try {
+    const parsed = JSON.parse(json);
+    return {
+      primary: parsed.primary || "",
+      secondary: Array.isArray(parsed.secondary) ? parsed.secondary : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+function splitLines(text: string | null): string[] {
+  if (!text) return [];
+  return text.split("\n").filter(Boolean);
+}
 
 export default function ContentPage() {
   const queryClient = useQueryClient();
@@ -68,6 +95,12 @@ export default function ContentPage() {
     setCopied(label);
     setTimeout(() => setCopied(null), 2000);
   };
+
+  const gc = dir?.generatedContent;
+  const categories = parseSuggestedCategories(gc?.suggestedCategories || null);
+  const serviceItems = splitLines(gc?.serviceList);
+  const primaryKeywords = splitLines(gc?.primaryKeywords);
+  const secondaryKeywords = splitLines(gc?.secondaryKeywords);
 
   return (
     <div className="space-y-8">
@@ -155,7 +188,7 @@ export default function ContentPage() {
                 <FileText className="h-10 w-10 text-zinc-300" />
                 <p className="text-sm text-zinc-500">Выберите платформу для генерации контента</p>
               </div>
-            ) : !dir.generatedContent ? (
+            ) : !gc ? (
               <div className="flex flex-col items-center gap-3 py-16 text-center">
                 <Sparkles className="h-10 w-10 text-zinc-300" />
                 <p className="text-sm text-zinc-500">
@@ -168,7 +201,7 @@ export default function ContentPage() {
               </div>
             ) : (
               <div className="space-y-6">
-                {dir.generatedContent.shortDescription && (
+                {gc.shortDescription && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -178,19 +211,19 @@ export default function ContentPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.shortDescription!, "short")}
+                        onClick={() => copyToClipboard(gc.shortDescription!, "short")}
                         className="gap-1"
                       >
                         {copied === "short" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm leading-relaxed">{dir.generatedContent.shortDescription}</p>
+                      <p className="text-sm leading-relaxed">{gc.shortDescription}</p>
                     </div>
                   </div>
                 )}
 
-                {dir.generatedContent.mediumDescription && (
+                {gc.mediumDescription && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -200,19 +233,19 @@ export default function ContentPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.mediumDescription!, "medium")}
+                        onClick={() => copyToClipboard(gc.mediumDescription!, "medium")}
                         className="gap-1"
                       >
                         {copied === "medium" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm leading-relaxed">{dir.generatedContent.mediumDescription}</p>
+                      <p className="text-sm leading-relaxed">{gc.mediumDescription}</p>
                     </div>
                   </div>
                 )}
 
-                {dir.generatedContent.longDescription && (
+                {gc.longDescription && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <div>
@@ -222,71 +255,142 @@ export default function ContentPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.longDescription!, "long")}
+                        onClick={() => copyToClipboard(gc.longDescription!, "long")}
                         className="gap-1"
                       >
                         {copied === "long" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm leading-relaxed">{dir.generatedContent.longDescription}</p>
+                      <p className="text-sm leading-relaxed">{gc.longDescription}</p>
                     </div>
                   </div>
                 )}
 
-                {dir.generatedContent.serviceDescription && (
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <List className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Список услуг</p>
+                  </div>
+                  {serviceItems.length > 0 ? (
+                    <ul className="space-y-1.5">
+                      {serviceItems.map((item, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                {gc.serviceDescription && (
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Описание услуг</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.serviceDescription!, "services")}
-                        className="gap-1"
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-xs font-medium text-zinc-500">Описание услуг</p>
+                      <button
+                        onClick={() => copyToClipboard(gc.serviceDescription!, "servdesc")}
+                        className="text-xs text-blue-600 hover:underline flex items-center gap-1 ml-auto"
                       >
-                        {copied === "services" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
-                      </Button>
+                        {copied === "servdesc" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
+                      </button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm leading-relaxed">{dir.generatedContent.serviceDescription}</p>
+                      <p className="text-sm leading-relaxed">{gc.serviceDescription}</p>
                     </div>
                   </div>
                 )}
 
-                {dir.generatedContent.socialBio && (
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Hash className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Основные ключевые слова</p>
+                  </div>
+                  {primaryKeywords.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {primaryKeywords.map((kw, i) => (
+                        <Badge key={i} variant="info" className="text-xs">
+                          {kw}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <Tags className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Вторичные ключевые слова</p>
+                  </div>
+                  {secondaryKeywords.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {secondaryKeywords.map((kw, i) => (
+                        <Badge key={i} variant="outline" className="text-xs text-zinc-600">
+                          {kw}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                <Separator />
+
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <FolderTree className="h-4 w-4 text-zinc-400" />
+                    <p className="text-xs font-medium text-zinc-500">Рекомендуемые категории</p>
+                  </div>
+                  {categories ? (
+                    <div className="space-y-3 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                      <div>
+                        <p className="text-xs font-medium text-zinc-500 mb-1">Основная категория</p>
+                        <Badge variant="info" className="text-xs">
+                          {categories.primary}
+                        </Badge>
+                      </div>
+                      {categories.secondary.length > 0 && (
+                        <div>
+                          <p className="text-xs font-medium text-zinc-500 mb-1">Дополнительные категории</p>
+                          <div className="flex flex-wrap gap-2">
+                            {categories.secondary.map((cat, i) => (
+                              <Badge key={i} variant="secondary" className="text-xs">
+                                {cat}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-zinc-400">Нет данных</p>
+                  )}
+                </div>
+
+                {gc.socialBio && (
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-sm font-medium">Социальная био</p>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.socialBio!, "bio")}
+                        onClick={() => copyToClipboard(gc.socialBio!, "bio")}
                         className="gap-1"
                       >
                         {copied === "bio" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
                       </Button>
                     </div>
                     <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm leading-relaxed">{dir.generatedContent.socialBio}</p>
-                    </div>
-                  </div>
-                )}
-
-                {dir.generatedContent.keywords && (
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium">Ключевые слова</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => copyToClipboard(dir.generatedContent!.keywords!, "keywords")}
-                        className="gap-1"
-                      >
-                        {copied === "keywords" ? "Скопировано!" : "Копировать"} <Copy className="h-3 w-3" />
-                      </Button>
-                    </div>
-                    <div className="rounded-lg bg-zinc-50 p-4">
-                      <p className="text-sm text-zinc-600">{dir.generatedContent.keywords}</p>
+                      <p className="text-sm leading-relaxed">{gc.socialBio}</p>
                     </div>
                   </div>
                 )}
