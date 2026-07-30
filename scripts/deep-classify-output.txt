@@ -1,0 +1,31 @@
+Testing 77 directories...
+
+Yellow Pages              https://www.yellowpages.com         [BLOCKED] Cloudflare
+Manta                     https://www.manta.com               [BLOCKED] Cloudflare
+DesignRush                https://www.designrush.com          [AUTO] Homepage form (6 fields)
+Crunchbase                https://www.crunchbase.com          [BLOCKED] Cloudflare
+Medium                    https://medium.com                  [AUTO] https://medium.com/add-business (1 fields)
+Trustpilot                https://www.trustpilot.com          [MANUAL] No submission form found
+Data Axle                 https://www.data-axle.com           [MANUAL] No submission form found
+Superpages                https://www.superpages.com          [BLOCKED] Cloudflare
+Merchant Circle           https://www.merchantcircle.com      [AUTO] Homepage form (2 fields)
+EZlocal                   https://www.ezlocal.com             [BLOCKED] Cloudflare
+Opendi                    https://www.opendi.us               [BLOCKED] Cloudflare
+Spoke                     https://spoke.com                   [BLOCKED] Cloudflare on /new
+n49                       https://www.n49.com                 [MANUAL] No submission form found
+GoodFirms                 https://www.goodfirms.co            [AUTO] Homepage form (4 fields)
+Agency Spotter            https://www.agencyspotter.com       [AUTO] Homepage form (2 fields)
+The Manifest              https://themanifest.com             [MANUAL] No submission form found
+Hotfrog                   https://www.hotfrog.com/add-busines [AUTO] Homepage form (2 fields)
+Local.com                 https://www.local.com               [AUTO] Homepage form (5 fields)
+Brownbook                 https://www.brownbook.net/add-busin [AUTO] Homepage form (20 fields)
+Alignable                 https://www.alignable.com           [AUTO] Homepage form (1 fields)
+Expertise.com             https://www.expertise.com           [AUTO] Homepage form (2 fields)
+Sortlist                  https://www.sortlist.com            [AUTO] Homepage form (5 fields)
+Bark.com                  https://www.bark.com                [AUTO] Homepage form (16 fields)
+Digital Agency Net        https://digitalagencynetwork.com    [AUTO] https://digitalagencynetwork.com/add-business (4 fields)
+Influencer Mkt Hub        https://influencermarketinghub.com  [AUTO] Homepage form (3 fields)
+CityLocalPro              https://www.citylocalpro.com        [AUTO] Homepage form (4 fields)
+FL SBDC Network           https://www.floridasbdc.org         [AUTO] Homepage form (1 fields)
+Plantation Chamber        https://www.plantationchamber.org   [MANUAL] No submission form found
+Broward County Chamber    https://browardchamber.com          

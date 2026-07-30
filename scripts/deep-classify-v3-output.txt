@@ -1,0 +1,34 @@
+PrismaClientKnownRequestError: 
+Invalid `prisma.directory.findMany()` invocation in
+C:\hp\github\seoflowai\scripts\deep-classify-v3.ts:101:39
+
+   98 }
+   99 
+  100 async function main() {
+→ 101   const dirs = await prisma.directory.findMany(
+Server has closed the connection.
+    at Jr.handleRequestError (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\RequestHandler.ts:237:13)
+    at Jr.handleAndLogRequestError (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\RequestHandler.ts:183:12)
+    at Jr.request (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\RequestHandler.ts:152:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async a (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\getPrismaClient.ts:1014:24)
+    at async main (C:\hp\github\seoflowai\scripts\deep-classify-v3.ts:101:16) {
+  code: 'P1017',
+  meta: {
+    modelName: 'Directory',
+    driverAdapterError: DriverAdapterError: ConnectionClosed
+        at PrismaPgAdapter.onError (C:\hp\github\seoflowai\node_modules\@prisma\adapter-pg\dist\index.js:675:11)
+        at PrismaPgAdapter.performIO (C:\hp\github\seoflowai\node_modules\@prisma\adapter-pg\dist\index.js:670:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+        at async PrismaPgAdapter.queryRaw (C:\hp\github\seoflowai\node_modules\@prisma\adapter-pg\dist\index.js:604:30)
+        at async e.interpretNode (C:\hp\github\seoflowai\node_modules\@prisma\client-engine-runtime\src\interpreter\query-interpreter.ts:186:26)
+        at async e.interpretNode (C:\hp\github\seoflowai\node_modules\@prisma\client-engine-runtime\src\interpreter\query-interpreter.ts:272:41)
+        at async e.run (C:\hp\github\seoflowai\node_modules\@prisma\client-engine-runtime\src\interpreter\query-interpreter.ts:94:23)
+        at async e.execute (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\core\engines\client\LocalExecutor.ts:81:12)
+        at async Ut.request (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\core\engines\client\ClientEngine.ts:510:22)
+        at async Object.singleLoader (C:\hp\github\seoflowai\node_modules\@prisma\client\src\runtime\RequestHandler.ts:112:26) {
+      cause: [Object]
+    }
+  },
+  clientVersion: '7.9.1'
+}

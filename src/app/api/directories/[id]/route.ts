@@ -9,9 +9,11 @@ export async function GET(
   const directory = await prisma.directory.findUnique({
     where: { id },
     include: {
+      submissionTemplate: true,
       seoAudit: true,
       submission: true,
       generatedContent: true,
+      automationJobs: { orderBy: { createdAt: "desc" } },
       campaign: { include: { company: true } },
     },
   });
@@ -85,9 +87,11 @@ export async function PATCH(
   const updated = await prisma.directory.findUnique({
     where: { id },
     include: {
+      submissionTemplate: true,
       seoAudit: true,
       submission: true,
       generatedContent: true,
+      automationJobs: { orderBy: { createdAt: "desc" } },
       campaign: { include: { company: true } },
     },
   });

@@ -1,0 +1,9 @@
+Re-testing 22 previously DEAD/CLOUDFLARE directories for forms...
+
+Behance                   https://www.behance.net               [MANUAL] Login: Search Projects :: Photos, videos, logos
+Dribbble                  https://dribbble.com                  [MANUAL] Login: Dribbble - Discover the World’s Top Desi
+TopSEOs                   https://www.topseos.com               [MANUAL] Login: Rankings & Reviews of Best SEO Companies
+Digital Agency Network    https://digitalagencynetwork.com      [DEAD]
+CityLocalPro              https://www.citylocalpro.com          [AUTO] 4f listing keywords: USA Free Business Directory - CityLocal 
+SCORE Mentor Network      https://www.score.org                 [DEAD]
+FL SBDC Network           https://www.floridasbdc.org           [MANUAL] Search: Homepage - Florida SBDC

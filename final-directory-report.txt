@@ -1,0 +1,77 @@
+Каталог | URL | Тип | Статус | Причина | Доказательство
+---------|------|------|--------|---------|-------------
+Brownbook                 | https://www.brownbook.net/add-business     | SUCCESS         | Размещение выполнено                       | 44 fills, 0 failures, 66.3s
+CityLocalPro              | https://citylocalpro.com/add-your-business | NEEDS_MANUAL    | reCAPTCHA v2 блокирует отправку            | 13 полей заполнены, captcha блокирует
+DesignRush                | https://www.designrush.com/submit/agency   | NEEDS_MANUAL    | Cloudflare после регистрации               | Регистрация успешна, /submit/agency/step/1
+TopSEOs                   | https://www.topseos.com                    | NEEDS_MANUAL    | 13 полей формы, требуется регистрация      | Form detected (13f)
+SBA.gov                   | https://www.sba.gov                        | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+ActiveCampaign            | https://www.activecampaign.com             | NEEDS_MANUAL    | Partner program - ручная заявка            | Become an ActiveCampaign Partner
+HubSpot                   | https://www.hubspot.com                    | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Envato                    | https://envato.com                         | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Smashing Magazine         | https://www.smashingmagazine.com           | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+SimilarWeb                | https://www.similarweb.com                 | NEEDS_MANUAL    | Partner program - ручная заявка            | Partners link
+BuiltWith                 | https://builtwith.com                      | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Moz                       | https://moz.com                            | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Yext                      | https://www.yext.com                       | NEEDS_MANUAL    | Partner program - ручная заявка            | Partners link
+Birdeye                   | https://birdeye.com                        | NEEDS_MANUAL    | Partner program - ручная заявка            | Google Partnership link
+Bark.com                  | https://www.bark.com                       | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Behance                   | https://www.behance.net                    | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Dribbble                  | https://dribbble.com                       | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Medium                    | https://medium.com                         | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Quora                     | https://www.quora.com                      | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Alignable                 | https://www.alignable.com                  | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Stripe Partner            | https://stripe.com/partners                | NEEDS_MANUAL    | Partner program - ручная заявка            | Partner application
+Shopify Partners          | https://www.shopify.com/partners           | NEEDS_MANUAL    | Partner program - ручная заявка            | Partner application
+Webflow Partner           | https://webflow.com                        | NEEDS_MANUAL    | Partner program - ручная заявка            | Partner application
+Mailchimp Partner         | https://mailchimp.com                      | NEEDS_MANUAL    | Partner program - ручная заявка            | Partner application
+WooCommerce Agency        | https://woocommerce.com                    | NEEDS_MANUAL    | Partner program - ручная заявка            | Partner application
+Nextdoor Business         | https://nextdoor.com                       | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Express Update USA        | https://www.expressupdate.com              | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Neustar Localeze          | https://www.neustarlocaleze.com            | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Foursquare Business       | https://foursquare.com                     | NEEDS_MANUAL    | Требуется регистрация/авторизация          | Login required
+Yellow Pages              | https://www.yellowpages.com                | FAILED          | Cloudflare защита                          | Cloudflare detected
+Manta                     | https://www.manta.com                      | FAILED          | Cloudflare защита                          | Cloudflare detected
+Superpages                | https://www.superpages.com                 | FAILED          | Cloudflare защита                          | Cloudflare on /add-listing
+EZlocal                   | https://www.ezlocal.com                    | FAILED          | Cloudflare защита                          | Cloudflare detected
+Stack Overflow            | https://stackoverflow.com                  | FAILED          | Cloudflare защита                          | Cloudflare on /add-listing
+ThemeForest               | https://themeforest.net                    | FAILED          | Cloudflare защита                          | Cloudflare detected
+Data Axle                 | https://www.data-axle.com                  | FAILED          | Cloudflare защита                          | Cloudflare detected
+EzineArticles             | https://ezinearticles.com                  | FAILED          | Сайт не работает                           | Unreachable
+Semfirms                  | https://semfirms.com                       | FAILED          | Сайт не работает                           | Unreachable
+Digital Agency Network    | https://digitalagencynetwork.com           | FAILED          | 404 страница не найдена                    | Page not found
+SCORE Mentor Network      | https://www.score.org                      | FAILED          | Таймаут подключения                        | Timeout
+Plantation Chamber        | https://www.plantationchamber.org          | FAILED          | Сайт не работает                           | Unreachable
+Freepik                   | https://www.freepik.com                    | FAILED          | 403 Forbidden                              | Security block
+GoodFirms                 | https://www.goodfirms.co                   | NOT_APPLICABLE  | Поисковая/подписочная форма, не каталог    | Subscribe & Download form
+Opendi                    | https://www.opendi.us                      | NOT_APPLICABLE  | Поисковая форма (What? + Where?)           | Search form
+Sortlist                  | https://www.sortlist.com                   | NOT_APPLICABLE  | SPA с скрытыми полями, не форма размещения | Empty fields SPA
+Hotfrog                   | https://www.hotfrog.com                    | NOT_APPLICABLE  | Поисковая страница                         | Search page
+Merchant Circle           | https://www.merchantcircle.com             | NOT_APPLICABLE  | Поисковая страница                         | Search page
+Local.com                 | https://www.local.com                      | NOT_APPLICABLE  | Форма discover/subscribe, не размещение    | Discover/subscribe form
+Trustpilot                | https://www.trustpilot.com                 | NOT_APPLICABLE  | Поисковая страница отзывов                 | Search page
+Sitejabber                | https://www.sitejabber.com                 | NOT_APPLICABLE  | Поисковая страница отзывов                 | Search page
+ProvenExpert              | https://www.provenexpert.com               | NOT_APPLICABLE  | Форма подписки                             | Subscribe form
+G2                        | https://www.g2.com                         | NOT_APPLICABLE  | Минимальная страница                       | Empty page
+HubPages                  | https://hubpages.com                       | NOT_APPLICABLE  | Минимальная страница                       | Empty page
+SlideShare                | https://www.slideshare.net                 | NOT_APPLICABLE  | Поисковая страница презентаций             | Search page
+Tumblr                    | https://www.tumblr.com                     | NOT_APPLICABLE  | Поисковая страница блогов                  | Search page
+Business2Community        | https://www.business2community.com         | NOT_APPLICABLE  | Новостной сайт, не каталог                 | Business news site
+Crunchbase                | https://www.crunchbase.com                 | NOT_APPLICABLE  | Форма подписки, не каталог                 | Subscribe form
+ProductHunt               | https://www.producthunt.com                | NOT_APPLICABLE  | Форма подписки, не каталог                 | Subscribe form
+Agency Spotter            | https://www.agencyspotter.com              | NOT_APPLICABLE  | Поисковая страница                         | Search page
+The Manifest              | https://themanifest.com                    | NOT_APPLICABLE  | Поисковая страница                         | Search page
+Expertise.com             | https://www.expertise.com                  | NOT_APPLICABLE  | Поисковая страница                         | Search page
+Influencer Marketing Hub  | https://influencermarketinghub.com         | NOT_APPLICABLE  | Mailchimp подписка, не каталог             | Mailchimp subscribe
+Broward County Chamber    | https://browardchamber.com                 | NOT_APPLICABLE  | Минимальная страница                       | Empty page
+FL SBDC Network           | https://www.floridasbdc.org                | NOT_APPLICABLE  | Поисковая страница                         | Search page
+Spoke                     | https://spoke.com                          | NOT_APPLICABLE  | Минимальная страница                       | Empty page
+n49                       | https://www.n49.com                        | NOT_APPLICABLE  | 403 Forbidden                              | 403 Forbidden
+CSS-Tricks                | https://css-tricks.com                     | NOT_APPLICABLE  | Подписка/контент сайт                      | Subscribe site
+WPBeginner                | https://www.wpbeginner.com                 | NOT_APPLICABLE  | Регистрация домена, не каталог             | Register domain link
+GitHub                    | https://github.com                         | NOT_APPLICABLE  | 404 на /add-listing, не каталог            | 404 page
+Awwwards                  | https://www.awwwards.com                   | NOT_APPLICABLE  | Конкурс дизайна, не каталог размещения     | Design awards site
+CSS Design Awards         | https://www.cssdesignawards.com            | NOT_APPLICABLE  | Конкурс дизайна, не каталог размещения     | Design awards site
+SiteInspire               | https://www.siteinspire.com                | NOT_APPLICABLE  | Галерея дизайна, не каталог размещения     | Design gallery
+Find Best SEO             | https://findbestseo.com                    | NOT_APPLICABLE  | Поисковая/агрегатор страница               | Search page
+FL Business Dir           | https://floridabusinessdirectory.com       | NOT_APPLICABLE  | Поисковая страница                         | Search page
+South FL Biz Journal      | https://www.bizjournals.com/southflorida   | NOT_APPLICABLE  | Новостной сайт, не каталог                 | News site

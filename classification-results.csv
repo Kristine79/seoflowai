@@ -1,0 +1,87 @@
+platform,url,submissionUrl,type,fields,action
+Yellow Pages,https://www.yellowpages.com,,BLOCKED,0,Cloudflare
+Manta,https://www.manta.com,,BLOCKED,0,Cloudflare
+Hotfrog,https://www.hotfrog.com/add-business,,MANUAL,0,Search page
+Superpages,https://www.superpages.com,,BLOCKED,0,Cloudflare
+Merchant Circle,https://www.merchantcircle.com,,MANUAL,0,Search page
+Local.com,https://www.local.com,,MANUAL,0,Non-listing form (5f): discover
+subscribe
+confident decisions start with expert rev
+EZlocal,https://www.ezlocal.com,,BLOCKED,0,Cloudflare
+Opendi,https://www.opendi.us,https://www.opendi.us,AUTO,3,Listing form (3f)
+Spoke,https://spoke.com,,MANUAL,0,Empty/minimal page: Spoke: Last mile delivery software
+n49,https://www.n49.com,,MANUAL,0,Empty/minimal page: 403 Forbidden
+Brownbook,https://www.brownbook.net/add-business,,MANUAL,0,Non-listing form (20f): worldwide
+
+sign in / register
+
+add a new business
+
+add a bus
+Trustpilot,https://www.trustpilot.com,,MANUAL,0,Search page
+Sitejabber,https://www.sitejabber.com,,MANUAL,0,Search page
+ProvenExpert,https://www.provenexpert.com,,MANUAL,0,Subscribe/newsletter form
+G2,https://www.g2.com,,MANUAL,0,Empty/minimal page: g2.com
+Medium,https://medium.com,,SEMI_AUTO,0,Login required
+HubPages,https://hubpages.com,,MANUAL,0,Empty/minimal page: hubpages.com
+EzineArticles,https://ezinearticles.com,,DEAD,0,Unreachable
+SlideShare,https://www.slideshare.net,,MANUAL,0,Search page
+Quora,https://www.quora.com,,SEMI_AUTO,0,Login required
+Tumblr,https://www.tumblr.com,,MANUAL,0,Search page
+Business2Community,https://www.business2community.com,,MANUAL,0,Non-listing form (4f): business news
+marketing
+about us
+discover the latest busines
+Crunchbase,https://www.crunchbase.com,,MANUAL,0,Subscribe/newsletter form
+GitHub,https://github.com,https://github.com/add-listing,PROMISING,9,9 fields on /add-listing
+Stack Overflow,https://stackoverflow.com,,BLOCKED,0,Cloudflare on /add-listing
+Behance,https://www.behance.net,,DEAD,0,Unreachable
+Dribbble,https://dribbble.com,,DEAD,0,Unreachable
+ProductHunt,https://www.producthunt.com,,MANUAL,0,Subscribe/newsletter form
+GoodFirms,https://www.goodfirms.co,https://www.goodfirms.co,AUTO,4,Listing form (4f)
+DesignRush,https://www.designrush.com,https://www.designrush.com/add-listing,PROMISING,9,9 fields on /add-listing
+Agency Spotter,https://www.agencyspotter.com,,MANUAL,0,Search page
+The Manifest,https://themanifest.com,,MANUAL,0,Search page
+Expertise.com,https://www.expertise.com,,MANUAL,0,Search page
+Sortlist,https://www.sortlist.com,https://www.sortlist.com,AUTO,5,Listing form (5f)
+Bark.com,https://www.bark.com,https://www.bark.com/add-business,PROMISING,14,14 fields on /add-business
+Semfirms,https://semfirms.com,,DEAD,0,Unreachable
+TopSEOs,https://www.topseos.com,,DEAD,0,Unreachable
+Influencer Marketing Hub,https://influencermarketinghub.com,,MANUAL,0,Subscribe/newsletter form
+Digital Agency Network,https://digitalagencynetwork.com,,DEAD,0,Unreachable
+Alignable,https://www.alignable.com,,SEMI_AUTO,0,Login required
+CityLocalPro,https://www.citylocalpro.com,,DEAD,0,Unreachable
+SCORE Mentor Network,https://www.score.org,,DEAD,0,Unreachable
+FL SBDC Network,https://www.floridasbdc.org,,DEAD,0,Unreachable
+SBA.gov Business,https://www.sba.gov,,DEAD,0,Unreachable
+Plantation Chamber,https://www.plantationchamber.org,,DEAD,0,Unreachable
+Broward County Chamber,https://browardchamber.com,,MANUAL,0,Empty/minimal page: ?
+ActiveCampaign,https://www.activecampaign.com,,DEAD,0,Unreachable
+HubSpot Agency Directory,https://www.hubspot.com,,DEAD,0,Unreachable
+Stripe Partner,https://stripe.com/partners,,DEAD,0,Unreachable
+Shopify Partners,https://www.shopify.com/partners,,DEAD,0,Unreachable
+Webflow Partner,https://webflow.com,,DEAD,0,Unreachable
+Mailchimp Partner,https://mailchimp.com,,DEAD,0,Unreachable
+Data Axle,https://www.data-axle.com,,DEAD,0,Unreachable
+Moz Local,https://moz.com,,DEAD,0,Unreachable
+Yext,https://www.yext.com,,DEAD,0,Unreachable
+Birdeye,https://birdeye.com,,DEAD,0,Unreachable
+BrightLocal,https://www.brightlocal.com,,DEAD,0,Unreachable
+Synup,https://www.synup.com,,DEAD,0,Unreachable
+SimilarWeb,https://www.similarweb.com,,DEAD,0,Unreachable
+BuiltWith,https://builtwith.com,,DEAD,0,Unreachable
+Datanyze,https://www.datanyze.com,,DEAD,0,Unreachable
+Wappalyzer,https://www.wappalyzer.com,,DEAD,0,Unreachable
+ThemeForest,https://themeforest.net,,DEAD,0,Unreachable
+CodeCanyon,https://codecanyon.net,,DEAD,0,Unreachable
+Freepik,https://www.freepik.com,,DEAD,0,Unreachable
+Flaticon,https://www.flaticon.com,,DEAD,0,Unreachable
+Placeit,https://placeit.net,,DEAD,0,Unreachable
+CSS-Tricks,https://css-tricks.com,,DEAD,0,Unreachable
+Smashing Magazine,https://www.smashingmagazine.com,,DEAD,0,Unreachable
+SitePoint,https://www.sitepoint.com,,DEAD,0,Unreachable
+Tuts+,https://tutsplus.com,,DEAD,0,Unreachable
+Envato,https://envato.com,,DEAD,0,Unreachable
+Kinsta,https://kinsta.com,,DEAD,0,Unreachable
+WPBeginner,https://www.wpbeginner.com,,DEAD,0,Unreachable
+Elegant Themes,https://www.elegantthemes.com,,DEAD,0,Unreachable

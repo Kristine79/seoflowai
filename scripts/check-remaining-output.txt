@@ -1,0 +1,7 @@
+Checking 16 remaining directories...
+
+SBA.gov                   https://www.sba.gov                   [NEEDS_MANUAL   ] Login/registration required
+ActiveCampaign            https://www.activecampaign.com        [NEEDS_MANUAL   ] Listing form at Become an ActiveCampaign Partner: https://ww
+HubSpot                   https://www.hubspot.com               [NEEDS_MANUAL   ] Login/registration required
+Envato                    https://envato.com                    [NEEDS_MANUAL   ] Login/registration required
+CSS-Tricks                https://css-tricks.com                [NOT_APPLICABLE ] Subscribe/newsletter site

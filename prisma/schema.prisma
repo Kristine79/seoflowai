@@ -109,6 +109,8 @@ model Directory {
   seoAudit        SeoAudit?
   submission      Submission?
   generatedContent GeneratedContent?
+  submissionTemplate SubmissionTemplate?
+  automationJobs  AutomationJob[]
 }
 
 model SeoAudit {
@@ -164,4 +166,48 @@ model GeneratedContent {
 
   directoryId   String   @unique
   directory     Directory @relation(fields: [directoryId], references: [id])
+}
+
+model SubmissionTemplate {
+  id            String   @id @default(cuid())
+  fieldMapping  Json
+  formStructure Json
+  submitSelector String?
+  version       Int      @default(1)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  directoryId   String   @unique
+  directory     Directory @relation(fields: [directoryId], references: [id])
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+  NEEDS_MANUAL
+}
+
+enum AutomationMode {
+  PREVIEW
+  SUBMIT
+}
+
+model AutomationJob {
+  id          String         @id @default(cuid())
+  status      JobStatus      @default(PENDING)
+  mode        AutomationMode @default(PREVIEW)
+  startedAt   DateTime?
+  finishedAt  DateTime?
+  screenshot  String?
+  error       String?
+  logs        String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  directoryId   String
+  directory     Directory @relation(fields: [directoryId], references: [id])
+
+  @@index([directoryId])
 }

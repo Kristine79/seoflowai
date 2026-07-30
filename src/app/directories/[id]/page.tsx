@@ -26,6 +26,7 @@ import {
   ListChecks,
   Bot,
   Square,
+  RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -87,6 +88,25 @@ type DirectoryDetail = {
       name: string;
     };
   } | null;
+  submissionTemplate?: {
+    id: string;
+    fieldMapping: unknown;
+    formStructure: unknown;
+    submitSelector: string | null;
+    version: number;
+    createdAt: string;
+  } | null;
+  automationJobs?: {
+    id: string;
+    status: string;
+    mode: string;
+    startedAt: string | null;
+    finishedAt: string | null;
+    screenshot: string | null;
+    error: string | null;
+    logs: string | null;
+    createdAt: string;
+  }[];
 };
 
 const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "WAITING_VERIFICATION", "VERIFICATION_REQUIRED", "REJECTED", "PAYMENT_REQUIRED", "COMPLETED"];
@@ -168,6 +188,9 @@ export default function DirectoryDetailPage() {
     },
   });
 
+  const [submitting, setSubmitting] = useState(false);
+  const [aiMode, setAiMode] = useState<"PREVIEW" | "SUBMIT">("PREVIEW");
+
   const generateContent = async () => {
     setGenerating(true);
     await fetch("/api/content", {
@@ -177,6 +200,20 @@ export default function DirectoryDetailPage() {
     });
     setGenerating(false);
     queryClient.invalidateQueries({ queryKey: ["directory", params.id] });
+  };
+
+  const handleStartAiSubmission = async (mode?: "PREVIEW" | "SUBMIT") => {
+    setSubmitting(true);
+    try {
+      await fetch("/api/submission/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ directoryId: params.id, mode: mode || aiMode }),
+      });
+      queryClient.invalidateQueries({ queryKey: ["directory", params.id] });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const copyToClipboard = (text: string, label: string) => {
@@ -291,10 +328,21 @@ export default function DirectoryDetailPage() {
             </Button>
           )}
           {isInProgress && dir.automationMode === "AI_ASSISTED" && (
-            <Button variant="secondary" size="sm" className="gap-2">
-              <Bot className="h-4 w-4" />
-              Run AI Submission
-            </Button>
+            <div className="flex items-center gap-2">
+              <Select value={aiMode} onValueChange={(v) => setAiMode(v as "PREVIEW" | "SUBMIT")}>
+                <SelectTrigger className="h-7 text-xs w-[110px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="PREVIEW">○ Preview</SelectItem>
+                  <SelectItem value="SUBMIT">● Submit</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="secondary" size="sm" className="gap-2" onClick={() => handleStartAiSubmission()} disabled={submitting}>
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
+                {submitting ? "Запуск..." : "Run AI Submission"}
+              </Button>
+            </div>
           )}
           {!isCompleted && !isReady && (
             <Button
@@ -622,10 +670,23 @@ export default function DirectoryDetailPage() {
                     Start Submission
                   </Button>
                   {dir.automationMode === "AI_ASSISTED" && (
-                    <Button variant="secondary" size="sm" className="gap-2 w-full">
-                      <Bot className="h-4 w-4" />
-                      Run AI Submission
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2">
+                        <Select value={aiMode} onValueChange={(v) => setAiMode(v as "PREVIEW" | "SUBMIT")}>
+                          <SelectTrigger className="h-7 text-xs flex-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="PREVIEW">○ Preview</SelectItem>
+                            <SelectItem value="SUBMIT">● Submit</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Button variant="secondary" size="sm" className="gap-2 flex-1" onClick={() => handleStartAiSubmission()} disabled={submitting}>
+                          {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
+                          {submitting ? "Запуск..." : "Run AI Submission"}
+                        </Button>
+                      </div>
+                    </div>
                   )}
                 </div>
                 {dir.startedAt && (
@@ -831,6 +892,43 @@ export default function DirectoryDetailPage() {
             </CardContent>
           </Card>
 
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base flex items-center gap-2">
+                <Copy className="h-4 w-4" />
+                Submission Template
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {dir.submissionTemplate ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block" />
+                    <span className="text-sm font-medium text-emerald-700">Template exists</span>
+                    <span className="text-[10px] uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100 ml-auto">
+                      v{dir.submissionTemplate.version}
+                    </span>
+                  </div>
+                  <div className="text-xs text-zinc-500 space-y-1">
+                    <p>Поля: {Object.keys(dir.submissionTemplate.fieldMapping as Record<string, string> || {}).filter(k => (dir.submissionTemplate.fieldMapping as Record<string, string>)[k]).length} заполнено</p>
+                    <p>Submit: {dir.submissionTemplate.submitSelector || "не указан"}</p>
+                    <p>Создан: {formatDate(dir.submissionTemplate.createdAt)}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-3 py-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100">
+                    <Copy className="h-5 w-5 text-zinc-400" />
+                  </div>
+                  <p className="text-sm text-zinc-500">No template</p>
+                  <p className="text-xs text-zinc-400 text-center">
+                    Шаблон будет сохранён после первого Preview.
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
           {isInProgress && dir.automationMode === "AI_ASSISTED" && (
             <Card>
               <CardHeader>
@@ -857,10 +955,111 @@ export default function DirectoryDetailPage() {
                     </ul>
                   </div>
                 )}
-                <Button variant="secondary" size="sm" className="gap-2 w-full">
-                  <Bot className="h-4 w-4" />
-                  Run AI Submission
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Select value={aiMode} onValueChange={(v) => setAiMode(v as "PREVIEW" | "SUBMIT")}>
+                    <SelectTrigger className="h-7 text-xs w-[100px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="PREVIEW">○ Preview</SelectItem>
+                      <SelectItem value="SUBMIT">● Submit</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Button variant="secondary" size="sm" className="gap-2 flex-1" onClick={() => handleStartAiSubmission()} disabled={submitting}>
+                    {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
+                    {submitting ? "Запуск..." : "Run AI Submission"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {dir.automationJobs && dir.automationJobs.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <ListChecks className="h-4 w-4" />
+                  История AI подач
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                  {dir.automationJobs.map((job) => {
+                    const isManual = job.status === "NEEDS_MANUAL";
+                    return (
+                  <div key={job.id} className={cn("rounded-lg border p-3 space-y-2", isManual ? "border-amber-200 bg-amber-50/30" : "border-zinc-200")}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {isManual ? (
+                          <span className="text-amber-500 text-sm">⚠</span>
+                        ) : (
+                          <span className={
+                            job.status === "SUCCESS" ? "h-2 w-2 rounded-full bg-emerald-500 inline-block" :
+                            job.status === "FAILED" ? "h-2 w-2 rounded-full bg-red-500 inline-block" :
+                            job.status === "RUNNING" ? "h-2 w-2 rounded-full bg-amber-500 inline-block" :
+                            "h-2 w-2 rounded-full bg-zinc-300 inline-block"
+                          } />
+                        )}
+                        <span className={cn("text-sm font-medium", isManual && "text-amber-700")}>
+                          {isManual ? "⚠ Требуется ручное действие" :
+                           job.status === "PENDING" ? "Ожидает" :
+                           job.status === "RUNNING" ? "Выполняется" :
+                           job.status === "SUCCESS" ? "Успешно" :
+                           job.status === "FAILED" ? "Ошибка" :
+                           "Требуется вручную"}
+                        </span>
+                        <span className="text-[10px] uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100">
+                          {job.mode || "PREVIEW"}
+                        </span>
+                      </div>
+                      <span className="text-xs text-zinc-400">
+                        {job.createdAt ? formatDate(job.createdAt) : ""}
+                      </span>
+                    </div>
+                    {isManual && (
+                      <p className="text-xs text-amber-700 bg-amber-100/50 rounded p-2 flex items-center gap-1">
+                        ⚠ Требуется ручное действие: AI не смог завершить автоматическую подачу.
+                        Проверьте статус и заполните форму вручную.
+                      </p>
+                    )}
+                    {job.error && (
+                      <p className="text-xs text-red-600 bg-red-50 rounded p-2">{job.error}</p>
+                    )}
+                    {job.logs && (
+                      <details className="text-xs text-zinc-500">
+                        <summary className="cursor-pointer hover:text-zinc-700">Логи</summary>
+                        <pre className="mt-1 max-h-32 overflow-y-auto whitespace-pre-wrap bg-zinc-50 rounded p-2">
+                          {(() => {
+                            try { return JSON.parse(job.logs).join("\n"); }
+                            catch { return job.logs; }
+                          })()}
+                        </pre>
+                      </details>
+                    )}
+                    {job.screenshot && (
+                      <details className="text-xs text-zinc-500">
+                        <summary className="cursor-pointer hover:text-zinc-700">Скриншот</summary>
+                        <img
+                          src={`data:image/png;base64,${job.screenshot}`}
+                          alt="Submission screenshot"
+                          className="mt-1 rounded border max-w-full"
+                        />
+                      </details>
+                    )}
+                    {(job.status === "FAILED" || job.status === "NEEDS_MANUAL") && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2 w-full mt-1"
+                        onClick={() => handleStartAiSubmission(job.mode as "PREVIEW" | "SUBMIT")}
+                        disabled={submitting}
+                      >
+                        {submitting ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
+                        Retry Submission
+                      </Button>
+                    )}
+                  </div>
+                    );
+                  })}
               </CardContent>
             </Card>
           )}
