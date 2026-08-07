@@ -50,6 +50,83 @@ const MAX_STEPS = 5;
 
 const EXCLUDE_KEYWORDS = ["sign in", "log in", "login"];
 
+const ADD_BUSINESS_KEYWORDS = [
+  "add your business", "add a business", "add business",
+  "add a new business", "add my business", "add new business",
+  "add company", "add your company", "add a company",
+  "submit your listing", "submit listing", "submit a listing",
+  "add your listing", "add listing", "add a listing",
+  "list your business", "list my business", "list a business",
+  "free listing", "free business listing", "create a free listing",
+  "get listed", "claim your business", "register your business",
+];
+
+async function navigateToAddBusinessPage(
+  page: Page,
+  log: (msg: string) => void
+): Promise<boolean> {
+  // Wait for content / lazy-rendered nav links
+  await page.waitForTimeout(1000);
+
+  const candidate = await page.evaluate((keywords: string[]) => {
+    const anchors = Array.from(
+      document.querySelectorAll<HTMLElement>('a, button, [role="link"], [role="button"]')
+    );
+    // Sort longer keyword first so "add your business" beats "add business"
+    const sorted = [...keywords].sort((a, b) => b.length - a.length);
+    for (const el of anchors) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) continue;
+      if ((el as HTMLElement).offsetParent === null && el.tagName.toLowerCase() !== "a") continue;
+      const text = (el.textContent || "").trim().toLowerCase();
+      if (!text || text.length > 80) continue;
+      for (const kw of sorted) {
+        if (text === kw || text.startsWith(kw) || text.includes(kw)) {
+          const href = el.getAttribute("href") || (el as HTMLAnchorElement).href || null;
+          return {
+            text: (el.textContent || "").trim().slice(0, 100),
+            href,
+            tag: el.tagName.toLowerCase(),
+          };
+        }
+      }
+    }
+    return null;
+  }, ADD_BUSINESS_KEYWORDS);
+
+  if (!candidate) {
+    log('No "Add Business" link found on the page');
+    return false;
+  }
+  log(`Found Add Business link: "${candidate.text}" (tag=${candidate.tag}, href=${candidate.href || "click"})`);
+
+  if (candidate.tag === "a" && candidate.href) {
+    try {
+      const absolute = candidate.href.startsWith("http")
+        ? candidate.href
+        : new URL(candidate.href, page.url()).href;
+      log(`Navigating to Add Business page: ${absolute}`);
+      await page.goto(absolute, { waitUntil: "domcontentloaded", timeout: 15000 });
+      await page.waitForTimeout(2000);
+      log(`Now on: ${page.url()}`);
+      return true;
+    } catch (e) {
+      log(`Could not navigate to Add Business page: ${(e as Error).message.slice(0, 80)}`);
+      return false;
+    }
+  }
+
+  try {
+    await page.getByText(candidate.text, { exact: false }).first().click({ timeout: 8000 });
+    await page.waitForTimeout(3000);
+    log(`Clicked Add Business link; now on: ${page.url()}`);
+    return true;
+  } catch (e) {
+    log(`Could not click Add Business link: ${(e as Error).message.slice(0, 80)}`);
+    return false;
+  }
+}
+
 async function findSubmitButton(page: Page): Promise<{ selector: string; text: string } | null> {
   return page.evaluate(({ submit, exclude }: { submit: string[]; exclude: string[] }) => {
     const buttons = document.querySelectorAll(
@@ -65,7 +142,7 @@ async function findSubmitButton(page: Page): Promise<{ selector: string; text: s
           .map((c) => c.replace(/[/:()[\]!@#$%^&*,;=+]/g, "\\$&"))
           .join(".");
         const selector = el.id
-          ? `#${el.id}`
+          ? `#${CSS.escape(el.id)}`
           : el.className
             ? `.${escapedClass}`
             : el.tagName.toLowerCase() === "button"
@@ -168,34 +245,81 @@ async function handleSelectField(
   log: (msg: string) => void
 ): Promise<boolean> {
   let selectEl: import("playwright").ElementHandle<Element> | null;
-  try {
-    selectEl = await page.$(selector);
-  } catch {
-    return false;
+  try { selectEl = await page.$(selector); } catch { selectEl = null; }
+  if (!selectEl) {
+    // Selector didn't match (invalid CSS syntax like colons in class names).
+    // The selector normalization in processFormStep should have already handled this,
+    // but if it didn't, try by label.
+    const elId = await page.evaluate((sel) => {
+      if (sel.startsWith(".")) {
+        const parts = sel.slice(1).split(".");
+        for (let i = parts.length; i >= 1; i--) {
+          const tryParts = parts.slice(0, i);
+          const escaped = tryParts.map(c => c.includes(":") ? c.replaceAll(":", "\\:") : c).join(".");
+          try { const el = document.querySelector(`.${escaped}`); if (el) return el.id || null; } catch {}
+        }
+      }
+      return null;
+    }, selector).catch(() => null);
+    if (elId) {
+      selectEl = await page.$(`#${elId}`).catch(() => null);
+      if (selectEl) log(`Selector resolved via id "${elId}"`);
+    }
+    if (!selectEl) return false;
   }
-  if (!selectEl) return false;
 
   const tagName = await selectEl.evaluate((el) => el.tagName.toLowerCase());
 
+  // If the element is a button, redirect to the companion react-select combobox
+  if (tagName === "button") {
+    const comboBoxId = await page.evaluate(() => {
+      const combobox = document.querySelector("#react-select-country_select-input");
+      return combobox?.id || null;
+    });
+    if (comboBoxId) {
+      log(`Button redirecting to combobox "#${comboBoxId}"`);
+      return handleSelectField(page, `#${comboBoxId}`, value, log);
+    }
+  }
+
   if (tagName === "select") {
     try {
-      const optionExists = await page.evaluate(
+      const optionInfo = await page.evaluate(
         ({ sel, val }) => {
           const el = document.querySelector(sel) as HTMLSelectElement;
-          if (!el) return false;
-          return Array.from(el.options).some((o) =>
+          if (!el) return { exists: false };
+          const match = Array.from(el.options).find((o) =>
             o.text.toLowerCase().includes(val.toLowerCase()) ||
             o.value.toLowerCase().includes(val.toLowerCase())
           );
+          if (match) return { exists: true, value: match.value };
+          return { exists: false };
         },
         { sel: selector, val: value }
       );
 
-      if (optionExists) {
+      if (optionInfo.exists) {
         log(`Select detected: selecting option matching "${value.slice(0, 40)}"`);
-        await page.selectOption(selector, { label: new RegExp(value, "i") as unknown as string });
-        log(`  ✓ Selected option for "${value.slice(0, 40)}"`);
-        return true;
+        try {
+          await page.selectOption(selector, optionInfo.value);
+          log(`  ✓ Selected option for "${value.slice(0, 40)}"`);
+          return true;
+        } catch {
+          // selectOption failed — try evaluate fallback
+          log(`selectOption threw, trying evaluate fallback...`);
+          const set = await page.evaluate(({ sel, val: v }) => {
+            const el = document.querySelector(sel) as HTMLSelectElement;
+            if (!el) return false;
+            const opt = Array.from(el.options).find(o =>
+              o.text.toLowerCase().includes(v.toLowerCase()) ||
+              o.value.toLowerCase().includes(v.toLowerCase())
+            );
+            if (opt) { el.value = opt.value; el.dispatchEvent(new Event("change", { bubbles: true })); return true; }
+            return false;
+          }, { sel: selector, val: value });
+          if (set) { log(`  ✓ Selected option via evaluate`); return true; }
+          return false;
+        }
       }
 
       const firstOption = await page.evaluate((sel: string) => {
@@ -209,6 +333,20 @@ async function handleSelectField(
         return true;
       }
     } catch {
+      // Final evaluate fallback
+      try {
+        const set = await page.evaluate(({ sel, val }) => {
+          const el = document.querySelector(sel) as HTMLSelectElement;
+          if (!el) return false;
+          const opt = Array.from(el.options).find(o =>
+            o.text.toLowerCase().includes(val.toLowerCase()) ||
+            o.value.toLowerCase().includes(val.toLowerCase())
+          );
+          if (opt) { el.value = opt.value; el.dispatchEvent(new Event("change", { bubbles: true })); return true; }
+          return false;
+        }, { sel: selector, val: value });
+        if (set) return true;
+      } catch {}
       return false;
     }
     return false;
@@ -246,7 +384,13 @@ async function handleSelectField(
       }
 
       if (await searchInput.count() > 0) {
-        const searchTerms = [value, value.split(" ")[0], value.slice(0, Math.min(8, value.length))];
+        const individualWords = value.split(/\s+/).filter(Boolean);
+        const searchTerms = [
+          value,
+          value.slice(0, Math.min(10, value.length)),
+          ...individualWords,
+          ...individualWords.map(w => w.slice(0, Math.min(5, w.length))),
+        ];
         let selected = false;
 
         for (const term of [...new Set(searchTerms)]) {
@@ -260,8 +404,8 @@ async function handleSelectField(
           await searchInput.type(term, { delay: 25 });
 
           try {
-            await page.waitForSelector('.MuiList-root [role="button"]', { timeout: 6000 });
-            const optionEls = page.locator('.MuiList-root [role="button"]');
+            await page.waitForTimeout(3000); // Wait for API results to load
+            const optionEls = page.locator('.MuiPopover-paper [role="option"], .MuiList-root li');
             const optCount = await optionEls.count();
 
             if (optCount > 0) {
@@ -494,8 +638,9 @@ async function handleSearchPage(
   );
 
   let filled = 0;
+  const escapeForSelector = (id: string) => id.includes("#") || id.includes(":") || id.includes(".") ? CSS.escape(id) : id;
   if (businessInfo && companyData.name) {
-    const sel = businessInfo.id ? `#${businessInfo.id}` :
+    const sel = businessInfo.id ? `#${escapeForSelector(businessInfo.id)}` :
       businessInfo.name ? `[name="${businessInfo.name}"]` :
       businessInfo.placeholder ? `[placeholder="${businessInfo.placeholder}"]` : "";
     log(`Filling "${businessInfo.placeholder || businessInfo.label || businessInfo.id}" → "${companyData.name}" via ${sel}`);
@@ -527,7 +672,7 @@ async function handleSearchPage(
     await page.waitForTimeout(300);
   }
   if (cityInfo && companyData.city) {
-    const sel = cityInfo.id ? `#${cityInfo.id}` :
+    const sel = cityInfo.id ? `#${escapeForSelector(cityInfo.id)}` :
       cityInfo.name ? `[name="${cityInfo.name}"]` :
       cityInfo.placeholder ? `[placeholder="${cityInfo.placeholder}"]` : "";
     log(`Filling "${cityInfo.placeholder || cityInfo.label || cityInfo.id}" → "${companyData.city}" via ${sel}`);
@@ -836,9 +981,39 @@ async function processFormStep(
   }
 
   const currentSelectors = new Set(formStructure.fields.map(f => f.selector));
-  const fillableFields = Object.entries(fieldMapping).filter(([sel, v]) => v && v.length > 0 && currentSelectors.has(sel));
+  let fillableFields = Object.entries(fieldMapping).filter(([sel, v]) => v && v.length > 0 && currentSelectors.has(sel));
   const skippedStale = Object.keys(fieldMapping).length - fillableFields.length;
   log(`Mapping result: ${fillableFields.length} of ${formStructure.fields.length} fields mapped${skippedStale > 0 ? ` (${skippedStale} stale selectors filtered)` : ""}`);
+
+  // Normalize selectors: if a selector doesn't match any DOM element, find a working alternative
+  const normalized: typeof fillableFields = [];
+  for (const [sel, val] of fillableFields) {
+    const fieldEntry = formStructure.fields.find(f => f.selector === sel);
+    const labelHint = fieldEntry?.label || "";
+    const goodSelector = await page.evaluate(({ s, labelHint: lh }: { s: string; labelHint: string }) => {
+      try {
+        if (document.querySelector(s)) return s;
+      } catch { /* selector has invalid CSS syntax (e.g., colons in class names) */ }
+      // Try CSS.escape on parts of the selector
+      try {
+        const escaped = CSS.escape(s.replace(/^#/, ''));
+        const trySel = `#${escaped}`;
+        if (document.querySelector(trySel)) return trySel;
+      } catch {}
+      // Companion react-select combobox for country/select buttons
+      if (lh.toLowerCase().includes("country")) {
+        const cb = document.querySelector("#react-select-country_select-input");
+        if (cb) return "#react-select-country_select-input";
+      }
+      return null;
+    }, { s: sel, labelHint }).catch(() => null);
+    if (goodSelector) {
+      normalized.push([goodSelector, val] as typeof fillableFields[0]);
+    } else {
+      log(`Selector "${sel.slice(0, 40)}..." doesn't match any element, skipping`);
+    }
+  }
+  fillableFields = normalized;
 
   const mappingDetails = fillableFields.map(([sel, val]) => `  ${sel} → "${val.slice(0, 60)}"`).join("\n");
   if (mappingDetails) log(`Mapped fields:\n${mappingDetails}`);
@@ -865,14 +1040,13 @@ async function processFormStep(
     const fieldLabel = formStructure.fields.find((f) => f.selector === selector)?.label || selector;
 
     const needsSelectHandler = await page.evaluate((sel) => {
-      try {
-        const el = document.querySelector(sel);
-        if (!el) return false;
-        const role = el.getAttribute("role");
-        const input = el as HTMLInputElement;
-        return input.readOnly || role === "combobox" || el.className.includes("react-select");
-      } catch { return false; }
-    }, selector);
+      let el: Element | null = null;
+      try { el = document.querySelector(sel); } catch { /* invalid CSS syntax (colons) */ }
+      if (!el) return false;
+      const role = el.getAttribute("role");
+      const input = el as HTMLInputElement;
+      return input.readOnly || role === "combobox" || el.className.includes("react-select");
+    }, selector).catch(() => false);
 
     if (mode === "PREVIEW" && !previewScreenshot && needsSelectHandler && (
       selector.includes("react-select-country") ||
@@ -892,6 +1066,42 @@ async function processFormStep(
         log(`  ✓ [${filledCount}/${fillableFields.length}] "${fieldLabel}" → "${value.slice(0, 60)}" (${selector})`);
         continue;
       } catch {
+        // Fallback for invisible/hidden inputs: set value via JS
+        try {
+          const setOk = await page.evaluate(({ sel, val }) => {
+            let el: Element | null = null;
+            try { el = document.querySelector(sel); } catch {}
+            if (!el) return false;
+            if (el instanceof HTMLSelectElement) {
+              const opt = Array.from(el.options).find(o =>
+                o.text.toLowerCase().includes(val.toLowerCase()) ||
+                o.value.toLowerCase().includes(val.toLowerCase())
+              );
+              if (opt) { el.value = opt.value; el.dispatchEvent(new Event("change", { bubbles: true })); return true; }
+              return false;
+            }
+            if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) {
+              const proto = HTMLInputElement.prototype;
+              const setter = Object.getOwnPropertyDescriptor(proto, "value")?.set;
+              if (setter) {
+                setter.call(el, val);
+                el.dispatchEvent(new Event("input", { bubbles: true }));
+                el.dispatchEvent(new Event("change", { bubbles: true }));
+                return true;
+              }
+              (el as HTMLInputElement).value = val;
+              el.dispatchEvent(new Event("input", { bubbles: true }));
+              el.dispatchEvent(new Event("change", { bubbles: true }));
+              return true;
+            }
+            return false;
+          }, { sel: selector, val: value });
+          if (setOk) {
+            filledCount++;
+            log(`  ✓ [${filledCount}/${fillableFields.length}] "${fieldLabel}" → "${value.slice(0, 60)}" (evaluate fallback)`);
+            continue;
+          }
+        } catch {}
         selectOk = await handleSelectField(page, selector, value, log);
       }
     }
@@ -1053,7 +1263,7 @@ export async function runSubmission(
     log(`Page title: ${await page.title()}`);
 
     const loginRequired = await detectLoginRequired(page);
-    if (loginRequired && mode === "SUBMIT") {
+    if (loginRequired) {
       log("Login form detected — requires authentication");
       const screenshot = await takeScreenshot(page);
       await closePage(page);
@@ -1064,26 +1274,72 @@ export async function runSubmission(
     }
 
     const quality = await checkFormQuality(page);
-    log(`Form analysis: ${quality.totalFields} input fields, ${quality.requiredFields} required`);
+    log(`Form analysis: ${quality.totalFields} input fields, ${quality.requiredFields} required, cloudflare=${quality.hasCloudflareChallenge}, captcha=${quality.hasCaptcha}`);
 
-    if (quality.hasCaptcha) {
-      log("CAPTCHA detected — needs manual action");
+    // Cloudflare / anti-bot challenge blocks access entirely — cannot proceed.
+    // Do NOT bypass per project rules; mark as FAILED.
+    if (quality.hasCloudflareChallenge) {
+      log("Cloudflare anti-bot challenge detected — cannot proceed without bypassing protections");
       const screenshot = await takeScreenshot(page);
       await closePage(page);
       return {
         success: false, logs, screenshot,
-        error: "Обнаружена captcha: требуется ручное подтверждение",
+        error: "Cloudflare anti-bot challenge: доступ заблокирован, требуется ручная обработка",
       };
     }
 
-    if (quality.totalFields === 0) {
-      log("No form fields found on page");
-      const screenshot = await takeScreenshot(page);
-      await closePage(page);
-      return {
-        success: false, logs, screenshot,
-        error: "Форма не найдена: на странице нет полей ввода",
-      };
+    // Real captcha widget present — do NOT abort; fill form fields for the client report,
+    // then mark NEEDS_MANUAL at the end (captcha blocks final submission).
+    let captchaDetected = quality.hasCaptcha;
+    if (captchaDetected) {
+      log("Real captcha widget detected — will fill form fields but submission will need manual captcha solve");
+    }
+
+    // If the landing page is not a submission form (no/few required fields),
+    // try navigating to the Add Business / Submit Listing page first.
+    // Handles directory homepages that show a search box + "Add Business" link.
+    const looksLikeSubmissionForm = quality.requiredFields >= 3;
+    if (!looksLikeSubmissionForm) {
+      log("Landing page does not look like a submission form — attempting Add Business navigation");
+      const navigated = await navigateToAddBusinessPage(page, log);
+      if (navigated) {
+        if (mode === "SUBMIT" && await detectLoginRequired(page)) {
+          log("Login form detected — requires authentication");
+          const screenshot = await takeScreenshot(page);
+          await closePage(page);
+          return { success: false, logs, screenshot, error: "Требуется авторизация: обнаружена форма входа" };
+        }
+        const postNavQuality = await checkFormQuality(page);
+        log(`Post Add-Business navigation: ${postNavQuality.totalFields} fields, required=${postNavQuality.requiredFields}, cloudflare=${postNavQuality.hasCloudflareChallenge}, captcha=${postNavQuality.hasCaptcha}`);
+        if (postNavQuality.hasCloudflareChallenge) {
+          const screenshot = await takeScreenshot(page);
+          await closePage(page);
+          return { success: false, logs, screenshot, error: "Cloudflare anti-bot challenge: доступ к Add Business заблокирован" };
+        }
+        if (postNavQuality.totalFields === 0) {
+          log("Add Business page also has no form fields");
+          const screenshot = await takeScreenshot(page);
+          await closePage(page);
+          return { success: false, logs, screenshot, error: "Форма не найдена: на странице Add Business нет полей ввода" };
+        }
+        quality.totalFields = postNavQuality.totalFields;
+        quality.requiredFields = postNavQuality.requiredFields;
+        quality.hasCaptcha = postNavQuality.hasCaptcha;
+        quality.hasCloudflareChallenge = postNavQuality.hasCloudflareChallenge;
+        if (postNavQuality.hasCaptcha) {
+          captchaDetected = true;
+          log("Captcha detected on Add Business page — will fill fields but mark NEEDS_MANUAL");
+        }
+        log(`Continuing submission on Add Business page (${postNavQuality.totalFields} fields, ${postNavQuality.requiredFields} required)`);
+      } else if (quality.totalFields === 0) {
+        log("No form fields and no Add Business link found");
+        const screenshot = await takeScreenshot(page);
+        await closePage(page);
+        return {
+          success: false, logs, screenshot,
+          error: "Форма не найдена: на странице нет полей ввода и Add Business ссылка отсутствует",
+        };
+      }
     }
 
     let allFields: FormField[] = [];
@@ -1120,10 +1376,6 @@ export async function runSubmission(
 
       if (stepResult.newCount === 0) {
         noNewFieldSteps++;
-        if (noNewFieldSteps >= 2) {
-          log(`\nNo new fields for 2 consecutive steps — stopping step navigation`);
-          break;
-        }
       } else {
         noNewFieldSteps = 0;
       }
@@ -1438,6 +1690,22 @@ export async function runSubmission(
     if (newPage) await closePage(newPage);
     log(`=== Submission completed (${mode}) ===`);
     log(`Duration: ${((Date.now() - new Date(startedAt).getTime()) / 1000).toFixed(1)}s`);
+
+    // If a real captcha widget was detected, the form was filled but final
+    // submission requires a manual captcha solve. Report NEEDS_MANUAL with
+    // the filled-field data so the client sees what was completed.
+    if (captchaDetected) {
+      log("Captcha was detected — marking as NEEDS_MANUAL (form filled, captcha blocks submit)");
+      return {
+        success: false,
+        logs,
+        screenshot,
+        fieldMapping: combinedMapping,
+        formStructure: finalFormStructure,
+        submitSelector: null,
+        error: "Captcha: форма заполнена, требуется ручное подтверждение captcha для отправки",
+      };
+    }
 
     return {
       success: true,
