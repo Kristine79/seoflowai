@@ -18,8 +18,13 @@ export async function closeBrowser(): Promise<void> {
 
 export async function navigateTo(url: string): Promise<Page> {
   const browser = await getBrowser();
-  const page = await browser.newPage();
-  await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
+  const page = await browser.newPage({
+    viewport: { width: 1280, height: 800 },
+    userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  });
+  await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+  // Wait a bit for JS-rendered content
+  await page.waitForTimeout(2000);
   return page;
 }
 

@@ -17,6 +17,7 @@ export type FormStructure = {
 
 export type FormQuality = {
   hasCaptcha: boolean;
+  hasCloudflareChallenge: boolean;
   hasNonStandardLayout: boolean;
   totalFields: number;
   requiredFields: number;
@@ -47,9 +48,9 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
         const text = (el.textContent || "").trim().toLowerCase();
         if (text && keywords.some((kw) => text.includes(kw))) {
           submitSelector = el.id
-            ? `#${el.id}`
+            ? `#${CSS.escape(el.id)}`
             : el.className
-              ? `.${el.className.split(" ").join(".")}`
+              ? `.${el.className.split(" ").map(c => CSS.escape(c)).join(".")}`
               : `button:has-text("${el.textContent?.trim()}")`;
           submitText = el.textContent?.trim() || null;
           return;
@@ -106,11 +107,11 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
 
       const namedEl = el as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
       const selector = id
-        ? `#${id}`
+        ? `#${CSS.escape(id)}`
         : namedEl.name
           ? `[name="${namedEl.name}"]`
           : el.className
-            ? "." + el.className.trim().split(/\s+/).join(".")
+            ? "." + el.className.trim().split(/\s+/).map(c => CSS.escape(c)).join(".")
             : "";
 
       results.push({
@@ -131,23 +132,13 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
 
 export async function checkFormQuality(page: Page): Promise<FormQuality> {
   return page.evaluate(() => {
-    const html = document.body.innerHTML.toLowerCase();
+    const titleLower = (document.title || "").toLowerCase();
+    const html = document.documentElement.innerHTML.toLowerCase();
+    const bodyText = (document.body?.innerText || "").toLowerCase();
 
-    const captchaKeywords = [
-      "recaptcha", "g-recaptcha", "hcaptcha", "cf-turnstile",
-      "captcha", "i am not a robot", "verify you are human",
-    ];
-    const hasCaptcha = captchaKeywords.some((kw) => html.includes(kw)) ||
-      !!document.querySelector(
-        "iframe[src*='recaptcha'], iframe[src*='hcaptcha'], .g-recaptcha, .h-captcha, [cf-turnstile]"
-      );
-
+    // Form fields (computed early — used to disambiguate CF challenge from
+    // a real form that merely embeds a Cloudflare Turnstile widget).
     const formElements = document.querySelectorAll("input, select, textarea");
-    let iframes = 0;
-    let hiddenLayers = 0;
-
-    document.querySelectorAll("iframe, .modal, [class*=overlay], [class*=popup]").forEach(() => iframes++);
-
     const totalFields = formElements.length;
     const requiredFields = Array.from(formElements).filter(
       (el) =>
@@ -155,8 +146,53 @@ export async function checkFormQuality(page: Page): Promise<FormQuality> {
         el.getAttribute("aria-required") === "true"
     ).length;
 
-    const hasNonStandardLayout = totalFields === 0 || iframes > 2 || hiddenLayers > 1 || hasCaptcha;
+    // --- Cloudflare / anti-bot CHALLENGE PAGE detection ---
+    // A CF challenge page replaces the entire page with a "Just a moment..."
+    // or "Attention Required" interstitial. It has a distinctive title and
+    // almost no form fields. A real form that embeds a Turnstile widget keeps
+    // its own page title and has many fields — that is NOT a challenge page.
+    const cfTitleMarkers = ["just a moment", "attention required", "cloudflare"];
+    const hasCfTitle = cfTitleMarkers.some((m) => titleLower.includes(m));
+    const cfBodyMarkers = [
+      "performing security verification",
+      "this website uses a security service to protect against malicious bots",
+      "checking your browser before accessing",
+    ];
+    const hasCfBody = cfBodyMarkers.some((m) => bodyText.includes(m));
+    const hasCfRay = html.includes("cf-ray") || html.includes("_cf_chl_opt");
+    // Challenge page: distinctive title OR (body markers + very few fields + short text).
+    // The totalFields <= 1 guard prevents false positives on real forms with Turnstile.
+    const hasCloudflareChallenge =
+      (hasCfTitle && totalFields <= 1) ||
+      (hasCfBody && totalFields <= 1 && bodyText.length < 800) ||
+      (hasCfTitle && hasCfBody);
 
-    return { hasCaptcha, hasNonStandardLayout, totalFields, requiredFields };
+    // --- Real captcha widget detection (visible only) ---
+    // Catches reCAPTCHA, hCaptcha, and Cloudflare Turnstile widgets that are
+    // embedded in an otherwise-visible form. Does NOT trigger on text mentions.
+    let hasCaptcha = false;
+    const widgetSelectors = ".g-recaptcha, .h-captcha, .cf-turnstile, [cf-turnstile], [data-sitekey], #cf-turnstile-container";
+    const widget = document.querySelector(widgetSelectors);
+    if (widget) {
+      const rect = widget.getBoundingClientRect();
+      if (rect.width > 0 || rect.height > 0) hasCaptcha = true;
+    }
+    if (!hasCaptcha) {
+      const captchaIframe = Array.from(document.querySelectorAll("iframe")).find((f) => {
+        const src = (f.src || "").toLowerCase();
+        return src.includes("recaptcha") || src.includes("hcaptcha") || src.includes("turnstile");
+      });
+      if (captchaIframe) {
+        const rect = captchaIframe.getBoundingClientRect();
+        if (rect.width > 0 || rect.height > 0) hasCaptcha = true;
+      }
+    }
+
+    let iframes = 0;
+    document.querySelectorAll("iframe, .modal, [class*=overlay], [class*=popup]").forEach(() => iframes++);
+
+    const hasNonStandardLayout = totalFields === 0 || iframes > 2 || hasCaptcha;
+
+    return { hasCaptcha, hasCloudflareChallenge, hasNonStandardLayout, totalFields, requiredFields };
   });
 }
