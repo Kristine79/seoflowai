@@ -107,25 +107,25 @@ const TOP10: Array<{ p: string; name: string; url: string; reason: string; diffi
   { p: "P2", name: "Brownbook", url: "https://www.brownbook.net/add-business", reason: "SUBMITTED 07.08: заявка отправлена, профиль НЕ опубликован (поиск: Results Found 0) — проверить email info@itllect-agency.com (activation) / дождаться модерации", difficulty: "Низкая", expected: "VERIFIED_SUCCESS possible" },
   { p: "P2", name: "CityLocalPro", url: "https://www.citylocalpro.com/add-your-business", reason: "SUBMITTED 07.08: заявка отправлена (reCAPTCHA v2 решена вручную), профиль НЕ опубликован (поиск: No result) — ожидать модерации", difficulty: "Средняя", expected: "VERIFIED_SUCCESS possible" },
   { p: "P2", name: "TopSEOs", url: "https://www.topseos.com/registration", reason: "Форма /registration жива (Drupal, 18f); заполнение проходит автоматически, остался шаг submit (OAuth только для входа)", difficulty: "Средняя", expected: "SUBMITTED possible" },
-  { p: "P2", name: "Ft Lauderdale Chamber", url: "https://www.ftlchamber.com/membership", reason: "Заявка на членство (форма за логином)", difficulty: "Средняя", expected: "SUBMITTED possible" },
-  { p: "P2", name: "The Manifest", url: "https://themanifest.com/listings/list-your-company", reason: "Регистрация → listing (Clutch); форма не детектится автоматически", difficulty: "Средняя", expected: "REGISTERED possible" },
-  { p: "P2", name: "ActiveCampaign", url: "https://www.activecampaign.com/partners/become-a-partner", reason: "Сайт ожил; partner-форма 21f заполнена частично — дозаполнить и отправить вручную", difficulty: "Средняя", expected: "SUBMITTED possible" },
   { p: "P3", name: "Yellow Pages / Hotfrog / Manta", url: "https://www.yellowpages.com", reason: "BLOCKED: Cloudflare/anti-bot 403 — только ручной заход через обычный браузер", difficulty: "Высокая", expected: "MANUAL REQUIRED" },
 ];
 
 const P3_NOTES = [
-  "Yellow Pages / Hotfrog / Manta — BLOCKED (Cloudflare 403 \"Performing security verification\" / \"Sorry, you have been blocked\"): только ручной заход через обычный браузер",
-  "Opendi / G2 — EXTERNAL BLOCK (Cloudflare/IP-reputation): сайты показывают \"Sorry, you have been blocked\"; без другого IP/VPN не открывать",
-  "Superpages / EZlocal / Agency Spotter / Sortlist / South FL Biz Journal / Stack Overflow — Cloudflare challenge: только headed-сессия с ручным решением, медленно и нестабильно",
-  "ProvenExpert — ERR_CONNECTION_CLOSED (блокировка соединения); Merchant Circle / HubPages — все URL регистрации 404/403: ручная проверка",
-  "Sitejabber — CAPTCHA + ошибка запуска браузера; аккаунт создавался ранее, нужна ручная проверка",
-  "Local.com — claim-listing отдаёт 404, форма нерабочая (площадка фактически мёртвая)",
-  "n49 — 403 без stealth",
+  "Yellow Pages / Manta / Hotfrog — BLOCKED (Cloudflare 403 \"Performing security verification\" / \"Sorry, you have been blocked\"): только ручной заход через обычный браузер",
+  "Opendi / G2 — BLOCKED (Cloudflare/IP-reputation): сайты показывают \"Sorry, you have been blocked\"; без другого IP/VPN не открывать",
+  "Superpages / EZlocal / Agency Spotter / Sortlist / South FL Biz Journal / Stack Overflow — BLOCKED (Cloudflare challenge): только headed-сессия с ручным решением",
+  "ProvenExpert — BLOCKED (ERR_CONNECTION_CLOSED, блокировка соединения); n49 — BLOCKED (403/IP restriction)",
+  "The Manifest — BLOCKED: регистрация через vendor.clutch.co/profile/create/basic, Cloudflare challenge-loop (Verification successful, но origin не отвечает). Главная clutch.co грузится, vendor-портал — нет. Ручной заход в обычном браузере",
+  "Sitejabber — NEEDS_MANUAL: CAPTCHA + аккаунт создавался ранее, нужна ручная проверка; TopSEOs — NEEDS_MANUAL: только LinkedIn OAuth",
+  "Local.com — FAILED: claim-listing отдаёт 404, форма нерабочая (площадка фактически мёртвая)",
   "Awwwards / CSS Design Awards — платная подача",
+  "Ft Lauderdale Chamber / Miami Chamber / Broward County Chamber — платное членство ($574+/год, non-refundable): требуют отдельного одобрения клиента и бюджета",
   "Twitter/X, Nextdoor, Foursquare — верификация по телефону/открытке",
   "Stripe / Mailchimp / Webflow / HubSpot / Semrush / WooCommerce — партнёрские заявки с ручным ревью",
+  "ActiveCampaign — NOT_APPLICABLE: partner ecosystem (reseller/commission), публичного каталога агентств нет; /partner содержит только sales-lead формы (Demo/Pricing/Trial)",
   "Business2Community — форма оказалась email-сборщиком (Aweber), не для подачи статей",
-  "Уже отработаны (SUBMITTED/REGISTERED): GoodFirms, Plantation Chamber, DesignRush, Digital Agency Net, Crunchbase, Medium, Shopify, YouTube",
+  "SUBMITTED (ожидают обработки): Brownbook, CityLocalPro, GoodFirms, Plantation Chamber, DesignRush, Digital Agency Net",
+  "REGISTERED (требуют завершения профиля): Crunchbase, Medium, Shopify, YouTube",
 ];
 
 function buildMd(rows: Row[], counts: Record<string, number>) {
@@ -144,13 +144,17 @@ function buildMd(rows: Row[], counts: Record<string, number>) {
   L.push(`| Размещено (подтверждено) | **${counts["Размещено (подтверждено)"] || 0}** |`);
   L.push(`| Заявка отправлена | **${counts["Заявка отправлена"] || 0}** |`);
   L.push(`| Аккаунт создан | **${counts["Аккаунт создан"] || 0}** |`);
+  L.push(`| Ожидает модерации | **${counts["Ожидает модерации"] || 0}** |`);
+  L.push(`| Требуется подтверждение | **${counts["Требуется подтверждение"] || 0}** |`);
   L.push(`| Требуется ручное действие | **${counts["Требуется ручное действие"] || 0}** |`);
+  L.push(`| Форма найдена, ожидает отправки | **${counts["Форма найдена, ожидает отправки"] || 0}** |`);
+  L.push(`| Заблокировано защитой сайта | **${counts["Заблокировано защитой сайта"] || 0}** |`);
   L.push(`| Не удалось выполнить | **${counts["Не удалось выполнить"] || 0}** |`);
   L.push(`| Не подходит для размещения | **${counts["Не подходит для размещения"] || 0}** |`);
   L.push("");
   L.push(
     "**Итого результативных шагов: " +
-      (counts["Размещено (подтверждено)"] + counts["Заявка отправлена"] + counts["Аккаунт создан"]) +
+      (counts["Размещено (подтверждено)"] + counts["Заявка отправлена"] + counts["Аккаунт создан"] + (counts["Ожидает модерации"] || 0) + (counts["Требуется подтверждение"] || 0)) +
       " из 76.**"
   );
   L.push("");
@@ -187,11 +191,11 @@ function buildTop10Md() {
   L.push("");
   L.push("## План P1");
   L.push("");
-  L.push("1. **Brownbook / CityLocalPro** — SUBMITTED 07.08: заявки отправлены, профили не опубликованы. Проверить email info@itllect-agency.com (Brownbook activation), дождаться модерации; при появлении профиля — зафиксировать URL и статус VERIFIED_SUCCESS.");
-  L.push("2. **TopSEOs** — /registration: заполнение уже проходит автоматически; довести submit до конца (ручной клик при зависании). Ожидание: SUBMITTED.");
-  L.push("3. **Opendi** — недоступен: EXTERNAL BLOCK (Cloudflare/IP fingerprint, turnstile). Нужен другой IP/VPN или ручной заход, иначе не открывать.");
-  L.push("4. Затем P2 через email-assisted регистрацию (рабочий паттерн: Semfirms, FindUsHere): Ft Lauderdale Chamber → The Manifest → ActiveCampaign.");
-  L.push("5. Правило: если площадка не даёт прогресса за 15 минут — остановиться и перейти к следующей P1.");
+  L.push("1. **Brownbook / CityLocalPro** — SUBMITTED 07.08: заявки отправлены, профили не опубликованы. Проверить email info@itllect-agency.com (Brownbook activation), дождаться модерации; при появлении профиля — зафиксировать URL и статус VERIFIED_SUCCESS. Повторные регистрации НЕ запускать.");
+  L.push("2. **TopSEOs** — NEEDS_MANUAL: /registration заполняется автоматически, submit зависает (только LinkedIn OAuth); довести submit вручную. Ожидание: SUBMITTED.");
+  L.push("3. **Opendi** — BLOCKED: EXTERNAL BLOCK (Cloudflare/IP fingerprint, turnstile). Нужен другой IP/VPN или ручной заход, иначе не открывать.");
+  L.push("4. Затем P2 через email-assisted регистрацию (рабочий паттерн: Semfirms, FindUsHere): следующий P2-кандидат.");
+  L.push("5. Правила: если площадка не даёт прогресса за 15 минут — остановиться и перейти к следующей P1. Площадки со статусами SUBMITTED / REGISTERED / PENDING_VERIFICATION / PENDING_MODERATION / VERIFIED_SUCCESS / BLOCKED в повторный запуск не включаются.");
   L.push("");
   return L.join("\n");
 }
@@ -219,7 +223,7 @@ function buildXlsx(rows: Row[]) {
   ]);
   styleTable(wsAll, 1, CLIENT_COLS.length, [26, 50, 34, 6, 10, 26, 70, 40, 60, 34]);
 
-  const ACTION_STATUSES = ["Заявка отправлена", "Аккаунт создан", "Требуется ручное действие"];
+  const ACTION_STATUSES = ["Заявка отправлена", "Аккаунт создан", "Ожидает модерации", "Требуется подтверждение", "Требуется ручное действие", "Форма найдена, ожидает отправки", "Заблокировано защитой сайта"];
   const actionCols = ["Каталог", "URL", "Статус", "Результат", "Следующий шаг"];
   const wsAction = wb.addWorksheet("Требуется действие");
   wsAction.addRows([
@@ -276,7 +280,18 @@ function main() {
     console.error(`Ожидалось ${MASTER_LIST.length} строк, получено ${rows.length} — есть расхождения с human-queue.json`);
   }
   const counts = summarize(rows);
-  const order = ["Размещено (подтверждено)", "Заявка отправлена", "Аккаунт создан", "Требуется ручное действие", "Не удалось выполнить", "Не подходит для размещения"];
+  const order = [
+    "Размещено (подтверждено)",
+    "Заявка отправлена",
+    "Аккаунт создан",
+    "Ожидает модерации",
+    "Требуется подтверждение",
+    "Требуется ручное действие",
+    "Форма найдена, ожидает отправки",
+    "Заблокировано защитой сайта",
+    "Не удалось выполнить",
+    "Не подходит для размещения",
+  ];
 
   writeFileSync(`${OUT_DIR}/client-directory-report.csv`, buildCsv(rows), "utf8");
   writeFileSync(`${OUT_DIR}/client-directory-report.md`, buildMd(rows, counts), "utf8");

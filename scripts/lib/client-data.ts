@@ -33,18 +33,39 @@ export function loadProbes(): Record<string, ProbeEntry> {
 
 export const STATUS_OVERRIDES: Record<string, string> = {
   Brownbook: "SUBMITTED",
-  Crunchbase: "REGISTERED",
+  CityLocalPro: "SUBMITTED",
   DesignRush: "SUBMITTED",
   GoodFirms: "SUBMITTED",
-  Manta: "FAILED",
+  "Digital Agency Net": "SUBMITTED",
+  "Plantation Chamber": "SUBMITTED",
+  Crunchbase: "REGISTERED",
   Medium: "REGISTERED",
   "Shopify Partners": "REGISTERED",
-  "Digital Agency Net": "SUBMITTED",
-  Hotfrog: "FAILED",
-  "Plantation Chamber": "SUBMITTED",
   "YouTube Channel": "REGISTERED",
-  "Bark.com": "NEEDS_MANUAL",
-  CityLocalPro: "SUBMITTED",
+  "SCORE Mentor Network": "NOT_APPLICABLE",
+  TopSEOs: "NEEDS_MANUAL",
+  ProvenExpert: "NEEDS_MANUAL",
+  Trustpilot: "NEEDS_MANUAL",
+  "Foursquare Business": "NEEDS_MANUAL",
+  "Nextdoor Business": "NEEDS_MANUAL",
+  "AngelList/Wellfound": "NEEDS_MANUAL",
+  "Express Update USA": "NEEDS_MANUAL",
+  "HubSpot Agency Dir": "NEEDS_MANUAL",
+  "Semrush Agency Partners": "NEEDS_MANUAL",
+  "The Manifest": "BLOCKED",
+  ActiveCampaign: "NOT_APPLICABLE",
+  "Yellow Pages": "BLOCKED",
+  Manta: "BLOCKED",
+  Hotfrog: "BLOCKED",
+  Opendi: "BLOCKED",
+  G2: "BLOCKED",
+  Superpages: "BLOCKED",
+  EZlocal: "BLOCKED",
+  "Agency Spotter": "BLOCKED",
+  Sortlist: "BLOCKED",
+  "South FL Biz Journal": "BLOCKED",
+  "Stack Overflow": "BLOCKED",
+  n49: "NOT_APPLICABLE",
 };
 
 export const RESULT_TEXT: Record<string, string> = {
@@ -63,13 +84,22 @@ export const RESULT_TEXT: Record<string, string> = {
   CityLocalPro: "SUBMITTED 07.08: заявка отправлена (reCAPTCHA v2 решена вручную), профиль НЕ опубликован (поиск: No result) — ожидает модерации",
   Sitejabber: "Аккаунт создавался ранее; повторный прогон не стартовал (ошибка браузера)",
   "Yellow Pages": "BLOCKED: Cloudflare 403 — 'Sorry, you have been blocked'; требуется ручной заход",
-  Opendi: "EXTERNAL BLOCK — Cloudflare/access restriction; IP/fingerprint блокировка, turnstile не проходит (\"" + "Sorry, you have been blocked" + "\")",
+  Opendi: "REPROBE 08.08: CF turnstile — multiple headed attempts failed, verification not passable; stay BLOCKED",
   TopSEOs: "Форма жива на /registration (Drupal); заполнение проходит, submit зависает — нужен ручной шаг",
-  ActiveCampaign: "Сайт ожил после DEAD; partner-форма 21f заполнена частично, submit-кнопки нет",
+  ProvenExpert: "REPROBE 08.08: site accessible (en-us/), form 10 fields detected, EMAIL fields absent — HUMAN ACTION timeout; stay NEEDS_MANUAL",
+  n49: "REPROBE 08.08: accessible but no add business form — not a business directory; status NOT_APPLICABLE",
+  ActiveCampaign: "Partner ecosystem (reseller/commission program), не бизнес-каталог — /partner содержит только sales-lead формы (Demo/Pricing/Trial), публичного каталога агентств нет",
   G2: "Сайт ожил после DEAD; claim-listing закрыт Cloudflare; повторный прогон упал (краш браузера)",
   "Local.com": "claim-listing → 404 (Page not found), форма нерабочая",
   Semfirms: "VERIFIED_SUCCESS: профиль создан и публично доступен",
   FindUsHere: "VERIFIED_SUCCESS: профиль создан и публично доступен (18+ млн бизнесов в каталоге)",
+  Trustpilot: "RECLASSIFIED 08.08: claim business + domain verification required. Listing IS possible.",
+  "Foursquare Business": "RECLASSIFIED 08.08: claim venue + phone verification required. Business CAN be listed.",
+  "Nextdoor Business": "RECLASSIFIED 08.08: create business page + postcard PIN verification. Local directory listing possible.",
+  "AngelList/Wellfound": "RECLASSIFIED 08.08: create startup/company profile. Startup directory listing possible.",
+  "Express Update USA": "RECLASSIFIED 08.08: claim InfoGroup citation listing via phone/postcard.",
+  "HubSpot Agency Dir": "RECLASSIFIED 08.08: partner application leads to public agency directory listing.",
+  "Semrush Agency Partners": "RECLASSIFIED 08.08: list agency on agencies.semrush.com self-service flow.",
 };
 
 export const PROFILE_URL_TEXT: Record<string, string> = {
@@ -79,18 +109,16 @@ export const PROFILE_URL_TEXT: Record<string, string> = {
 };
 
 export const NA_COMMENTS: Record<string, string> = {
-  Alignable: "Нет открытой формы размещения",
   Spoke: "Площадка сменила профиль — не каталог",
-  n49: "Доступ ограничен (403), нет формы размещения",
   "Find Best SEO": "Реестр рейтингов, формы нет",
   "Influencer Mkt Hub": "Форма не работает (email-сборщик)",
   "FL SBDC Network": "Консультационный сервис, не каталог",
   "Broward County Chamber": "Страница заявки пустая",
   "Miami Chamber": "Членство оформляется вручную",
+  "Ft Lauderdale Chamber": "Платное членство ($574/год + $50 one-time, non-refundable) — требуется отдельное одобрение клиента и бюджет",
   "Nextdoor Business": "Подтверждение по почтовой открытке",
   "City of Plantation": "Муниципальный ресурс",
   "Broward County Biz": "Муниципальный ресурс",
-  "SCORE Mentor Network": "Менторская программа, не каталог",
   "FL DEO Business": "Гос. портал ресурсов",
   "SBA.gov Business": "Гос. ресурс",
   "Semrush Agency Partners": "Партнёрская программа (ручное ревью)",
@@ -110,6 +138,7 @@ export const NA_COMMENTS: Record<string, string> = {
   "Neustar Localeze": "Агрегатор данных — подача не предусмотрена",
   "Express Update USA": "Claim через телефон/почту",
   "Foursquare Business": "Верификация по телефону",
+  ActiveCampaign: "Партнёрская программа (reseller/commission), публичного каталога агентств нет — только sales-lead формы (Demo/Pricing/Trial)",
 };
 
 export const NA_CATEGORY_LABELS: Record<number, { label: string; explanation: string }> = {
@@ -155,6 +184,7 @@ export const NA_CATEGORY: Record<string, number> = {
   "Foursquare Business": 2,
   "Express Update USA": 2,
   "Nextdoor Business": 2,
+  ActiveCampaign: 2,
   "Data Axle": 3,
   "Neustar Localeze": 3,
   "Find Best SEO": 3,
@@ -164,20 +194,22 @@ export const NA_CATEGORY: Record<string, number> = {
   "FL SBDC Network": 3,
   "Broward County Biz": 3,
   "City of Plantation": 3,
-  Alignable: 4,
   "Broward County Chamber": 4,
   "Miami Chamber": 4,
+  "Ft Lauderdale Chamber": 4,
   ProductHunt: 4,
-  n49: 4,
 };
 
 export const CLIENT_RESULT_TABLE = [
-  { status: "Размещено (подтверждено)", count: 2, description: "Профиль компании успешно создан и доступен (Semfirms, FindUsHere)" },
-  { status: "Заявка отправлена", count: 6, description: "Форма размещения заполнена и отправлена, ожидается обработка площадкой (в т.ч. Brownbook, CityLocalPro 07.08)" },
-  { status: "Аккаунт создан", count: 4, description: "Создан аккаунт, требуется дальнейшее заполнение или публикация профиля" },
-  { status: "Требуется действие", count: 12, description: "Нужен ручной шаг: подтверждение, CAPTCHA, заполнение профиля или другие действия" },
-  { status: "Не удалось выполнить", count: 23, description: "Площадка недоступна, заблокирована (в т.ч. Cloudflare/anti-bot) или возникла техническая проблема" },
-  { status: "Не подходит для размещения", count: 29, description: "Ресурс не является стандартным каталогом компаний или требует другого подхода" },
+  { status: "Размещено (подтверждено)", count: 2, description: "Найден публичный профиль URL и размещение подтверждено (Semfirms, FindUsHere)" },
+  { status: "Заявка отправлена", count: 6, description: "Форма отправлена, публикация/профиль ещё не подтверждены (Brownbook, CityLocalPro, DesignRush, GoodFirms, Digital Agency Net, Plantation Chamber)" },
+  { status: "Аккаунт создан", count: 4, description: "Аккаунт создан, требуется заполнение профиля, публикация контента или завершение регистрации (Crunchbase, Medium, Shopify Partners, YouTube Channel)" },
+  { status: "Ожидает модерации", count: 0, description: "Площадка получила заявку и выполняет проверку" },
+  { status: "Требуется подтверждение", count: 0, description: "Требуется подтверждение email/телефона для активации размещения" },
+{ status: "Требуется ручное действие", count: 7, description: "Ручной шаг: CAPTCHA, OAuth, зависший submit, партнёрская/плановая заявка или решение пользователя" },
+    { status: "Заблокировано защитой сайта", count: 14, description: "Внешняя блокировка: Cloudflare, CAPTCHA challenge, IP restriction — только ручной заход" },
+  { status: "Не удалось выполнить", count: 12, description: "Сайт недоступен, регистрация отсутствует (404) или техническая ошибка" },
+  { status: "Не подходит для размещения", count: 31, description: "Ресурс не является стандартным каталогом компаний, требует другого подхода или платного членства" },
 ];
 
 export const CLIENT_IMPORTANT_INFO =
@@ -187,9 +219,10 @@ export const CLIENT_IMPORTANT_INFO =
 
 export const CLIENT_NEXT_STEPS =
   "Приоритет дальнейшей работы:\n" +
-  "1. Завершение площадок, где уже создан аккаунт или отправлена заявка.\n" +
-  "2. Обработка площадок, требующих ручного действия.\n" +
-  "3. Дополнение профилей и получение прямых ссылок на размещения.";
+  "1. Отслеживание SUBMITTED/PENDING: подтвердить email (Brownbook), дождаться модерации (CityLocalPro), проверить публичные профили.\n" +
+  "2. Завершение REGISTERED: заполнить профили Crunchbase, Medium, Shopify Partners, YouTube Channel.\n" +
+  "3. Обработка NEEDS_MANUAL: TopSEOs (LinkedIn OAuth).\n" +
+  "4. Повторные регистрации для SUBMITTED/REGISTERED/PENDING/BLOCKED НЕ запускать.";
 
 export function probeKeyOf(name: string): string {
   return name
@@ -244,27 +277,41 @@ export const CLIENT_STATUS: Record<string, string> = {
   VERIFIED_SUCCESS: "Размещено (подтверждено)",
   SUBMITTED: "Заявка отправлена",
   REGISTERED: "Аккаунт создан",
+  PENDING_MODERATION: "Ожидает модерации",
+  PENDING_VERIFICATION: "Требуется подтверждение",
   NEEDS_MANUAL: "Требуется ручное действие",
+  FORM_READY: "Форма найдена, ожидает отправки",
+  NOT_STARTED: "Не обработано",
+  BLOCKED: "Заблокировано защитой сайта",
   FAILED: "Не удалось выполнить",
   NOT_APPLICABLE: "Не подходит для размещения",
-  UNVERIFIED: "Требуется ручное действие",
 };
 
 export const CLIENT_NEXT: Record<string, string> = {
   "Размещено (подтверждено)": "Проверка завершена",
-  "Заявка отправлена": "Ожидать обработки площадкой",
+  "Заявка отправлена": "Ожидать обработки площадкой и проверить публичный профиль",
   "Аккаунт создан": "Заполнить профиль компании / завершить публикацию",
+  "Ожидает модерации": "Дождаться проверки площадкой и проверить публичный профиль",
+  "Требуется подтверждение": "Подтвердить email/телефон для активации размещения",
   "Требуется ручное действие": "Требуется ручное действие",
+  "Форма найдена, ожидает отправки": "Заполнить и отправить форму",
+  "Не обработано": "Запустить обработку площадки",
+  "Заблокировано защитой сайта": "Ручной заход через обычный браузер / другой IP",
   "Не удалось выполнить": "Проверить альтернативный способ размещения",
   "Не подходит для размещения": "Не является стандартным каталогом компаний",
 };
 
 export const CLIENT_REASON: Record<string, string> = {
-  "Размещено (подтверждено)": "Профиль компании создан и доступен",
-  "Заявка отправлена": "Форма размещения заполнена и отправлена",
+  "Размещено (подтверждено)": "Найден публичный профиль URL",
+  "Заявка отправлена": "Форма размещения заполнена и отправлена, профиль ещё не подтверждён",
   "Аккаунт создан": "Создан аккаунт, профиль ещё не опубликован",
-  "Требуется ручное действие": "Требуется CAPTCHA, подтверждение, ручной шаг или дополнительная регистрация",
-  "Не удалось выполнить": "Сайт недоступен / ограничение доступа / техническая ошибка",
+  "Ожидает модерации": "Площадка получила заявку и выполняет проверку",
+  "Требуется подтверждение": "Требуется подтверждение email/телефона",
+  "Требуется ручное действие": "CAPTCHA, OAuth, зависший submit, партнёрская/плановая заявка или решение пользователя",
+  "Форма найдена, ожидает отправки": "Форма обнаружена, заполнение/отправка не выполнены",
+  "Не обработано": "Площадка ещё не обработана",
+  "Заблокировано защитой сайта": "Внешняя блокировка: Cloudflare / CAPTCHA / IP restriction",
+  "Не удалось выполнить": "Сайт недоступен / техническая ошибка",
   "Не подходит для размещения": "Социальная сеть / контентная платформа / партнёрский ресурс, не является каталогом компаний",
 };
 
@@ -281,27 +328,28 @@ export const CLIENT_RESULT: Record<string, string> = {
   "Plantation Chamber": "Заявка на членство подана",
   "YouTube Channel": "Канал компании создан",
   "Bark.com": "Форма открывается, заполнение зависает — нужен ручной шаг",
-  TopSEOs: "Форма заполняется, отправка зависает — нужен ручной шаг",
-  ActiveCampaign: "Сайт доступен; форма заполнена частично, нет кнопки отправки",
-  "South FL Biz Journal": "Доступ ограничен защитой сайта — требуется ручной заход",
-  "Stack Overflow": "Доступ ограничен защитой сайта — требуется ручной заход",
-  Sortlist: "Доступ ограничен защитой сайта — требуется ручной заход",
+  TopSEOs: "Регистрация только через LinkedIn OAuth — нужен ручной вход",
+  ActiveCampaign: "Партнёрская программа (reseller/commission), не каталог — публичногоListing нет",
+  Sitejabber: "Аккаунт создавался ранее + CAPTCHA — нужна ручная проверка",
+  "South FL Biz Journal": "Заблокировано Cloudflare challenge — требуется ручной заход",
+  "Stack Overflow": "Заблокировано Cloudflare challenge — требуется ручной заход",
+  Sortlist: "Заблокировано Cloudflare challenge — требуется ручной заход",
   Semfirms: "Профиль создан и подтверждён",
   FindUsHere: "Профиль создан и подтверждён",
-  "Ft Lauderdale Chamber": "Заявка на членство требует регистрации и ручного шага",
+  "Ft Lauderdale Chamber": "Платное членство ($574/год + $50 one-time, non-refundable) — требуется отдельное одобрение клиента и бюджет",
+  "The Manifest": "Заблокировано Cloudflare challenge-loop на vendor.clutch.co/profile/create/basic (реальная форма регистрации). Главная clutch.co/get-listed грузится, но vendor-портал не отвечает после CF verification (Ray ID a27c85757b9b543b) — требуется ручной заход в обычном браузере",
   "Mailchimp Partner": "Требуется регистрация и подача партнёрской заявки",
   "Stripe Partner": "Требуется найти способ подачи партнёрской заявки",
   Awwwards: "Требуется регистрация (подача платная)",
   HubPages: "Регистрация недоступна (все URL 404) — требуется ручная проверка",
-  ProvenExpert: "Сайт блокирует соединение (ERR_CONNECTION_CLOSED) — требуется ручная проверка",
+  ProvenExpert: "Сайт блокирует соединение (ERR_CONNECTION_CLOSED) — внешняя блокировка",
   "Yellow Pages": "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
-  Opendi: "Сайт блокирует доступ (защита сайта); требуется другой IP/VPN или ручной заход",
-  G2: "Форма подачи ограничена защитой сайта; требуется ручное действие",
+  Opendi: "Заблокировано Cloudflare/IP-reputation — требуется другой IP/VPN или ручной заход",
+  G2: "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
   "Local.com": "Страница подачи не работает (404)",
-  Sitejabber: "Аккаунт создавался ранее; требуется ручная проверка",
-  Superpages: "Доступ ограничен защитой сайта",
-  EZlocal: "Доступ ограничен защитой сайта",
-  "Agency Spotter": "Доступ ограничен защитой сайта",
+  Superpages: "Заблокировано Cloudflare challenge — требуется ручной заход",
+  EZlocal: "Заблокировано Cloudflare challenge — требуется ручной заход",
+  "Agency Spotter": "Заблокировано Cloudflare challenge — требуется ручной заход",
   "Merchant Circle": "Регистрация недоступна (404/403) — требуется ручная проверка",
   Upcity: "Сайт недоступен",
   "FL Business Dir": "Сайт недоступен",
@@ -312,8 +360,9 @@ export const CLIENT_RESULT: Record<string, string> = {
   Dribbble: "Требуется регистрация",
   Tumblr: "Требуется регистрация",
   "WooCommerce Agency": "Форма подачи не найдена",
+  n49: "Доступ ограничен (403/IP restriction) — требуется ручной заход",
   CityLocalPro: "Заявка отправлена 07.08, профиль не опубликован (поиск: No result) — ожидает модерации",
-  "SCORE Mentor Network": "Форма найдена, требуется ручное заполнение",
+  "SCORE Mentor Network": "Ресурс не является каталогом бизнеса (government mentoring) — не подходит для размещения",
 };
 
 export function clientStatusOf(entry: QueueEntry): string {

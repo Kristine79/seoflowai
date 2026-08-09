@@ -41,3 +41,52 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+nul
+
+# SEOFlow runtime / browser temporary data
+seoflowai-temp/
+
+# Runtime automation output
+human-submit-out/
+
+# Runtime logs
+*.log
+
+# Windows reserved device name
+nul
+
+# Build output
+/dist/
+
+# SEOFlow test artifacts
+/probe-out/
+/quick-submit-out/
+/stealth-submit-out/
+/business-preview/
+/pool-preview/
+/pool-submit/
+
+# Generated screenshots / diagnostics
+*-preview.png
+*-before.png
+*-after.png
+*-error.png
+*-filled.png
+*-form.png
+*-result.png
+*-submit.png
+*-current.png
+*-login.png
+*-step*.png
+*-presubmit.png
+*-postsubmit.png
+*-nosubmit.png
+*-blocked.png
+*-channel.png
+*-profile.png
+*-flow-result.png
+urlcheck-*.png
+verify-*.png
+temp-logo.png
+test-findushere.png

@@ -71,33 +71,33 @@ export function buildClientSummarySheet(wb: ExcelJS.Workbook): ExcelJS.Worksheet
     ws.getRow(r).height = 22;
   });
 
-  const impHdr = ws.getCell("A17");
+  const impHdr = ws.getCell("A21");
   impHdr.value = "Важная информация";
   impHdr.font = { bold: true, size: 12 };
-  ws.getRow(17).height = 20;
+  ws.getRow(21).height = 20;
 
-  const impText = ws.getCell("A18");
+  const impText = ws.getCell("A22");
   impText.value = CLIENT_IMPORTANT_INFO;
   impText.alignment = { wrapText: true, vertical: "top" };
-  ws.mergeCells("A18:C21");
-  ws.getRow(18).height = 60;
-  ws.getRow(19).height = 16;
-  ws.getRow(20).height = 16;
-  ws.getRow(21).height = 16;
+  ws.mergeCells("A22:C25");
+  ws.getRow(22).height = 60;
+  ws.getRow(23).height = 16;
+  ws.getRow(24).height = 16;
+  ws.getRow(25).height = 16;
 
-  const nextHdr = ws.getCell("A23");
+  const nextHdr = ws.getCell("A27");
   nextHdr.value = "Следующие шаги";
   nextHdr.font = { bold: true, size: 12 };
-  ws.getRow(23).height = 20;
+  ws.getRow(27).height = 20;
 
-  const nextText = ws.getCell("A24");
+  const nextText = ws.getCell("A28");
   nextText.value = CLIENT_NEXT_STEPS;
   nextText.alignment = { wrapText: true, vertical: "top" };
-  ws.mergeCells("A24:C27");
-  ws.getRow(24).height = 60;
-  ws.getRow(25).height = 16;
-  ws.getRow(26).height = 16;
-  ws.getRow(27).height = 16;
+  ws.mergeCells("A28:C31");
+  ws.getRow(28).height = 60;
+  ws.getRow(29).height = 16;
+  ws.getRow(30).height = 16;
+  ws.getRow(31).height = 16;
 
   return ws;
 }

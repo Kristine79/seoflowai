@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import type { FormField } from "./form-analyzer";
+import { aiChatCompletion } from "./ai-client";
 
 const COUNTRY_NAMES: Record<string, string> = {
   US: "United States",
@@ -77,12 +78,21 @@ const LABEL_RULES: { patterns: RegExp[]; dataKey: string }[] = [
   { patterns: [/video/i], dataKey: "video" },
 ];
 
+const NON_FILLABLE_TYPES = new Set(["checkbox", "radio", "file", "hidden", "button", "submit", "image", "reset"]);
+
+function isFillableType(field: FormField): boolean {
+  const t = (field.type || "").toLowerCase();
+  return !NON_FILLABLE_TYPES.has(t);
+}
+
 function ruleBasedMapping(
   companyData: Record<string, string>,
   formFields: FormField[]
 ): Record<string, string> {
   const mapping: Record<string, string> = {};
   for (const field of formFields) {
+    // Never assign text values to checkbox/radio/file/hidden controls.
+    if (!isFillableType(field)) continue;
     const text = `${field.label} ${field.placeholder}`;
     for (const rule of LABEL_RULES) {
       if (rule.patterns.some((p) => p.test(text))) {
@@ -118,7 +128,7 @@ export async function mapFieldsWithAI(
   }
 
   // Fall back to AI for the remaining fields
-  let remainingFields = formFields.filter((f) => !ruleMapping[f.selector]);
+  let remainingFields = formFields.filter((f) => !ruleMapping[f.selector] && isFillableType(f));
   if (remainingFields.length === 0) return ruleMapping;
 
   // Don't ask AI about social/vanity fields when company has no data for them
@@ -165,16 +175,12 @@ ${fieldDescriptions}
 ALREADY MAPPED (for context):
 ${Object.entries(ruleMapping).map(([k, v]) => `${k}=${v}`).join("\n")}
 
-For each unmapped field (by key), provide the value to fill. Respond with a JSON object where keys are the field keys (like "f0", "f1") and values are the text to enter. Skip submit buttons, checkboxes, and non-input fields. Use empty string for fields you cannot map.`;
+For each unmapped field (by key), provide the value to fill. Respond with a JSON object where keys are the field keys (like "f0", "f1") and values are the text to enter. Skip submit buttons, checkboxes, radio buttons, file uploads, and non-input fields. Use empty string for fields you cannot map.`;
+
+  const messages = [{ role: "user", content: prompt }];
 
   try {
-    const response = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-    });
-
-    const content = response.choices[0]?.message?.content;
+    const { content } = await aiChatCompletion(messages, { response_format: { type: "json_object" } });
     if (content) {
       try {
         const aiKeyMapping = JSON.parse(content) as Record<string, string>;
@@ -192,7 +198,7 @@ For each unmapped field (by key), provide the value to fill. Respond with a JSON
       }
     }
   } catch {
-    // LLM unavailable — use rule mapping only
+    // All AI providers unavailable — use rule mapping only
   }
 
   return ruleMapping;
