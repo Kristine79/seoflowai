@@ -238,6 +238,46 @@ async function detectEmailVerification(page: Page): Promise<boolean> {
   });
 }
 
+/**
+ * Confirmed submit evidence: clicking a submit button is NOT proof that the
+ * form was actually submitted. Returns the kind of confirmation, or null
+ * when no evidence of a successful submission exists.
+ *
+ * Supports same-URL AJAX forms: the URL may stay the same while the DOM
+ * switches to an explicit confirmation state (registration form gone + a
+ * generic success/confirmation text visible).
+ */
+async function detectSubmitEvidence(
+  page: Page,
+  urlBeforeSubmit: string,
+  submitText: string,
+  log: (msg: string) => void
+): Promise<"navigation" | "confirmation-state" | null> {
+  if (page.url() !== urlBeforeSubmit) {
+    log(`Submit evidence: navigation occurred → ${page.url()}`);
+    return "navigation";
+  }
+
+  const submitStillVisible = await page
+    .locator(`button:has-text("${submitText}")`)
+    .first()
+    .isVisible()
+    .catch(() => false);
+  const visibleForms = await page.locator("form:visible").count().catch(() => 0);
+  const bodyText = ((await page.locator("body").innerText().catch(() => "")) || "").toLowerCase();
+
+  const SUCCESS_PATTERNS = /thank you|thanks|success|submitted|successfully|congratulations|congratulation|welcome|account created|registration complete|check your email|we sent|зарегистрирован|успешно|спасибо|отправлен|подтвердите/i;
+  const hasConfirmationText = SUCCESS_PATTERNS.test(bodyText);
+
+  if (!submitStillVisible && visibleForms === 0 && hasConfirmationText) {
+    log("Submit evidence: registration form gone and confirmation state visible");
+    return "confirmation-state";
+  }
+
+  log(`Submit NOT confirmed: no navigation and no confirmation state (submit button visible=${submitStillVisible}, forms=${visibleForms})`);
+  return null;
+}
+
 export async function handleSelectField(
   page: Page,
   selector: string,
@@ -1143,13 +1183,32 @@ async function validateBeforeSubmit(
 ): Promise<string | null> {
   log("\n--- Pre-submit validation ---");
 
-  const requiredUnfilled = allFields.filter(
-    (f) => f.required && (!fieldMapping[f.selector] || fieldMapping[f.selector].length === 0)
-  );
+  // Verify the ACTUAL DOM state, not the mapping: a mapped value does not
+  // mean the value landed in the field (failed selects / readonly dropdowns
+  // leave the field empty while the mapping still contains a value).
+  const fieldsToCheck = formFields && formFields.length > 0 ? formFields : allFields;
+  const requiredUnfilled: FormField[] = [];
+  for (const f of fieldsToCheck) {
+    if (!f.required) continue;
+    const value = await page.evaluate((sel) => {
+      try {
+        const el = document.querySelector(sel);
+        if (!el) return "";
+        if (el instanceof HTMLSelectElement) return el.value || "";
+        if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return el.value || "";
+        return "";
+      } catch {
+        return "";
+      }
+    }, f.selector).catch(() => "");
+    if (!value || value.trim().length === 0) {
+      requiredUnfilled.push(f);
+    }
+  }
 
   if (requiredUnfilled.length > 0) {
     const names = requiredUnfilled.map((f) => `"${f.label || f.placeholder}"`).join(", ");
-    log(`Required fields not filled: ${names}`);
+    log(`Required fields not filled (DOM verified): ${names}`);
     if (mode === "SUBMIT") {
       return `Не заполнено обязательное поле: ${names}`;
     }
@@ -1658,29 +1717,41 @@ export async function runSubmission(
       }
       if (submitBtn) {
         log(`Submit button found: "${submitBtn.text}" (${submitBtn.selector})`);
+        const urlBeforeSubmit = activePage.url();
         try {
           const submitLocator = activePage.locator(`button:has-text("${submitBtn.text}")`).first();
           await submitLocator.click({ timeout: 8000 });
-          const afterClickUrl = activePage.url();
-          log(`Form submitted, waiting for navigation... (URL: ${afterClickUrl})`);
+          log(`Submit clicked, waiting for submission confirmation... (URL: ${urlBeforeSubmit})`);
           await activePage.waitForTimeout(3000);
-
-          const emailVerify = await detectEmailVerification(activePage);
-          if (emailVerify) {
-            log("Email verification page detected after submit — needs manual confirmation");
-            const screenshot = await takeScreenshot(activePage);
-            await closePage(page);
-            if (newPage) await closePage(newPage);
-            return {
-              success: false, logs, screenshot,
-              error: "Требуется подтверждение email: проверьте почту",
-            };
-          }
-          log("No email verification detected — submit appears successful");
         } catch (clickErr) {
           const clickMsg = clickErr instanceof Error ? clickErr.message.slice(0, 120) : "unknown";
           log(`Could not click submit button: ${clickMsg}`);
         }
+
+        const emailVerify = await detectEmailVerification(activePage);
+        if (emailVerify) {
+          log("Email verification page detected after submit — needs manual confirmation");
+          const screenshot = await takeScreenshot(activePage);
+          await closePage(page);
+          if (newPage) await closePage(newPage);
+          return {
+            success: false, logs, screenshot,
+            error: "Требуется подтверждение email: проверьте почту",
+          };
+        }
+
+        const submitEvidence = await detectSubmitEvidence(activePage, urlBeforeSubmit, submitBtn.text, log);
+        if (!submitEvidence) {
+          log("Submit NOT confirmed — form was not submitted");
+          const screenshot = await takeScreenshot(activePage);
+          await closePage(page);
+          if (newPage) await closePage(newPage);
+          return {
+            success: false, logs, screenshot,
+            error: "Форма не была отправлена: нет подтверждения успешной отправки",
+          };
+        }
+        log(`Submit confirmed (${submitEvidence}) — form was submitted`);
       } else {
         log("No final submit button found — needs manual action");
         const screenshot = await takeScreenshot(activePage);

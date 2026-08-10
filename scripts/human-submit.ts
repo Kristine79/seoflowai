@@ -572,22 +572,37 @@ async function multiStepFill(
     Object.assign(allMapping, mapping);
 
     // After filling, try to advance to the next step.
-    const btnText = await findAdvanceButton();
-    if (!btnText) {
-      log("No Next/Continue/Submit button found — final step reached.");
-      break;
-    }
-    log(`Advance button: "${btnText}"`);
-
-    const beforeUrl = page.url();
+    // Prefer the Analyzer's ranked submit control: it is scoped to the active
+    // step/form (visible, enabled, same step, same form, text score) and avoids
+    // marketing CTAs in the site header ("Get started") that a page-wide text
+    // match would hit. Fall back to text search only when the Analyzer found
+    // no control or it cannot be clicked.
     let clicked = false;
-    try {
-      await page.getByRole("button", { name: btnText, exact: false }).first().click({ timeout: 8000 }).catch(() => {
-        return page.getByText(btnText, { exact: false }).first().click({ timeout: 8000 });
-      });
-      clicked = true;
-    } catch (e) {
-      log(`Could not click advance button: ${e instanceof Error ? e.message.slice(0, 80) : String(e)}`);
+    const beforeUrl = page.url();
+    if (formStructure.submitSelector) {
+      try {
+        await page.click(formStructure.submitSelector, { timeout: 8000 });
+        clicked = true;
+        log(`Advance via analyzer selector: ${formStructure.submitSelector}`);
+      } catch (e) {
+        log(`Analyzer advance selector failed (${formStructure.submitSelector}): ${e instanceof Error ? e.message.slice(0, 80) : String(e)}`);
+      }
+    }
+    if (!clicked) {
+      const btnText = await findAdvanceButton();
+      if (!btnText) {
+        log("No Next/Continue/Submit button found — final step reached.");
+        break;
+      }
+      log(`Advance button: "${btnText}"`);
+      try {
+        await page.getByRole("button", { name: btnText, exact: false }).first().click({ timeout: 8000 }).catch(() => {
+          return page.getByText(btnText, { exact: false }).first().click({ timeout: 8000 });
+        });
+        clicked = true;
+      } catch (e) {
+        log(`Could not click advance button: ${e instanceof Error ? e.message.slice(0, 80) : String(e)}`);
+      }
     }
     if (!clicked) break;
 

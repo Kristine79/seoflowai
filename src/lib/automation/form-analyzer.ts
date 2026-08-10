@@ -7,6 +7,13 @@ export type FormField = {
   label: string;
   placeholder: string;
   required: boolean;
+  name?: string;
+  id?: string;
+  ariaLabel?: string;
+  autocomplete?: string;
+  visible?: boolean;
+  inViewport?: boolean;
+  disabled?: boolean;
 };
 
 export type FormStructure = {
@@ -59,6 +66,8 @@ const SEARCH_FIELD_PATTERN =
 export async function extractFormStructure(page: Page): Promise<FormStructure> {
   return page.evaluate(
     ({ keywords, cookieSel, nonFillable, searchPattern }: { keywords: string[]; cookieSel: string; nonFillable: string[]; searchPattern: { source: string; flags: string } }) => {
+      const __name = Function("fn", "return fn");
+      void __name;
       const searchRe = new RegExp(searchPattern.source, searchPattern.flags);
       const formElements = document.querySelectorAll(
         "input, select, textarea, button, a[role=button]"
@@ -66,9 +75,68 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
       const results: {
         selector: string; type: string; label: string;
         placeholder: string; required: boolean;
+        name?: string; id?: string; ariaLabel?: string;
+        autocomplete?: string; visible?: boolean; inViewport?: boolean;
+        disabled?: boolean;
       }[] = [];
       let submitSelector: string | null = null;
       let submitText: string | null = null;
+      const actionCandidates: {
+        selector: string;
+        text: string;
+        visible: boolean;
+        enabled: boolean;
+        hasRect: boolean;
+        inViewport: boolean;
+        sameCurrentStep: boolean;
+        sameForm: boolean;
+        textScore: number;
+        roleScore: number;
+        selectorScore: number;
+      }[] = [];
+
+      const stepMarker = /step|page|slide|stage|panel|wizard/i;
+
+      // Use the first visible fillable control as a generic active-step anchor.
+      // Hidden future-step controls remain in the DOM but do not define this step.
+      const activeField = Array.from(
+        document.querySelectorAll("input, select, textarea")
+      ).find((el) => {
+        const inputEl = el as HTMLInputElement;
+        const type = inputEl.type || el.tagName.toLowerCase();
+        const rect = el.getBoundingClientRect();
+        const style = window.getComputedStyle(el);
+        return (
+          rect.width > 0 &&
+          rect.height > 0 &&
+          rect.bottom > 0 &&
+          rect.right > 0 &&
+          rect.top < window.innerHeight &&
+          rect.left < window.innerWidth &&
+          style.display !== "none" &&
+          style.visibility !== "hidden" &&
+          style.opacity !== "0" &&
+          !nonFillable.includes(type.toLowerCase()) &&
+          !el.closest(cookieSel)
+        );
+      }) || null;
+      const activeForm = activeField?.closest("form") || null;
+      let activeStep: Element | null = null;
+      let activeAncestor: Element | null = activeField;
+      while (activeAncestor) {
+        const activeHtml = activeAncestor as HTMLElement;
+        const activeMarker = [
+          activeHtml.id,
+          String(activeHtml.className || ""),
+          activeAncestor.getAttribute("data-step"),
+          activeAncestor.getAttribute("data-testid"),
+        ].filter(Boolean).join(" ");
+        if (stepMarker.test(activeMarker)) {
+          activeStep = activeAncestor;
+          break;
+        }
+        activeAncestor = activeAncestor.parentElement;
+      }
 
       formElements.forEach((el) => {
         const tag = el.tagName.toLowerCase();
@@ -82,40 +150,129 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
         if (clsLower.includes("cookiebot") || clsLower.includes("cookie-consent")) return;
         if (nameLower.includes("cookiebot")) return;
 
-        // Submit buttons / links
+        // Submit buttons / links. Collect matching actions first; visibility and
+        // active-step ranking is applied after the full DOM pass.
+        let isActionElement = false;
+        let actionText: string | null = null;
+        let actionSelector: string | null = null;
+
         if (el instanceof HTMLButtonElement || tag === "button") {
-          const text = (el.textContent || "").trim().toLowerCase();
+          isActionElement = true;
+          const rawText = (el.textContent || "").trim();
+          const text = rawText.toLowerCase();
           if (text && keywords.some((kw) => text.includes(kw))) {
-            submitSelector = el.id
-              ? `#${CSS.escape(el.id)}`
-              : el.className
-                ? `.${el.className.split(" ").map(c => CSS.escape(c)).join(".")}`
-                : `button:has-text("${el.textContent?.trim()}")`;
-            submitText = el.textContent?.trim() || null;
+            const htmlEl = el as HTMLElement;
+            const className = String(htmlEl.className || "").trim();
+            actionText = rawText;
+            actionSelector = htmlEl.id
+              ? `#${CSS.escape(htmlEl.id)}`
+              : className
+                ? `.${className.split(/\s+/).map((c) => CSS.escape(c)).join(".")}`
+                : `button:has-text("${rawText}")`;
           }
-          return;
-        }
-
-        if (el instanceof HTMLInputElement && el.type === "submit") {
-          const val = (el.value || "").trim().toLowerCase();
-          if (keywords.some((kw) => val.includes(kw) || kw.includes(val))) {
-            submitSelector = `input[type=submit]${el.name ? `[name="${el.name}"]` : ""}`;
-            submitText = el.value || null;
+        } else if (el instanceof HTMLInputElement && el.type === "submit") {
+          isActionElement = true;
+          const rawText = (el.value || "").trim();
+          const text = rawText.toLowerCase();
+          if (keywords.some((kw) => text.includes(kw) || kw.includes(text))) {
+            actionText = rawText;
+            actionSelector = `input[type=submit]${el.name ? `[name="${el.name}"]` : ""}`;
           }
-          return;
-        }
-
-        if (
+        } else if (
           tag === "a" &&
           el.getAttribute("role") === "button" &&
           el.textContent
         ) {
-          const text = el.textContent.trim().toLowerCase();
+          isActionElement = true;
+          const rawText = el.textContent.trim();
+          const text = rawText.toLowerCase();
           if (keywords.some((kw) => text.includes(kw))) {
-            submitSelector = el.id
-              ? `#${el.id}`
-              : `a:has-text("${el.textContent.trim()}")`;
-            submitText = el.textContent.trim();
+            actionText = rawText;
+            actionSelector = el.id
+              ? `#${CSS.escape(el.id)}`
+              : `a:has-text("${rawText}")`;
+          }
+        }
+
+        if (isActionElement) {
+          if (actionText && actionSelector) {
+            const rect = el.getBoundingClientRect();
+            const style = window.getComputedStyle(el);
+            const htmlEl = el as HTMLElement;
+            const inputEl = el as HTMLInputElement;
+            const visible =
+              rect.width > 0 &&
+              rect.height > 0 &&
+              rect.bottom > 0 &&
+              rect.right > 0 &&
+              rect.top < window.innerHeight &&
+              rect.left < window.innerWidth &&
+              style.display !== "none" &&
+              style.visibility !== "hidden" &&
+              style.opacity !== "0";
+            const candidateForm = el.closest("form");
+            let candidateStep: Element | null = null;
+            let candidateAncestor: Element | null = el;
+            while (candidateAncestor) {
+              const candidateHtml = candidateAncestor as HTMLElement;
+              const candidateMarker = [
+                candidateHtml.id,
+                String(candidateHtml.className || ""),
+                candidateAncestor.getAttribute("data-step"),
+                candidateAncestor.getAttribute("data-testid"),
+              ].filter(Boolean).join(" ");
+              if (stepMarker.test(candidateMarker)) {
+                candidateStep = candidateAncestor;
+                break;
+              }
+              candidateAncestor = candidateAncestor.parentElement;
+            }
+
+            const normalizedText = actionText.toLowerCase();
+            let actionTextScore = 0;
+            for (const keyword of keywords) {
+              const normalizedKeyword = keyword.toLowerCase();
+              if (normalizedText === normalizedKeyword) actionTextScore = Math.max(actionTextScore, 100);
+              else if (normalizedText.startsWith(normalizedKeyword)) actionTextScore = Math.max(actionTextScore, 80);
+              else if (normalizedText.includes(normalizedKeyword)) actionTextScore = Math.max(actionTextScore, 60);
+              else if (normalizedKeyword.includes(normalizedText) && normalizedText) actionTextScore = Math.max(actionTextScore, 40);
+            }
+
+            actionCandidates.push({
+              selector: actionSelector,
+              text: actionText,
+              visible,
+              enabled: !(
+                el.hasAttribute("disabled") ||
+                el.getAttribute("aria-disabled") === "true" ||
+                htmlEl.classList.contains("disabled") ||
+                inputEl.disabled
+              ),
+              hasRect: rect.width > 0 && rect.height > 0,
+              inViewport:
+                rect.width > 0 &&
+                rect.height > 0 &&
+                rect.bottom > 0 &&
+                rect.right > 0 &&
+                rect.top < window.innerHeight &&
+                rect.left < window.innerWidth,
+              sameCurrentStep: !!(
+                activeStep &&
+                candidateStep &&
+                (activeStep === candidateStep ||
+                  activeStep.contains(candidateStep) ||
+                  candidateStep.contains(activeStep))
+              ),
+              sameForm: !!activeForm && candidateForm === activeForm,
+              textScore: actionTextScore,
+              roleScore:
+                tag === "button" || el.getAttribute("role") === "button" ? 1 : 0,
+              selectorScore: /submit|continue|register|signup|sign-up|create|add|get-started/i.test(
+                `${htmlEl.id || ""} ${String(htmlEl.className || "")}`
+              )
+                ? 1
+                : 0,
+            });
           }
           return;
         }
@@ -132,11 +289,20 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
         // are not visible yet get picked up by the next extraction pass after
         // the step navigation.
         const rect = el.getBoundingClientRect();
-        if (rect.width === 0 && rect.height === 0) return;
-        const isDisplayNone =
-          window.getComputedStyle(el).display === "none" ||
-          window.getComputedStyle(el).visibility === "hidden";
-        if (isDisplayNone) return;
+        if (
+          rect.width === 0 ||
+          rect.height === 0 ||
+          rect.bottom <= 0 ||
+          rect.right <= 0 ||
+          rect.top >= window.innerHeight ||
+          rect.left >= window.innerWidth
+        ) return;
+        const style = window.getComputedStyle(el);
+        if (
+          style.display === "none" ||
+          style.visibility === "hidden" ||
+          style.opacity === "0"
+        ) return;
 
         // In-form fields are always candidates. Out-of-form fields (SPA custom
         // containers) must pass stricter checks: meaningful selector + not a
@@ -196,8 +362,41 @@ export async function extractFormStructure(page: Page): Promise<FormStructure> {
           required:
             el.hasAttribute("required") ||
             el.getAttribute("aria-required") === "true",
+          name: namedEl.name || "",
+          id: el.id || "",
+          ariaLabel: el.getAttribute("aria-label") || "",
+          autocomplete: el.getAttribute("autocomplete") || "",
+          visible: true,
+          inViewport: true,
+          disabled: el.hasAttribute("disabled"),
         });
       });
+
+      actionCandidates.sort((a, b) => {
+        const priorities: (keyof typeof actionCandidates[number])[] = [
+          "visible",
+          "enabled",
+          "inViewport",
+          "hasRect",
+          "sameCurrentStep",
+          "sameForm",
+          "textScore",
+          "roleScore",
+          "selectorScore",
+        ];
+        for (const priority of priorities) {
+          const aValue = a[priority] as number | boolean;
+          const bValue = b[priority] as number | boolean;
+          if (aValue !== bValue) return Number(bValue) - Number(aValue);
+        }
+        return a.selector.localeCompare(b.selector);
+      });
+
+      const selectedAction = actionCandidates[0];
+      if (selectedAction) {
+        submitSelector = selectedAction.selector;
+        submitText = selectedAction.text || null;
+      }
 
       return { fields: results, submitSelector, submitText };
     },

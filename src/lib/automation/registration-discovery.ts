@@ -98,7 +98,8 @@ async function snapshotPage(page: Page): Promise<PageInfo | null> {
       const passwordInputs = inputs.filter((i) => i.type === "password").length;
       const businessInputs = inputs.filter((i) => {
         const n = `${i.name || ""} ${i.id || ""} ${i.placeholder || ""}`.toLowerCase();
-        return /business|company|organization|website|url|phone|telephone|address|street|city|zip|postal|state|country|legal\s*name|first\s*name|last\s*name/.test(n);
+        const signal = `${i.type || ""} ${i.name || ""} ${i.id || ""} ${i.placeholder || ""} ${i.getAttribute("aria-label") || ""}`.toLowerCase();
+        return !/^(search)$/i.test(i.type || "") && !/search|query|navigation|filter/.test(signal) && /business|company|organization|website|url|phone|telephone|address|street|city|zip|postal|state|country|legal\s*name|first\s*name|last\s*name/.test(n);
       }).length;
       const visibleInputs = inputs.filter((i) => {
         const rect = i.getBoundingClientRect();
@@ -116,7 +117,8 @@ async function snapshotPage(page: Page): Promise<PageInfo | null> {
       const visiblePasswordInputs = visibleInputs.filter((i) => i.type === "password").length;
       const visibleBusinessInputs = visibleInputs.filter((i) => {
         const n = `${i.name || ""} ${i.id || ""} ${i.placeholder || ""}`.toLowerCase();
-        return /business|company|organization|website|url|phone|telephone|address|street|city|zip|postal|state|country|legal\s*name|first\s*name|last\s*name/.test(n);
+        const signal = `${i.type || ""} ${i.name || ""} ${i.id || ""} ${i.placeholder || ""} ${i.getAttribute("aria-label") || ""}`.toLowerCase();
+        return !/^(search)$/i.test(i.type || "") && !/search|query|navigation|filter/.test(signal) && /business|company|organization|website|url|phone|telephone|address|street|city|zip|postal|state|country|legal\s*name|first\s*name|last\s*name/.test(n);
       }).length;
       const visibleForms = Array.from(document.querySelectorAll("form")).filter((form) => {
         const rect = form.getBoundingClientRect();

@@ -11,6 +11,7 @@
 
 import { launchStealthContext, stealthGoto, isCloudflareChallenge } from "../src/lib/automation/stealth";
 import { discoverRegistrationPage } from "../src/lib/automation/registration-discovery";
+import { extractFormStructure } from "../src/lib/automation/form-analyzer";
 
 type LiveExpectation = {
   name: string;
@@ -46,7 +47,6 @@ async function runSyntheticScenarios() {
     const page = await context.newPage();
     await page.route("**/*", async (route) => {
       const requestUrl = new URL(route.request().url());
-
       if (requestUrl.hostname === "synthetic.test" || requestUrl.hostname === "signup.synthetic.test") {
         let body = "<html><body><h1>Generic landing page</h1></body></html>";
         if (requestUrl.hostname === "synthetic.test" && requestUrl.pathname === "/stale") {
@@ -171,6 +171,60 @@ async function runSyntheticScenarios() {
   }
 }
 
+async function runSyntheticHandoffScenario() {
+  console.log(`\n${"=".repeat(70)}`);
+  console.log("  Synthetic discovery → analyzer handoff regression");
+  console.log(`${"=".repeat(70)}`);
+
+  const context = await launchStealthContext({ profile: "discovery-handoff-synthetic", headless: false });
+  try {
+    const page = await context.newPage();
+    await page.route("**/*", async (route) => {
+      const requestUrl = new URL(route.request().url());
+      console.log(`  [SYNTHETIC HANDOFF ROUTE] ${requestUrl.href}`);
+      if (requestUrl.hostname === "synthetic.test" && requestUrl.pathname === "/") {
+        await route.fulfill({
+          status: 200,
+          contentType: "text/html",
+          body: `<html><body><h1>Directory homepage</h1><input type="search" name="query" placeholder="Search company"><a href="https://synthetic.test/register">Sign up</a></body></html>`,
+        });
+        return;
+      }
+      if (requestUrl.hostname === "synthetic.test" && /^\/register\/?$/.test(requestUrl.pathname)) {
+        await route.fulfill({
+          status: 200,
+          contentType: "text/html",
+          body: `<html><body><h1>Create account</h1><form><label>Email <input id="email" type="email" name="email"></label><button>Create account</button></form></body></html>`,
+        });
+        return;
+      }
+      await route.continue();
+    });
+
+    await page.goto("https://synthetic.test/", { waitUntil: "domcontentloaded" });
+    const discovery = await discoverRegistrationPage(page, (message) => console.log(`  ${message}`));
+    const discoveryFinalUrl = discovery.url;
+    const pageUrlBeforeAnalyzer = page.url();
+    const form = await extractFormStructure(page);
+
+    console.log(`  DISCOVERY FINAL URL: ${discoveryFinalUrl}`);
+    console.log(`  PAGE URL BEFORE ANALYZER: ${pageUrlBeforeAnalyzer}`);
+    console.log(`  ANALYZER FIELDS: ${form.fields.map((field) => field.selector).join(", ") || "none"}`);
+
+    if (
+      !discovery.isRegistrationPage ||
+      discoveryFinalUrl !== "https://synthetic.test/register" ||
+      pageUrlBeforeAnalyzer !== discoveryFinalUrl ||
+      !form.fields.some((field) => field.selector === "#email")
+    ) {
+      throw new Error(`Synthetic handoff failed: ${JSON.stringify({ discovery, discoveryFinalUrl, pageUrlBeforeAnalyzer, form })}`);
+    }
+    console.log("  SYNTHETIC HANDOFF REGRESSION: PASS");
+  } finally {
+    await context.close();
+  }
+}
+
 async function run(url: string): Promise<"PASS" | "EXTERNAL/UNAVAILABLE"> {
   const label = url.replace(/^https?:\/\//, "").slice(0, 60);
   const expectation = getLiveExpectation(url);
@@ -251,13 +305,17 @@ async function run(url: string): Promise<"PASS" | "EXTERNAL/UNAVAILABLE"> {
 async function main() {
   const args = process.argv.slice(2);
   const syntheticRequested = args.includes("--synthetic");
+  const handoffRequested = args.includes("--handoff");
   if (syntheticRequested) {
     await runSyntheticScenarios();
   }
-  const urls = args.filter((arg) => arg !== "--synthetic");
+  if (handoffRequested) {
+    await runSyntheticHandoffScenario();
+  }
+  const urls = args.filter((arg) => arg !== "--synthetic" && arg !== "--handoff");
   if (urls.length === 0) {
-    if (syntheticRequested) return;
-    console.log("Usage: npx tsx scripts/test-registration-discovery.ts [--synthetic] <url> [url...]");
+    if (syntheticRequested || handoffRequested) return;
+    console.log("Usage: npx tsx scripts/test-registration-discovery.ts [--synthetic] [--handoff] <url> [url...]");
     return;
   }
   let unavailable = false;
