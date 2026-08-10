@@ -238,7 +238,7 @@ async function detectEmailVerification(page: Page): Promise<boolean> {
   });
 }
 
-async function handleSelectField(
+export async function handleSelectField(
   page: Page,
   selector: string,
   value: string,
@@ -377,11 +377,23 @@ async function handleSelectField(
       log(`Popup with search field detected — typing value`);
       const searchInput = page.locator(".MuiPopover-paper input[type=text]:not([readonly])").first();
 
-      const inputVisible = await searchInput.isVisible().catch(() => false);
-      if (!inputVisible) {
-        log(`Search popup not visible — input may already have value, skipping`);
+    const inputVisible = await searchInput.isVisible().catch(() => false);
+    if (!inputVisible) {
+      // Never report success on an unverified state: the value must actually
+      // be present in the DOM, otherwise the fill loop would claim success
+      // while the field is empty.
+      const currentValue = await page.evaluate((sel: string) => {
+        const el = document.querySelector(sel) as HTMLInputElement;
+        return el?.value || "";
+      }, selector).catch(() => "");
+      if (currentValue && currentValue.toLowerCase().includes(value.toLowerCase())) {
+        log(`Search popup not visible — input already has value "${currentValue.slice(0, 40)}", skipping`);
         return true;
       }
+      log(`Search popup not visible and value not committed — reporting failure`);
+      await page.keyboard.press("Escape").catch(() => {});
+      return false;
+    }
 
       if (await searchInput.count() > 0) {
         const individualWords = value.split(/\s+/).filter(Boolean);

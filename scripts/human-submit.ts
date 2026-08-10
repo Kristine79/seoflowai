@@ -43,6 +43,7 @@ import {
 import { waitForVerificationLink } from "../src/lib/automation/email-verifier";
 import { extractFormStructure } from "../src/lib/automation/form-analyzer";
 import { mapFieldsWithAI } from "../src/lib/automation/field-mapper";
+import { handleSelectField } from "../src/lib/automation/submission-runner";
 import { discoverRegistrationPage } from "../src/lib/automation/registration-discovery";
 import { dismissCookieConsent } from "../src/lib/automation/cookie-consent";
 import fs from "fs";
@@ -500,13 +501,14 @@ async function multiStepFill(
         const tag = await el.evaluate((e: Element) => e.tagName.toLowerCase()).catch(() => "");
         const ro = await el.evaluate((e: Element) => !!(e as HTMLInputElement).readOnly).catch(() => false);
         if (tag === "select" || ro) {
-          await page.click(sel).catch(() => {});
-          await page.waitForTimeout(300);
-          await page.keyboard.type(val, { delay: 20 });
-          await page.waitForTimeout(1000);
-          await page.keyboard.press("Escape");
-          filled++;
-          log(`  ✓ [${lbl}] filled via select path`);
+          const ok = await handleSelectField(page, sel, val, log);
+          if (ok) {
+            filled++;
+            log(`  ✓ [${lbl}] filled via select/dropdown path`);
+          } else {
+            failed++;
+            log(`  ✗ [${lbl}] select/dropdown not committed (${sel})`);
+          }
         } else if (tag === "input" || tag === "textarea") {
           await page.fill(sel, val);
           filled++;
