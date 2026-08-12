@@ -8,7 +8,7 @@ const columns = [
     links: [
       { label: "Возможности", href: "#features" },
       { label: "Как работает", href: "#how-it-works" },
-      { label: "Кейс 77 Platforms", href: "/case-studies/seo-agency-directory-campaign" },
+      { label: "Реальный кейс · 77 площадок", href: "/case-studies/seo-agency-directory-campaign" },
       { label: "Для кого", href: "#audience" },
     ],
   },
@@ -66,6 +66,14 @@ export function Footer() {
           <div className="flex gap-6 text-xs text-zinc-400">
             <span className="cursor-default">Privacy</span>
             <span className="cursor-default">Terms</span>
+            <a
+              href="https://github.com/Kristine79/seoflowai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-zinc-900"
+            >
+              GitHub
+            </a>
           </div>
         </div>
       </div>

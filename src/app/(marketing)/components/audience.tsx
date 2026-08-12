@@ -5,12 +5,12 @@ const audiences = [
   {
     icon: Building2,
     title: "SEO-агентства",
-    text: "Управляйте directory campaigns клиентов из одного workspace.",
+    text: "Управляйте directory-кампаниями клиентов из одного рабочего пространства.",
   },
   {
     icon: User,
     title: "In-house SEO teams",
-    text: "Стандартизируйте повторяющиеся SEO-операции.",
+    text: "Стандартизируйте повторяющиеся SEO-операции и размещения.",
   },
   {
     icon: Zap,
@@ -20,7 +20,7 @@ const audiences = [
   {
     icon: TrendingUp,
     title: "Growth teams",
-    text: "Находите и приоритизируйте новые SEO opportunities.",
+    text: "Находите, оценивайте и масштабируйте новые возможности для размещения.",
   },
 ];
 
@@ -31,7 +31,7 @@ export function Audience() {
         <div className="max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-widest text-zinc-400">Для кого</p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
-            Инструмент для команд, которые работают с размещениями регулярно.
+            Для SEO-команд, которые регулярно работают с десятками площадок.
           </h2>
         </div>
 

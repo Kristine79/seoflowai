@@ -1,0 +1,28 @@
+node_modules
+.next
+out
+.git
+.vercel
+.env
+.env.local
+.env*.local
+
+# Playwright browsers & caches
+ms-playwright
+test-results
+playwright-report
+
+# local artifacts (not part of the app)
+business-preview
+client-report
+human-submit-out
+pool-preview
+pool-submit
+probe-out
+quick-submit-out
+stealth-submit-out
+seoflowai-temp
+dist
+docs
+scripts
+directory-adapters

@@ -11,8 +11,8 @@ export function FinalCta() {
           Следующая SEO-кампания не должна начинаться с таблицы.
         </h2>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-zinc-400">
-          Создайте кампанию, подготовьте площадки и управляйте всем процессом из одного рабочего
-          пространства.
+          Создайте кампанию, подготовьте площадки и управляйте всем процессом в одном рабочем
+          пространстве.
         </p>
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
@@ -22,13 +22,14 @@ export function FinalCta() {
             Начать кампанию
             <ArrowUpRight className="h-4 w-4" />
           </Link>
-          <Link
-            href="/case-studies/seo-agency-directory-campaign"
+          <a
+            href="/SEOFlow-77-Platform-Campaign-Report.xlsx"
+            download="SEOFlow-77-Platform-Campaign-Report.xlsx"
             className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800/60 px-7 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-800 sm:w-auto"
           >
             <FileText className="h-4 w-4 text-zinc-400" />
-            Посмотреть кейс 77 Platforms
-          </Link>
+            Скачать полный отчёт
+          </a>
         </div>
       </div>
     </section>

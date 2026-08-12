@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import openai from "@/lib/openai";
+import getOpenAI from "@/lib/openai";
 
 export async function POST() {
   const directories = await prisma.directory.findMany({
@@ -91,7 +91,7 @@ IMPORTANT RULES:
 9. Content platforms score 60-75.
 10. Government resources score 30-50.`;
 
-      const response = await openai.chat.completions.create({
+      const response = await getOpenAI().chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-4o-mini",
         messages: [
           { role: "system", content: "You are a professional SEO strategist. Return only valid JSON. Be specific, personalized, and realistic with scores." },

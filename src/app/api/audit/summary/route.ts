@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import openai from "@/lib/openai";
+import getOpenAI from "@/lib/openai";
 
 export async function GET() {
   const directories = await prisma.directory.findMany({
@@ -104,7 +104,7 @@ High priority: ${high}
 Automation ready: ${easy + mediumAuto}
 Need manual work: ${hard + manual}`;
 
-      const response = await openai.chat.completions.create({
+      const response = await getOpenAI().chat.completions.create({
         model: process.env.OPENAI_MODEL || "gpt-4o-mini",
         messages: [
           { role: "system", content: "You are an SEO campaign strategist. Return only valid JSON." },

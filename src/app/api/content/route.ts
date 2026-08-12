@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import openai from "@/lib/openai";
+import getOpenAI from "@/lib/openai";
 
 export async function POST(request: Request) {
   const { directoryId } = await request.json();
@@ -50,7 +50,7 @@ Generate optimized content for this directory listing. Return JSON (no markdown,
   }
 }`;
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: process.env.OPENAI_MODEL || "gpt-4o-mini",
       messages: [
         { role: "system", content: "You are an SEO content writer. Return only valid JSON." },

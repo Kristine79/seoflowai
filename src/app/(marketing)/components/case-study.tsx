@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CASE_SUMMARY, CASE_STATUSES, CASE_PLATFORMS } from "../data/case-data";
 
@@ -105,10 +105,18 @@ export function CaseStudy() {
             ))}
           </div>
 
-          <div className="border-t border-zinc-100 px-5 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
             <p className="text-xs text-zinc-400">
-              Показано {platforms.length} из {CASE_SUMMARY.total} площадок · данные финального отчёта кампании
+              {platforms.length} из {CASE_SUMMARY.total} площадок · наиболее показательные результаты кампании
             </p>
+            <a
+              href="/SEOFlow-77-Platform-Campaign-Report.xlsx"
+              download="SEOFlow-77-Platform-Campaign-Report.xlsx"
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-xs font-medium text-zinc-700 shadow-sm transition-colors hover:bg-zinc-50"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Скачать полный отчёт
+            </a>
           </div>
         </div>
 
