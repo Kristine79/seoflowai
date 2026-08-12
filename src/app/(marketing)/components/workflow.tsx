@@ -1,3 +1,4 @@
+"use client";
 import { Search, Target, Sparkles, Rocket, CheckCircle2, FileText } from "lucide-react";
 
 const steps = [

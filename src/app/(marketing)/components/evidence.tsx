@@ -1,3 +1,4 @@
+"use client";
 import { Link, Search, CheckCircle2, FileText } from "lucide-react";
 
 const chain = [

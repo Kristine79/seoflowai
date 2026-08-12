@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SEOFlow AI — автоматизация SEO directory campaigns",
-  description:
-    "SEOFlow помогает исследовать SEO-площадки, готовить контент, запускать directory campaigns и отслеживать результаты в одном рабочем пространстве.",
   openGraph: {
     title: "SEOFlow AI — автоматизация SEO directory campaigns",
     description:

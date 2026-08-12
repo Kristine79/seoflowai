@@ -1,3 +1,4 @@
+"use client";
 import { Gauge, ListChecks, Layers, FileText, Hash, TrendingUp, Lightbulb, Rocket } from "lucide-react";
 
 const features = [

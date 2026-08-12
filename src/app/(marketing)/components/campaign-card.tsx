@@ -1,3 +1,4 @@
+"use client";
 import { Search, BarChart3, Sparkles, ArrowUpRight, CheckSquare, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CASE_SUMMARY } from "../data/case-data";

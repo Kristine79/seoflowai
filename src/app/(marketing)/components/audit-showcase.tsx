@@ -1,3 +1,4 @@
+"use client";
 import { Gauge, Zap, Clock } from "lucide-react";
 import { CASE_SUMMARY, CASE_CATEGORIES, VERIFIED_PLATFORMS } from "../data/case-data";
 

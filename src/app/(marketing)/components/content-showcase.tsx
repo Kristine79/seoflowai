@@ -1,3 +1,4 @@
+"use client";
 import { Sparkles, FileText, Rocket, CheckCircle2 } from "lucide-react";
 import { COMPANY_PROFILE } from "../data/case-data";
 

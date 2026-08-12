@@ -1,3 +1,4 @@
+"use client";
 import { Activity, User, AlertCircle } from "lucide-react";
 
 const states = [

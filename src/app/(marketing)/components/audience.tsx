@@ -1,3 +1,4 @@
+"use client";
 import { Building2, User, Zap, TrendingUp } from "lucide-react";
 
 const audiences = [

@@ -1,3 +1,4 @@
+"use client";
 import { Sparkles, ListChecks, User, Layers, BarChart3 } from "lucide-react";
 
 const reasons = [

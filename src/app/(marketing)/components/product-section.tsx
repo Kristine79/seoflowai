@@ -1,3 +1,4 @@
+"use client";
 import { ProductPreview } from "./product-preview";
 
 const captions = [

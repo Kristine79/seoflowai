@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowUpRight, Play } from "lucide-react";
 import { CampaignCard } from "./campaign-card";
