@@ -184,9 +184,35 @@ export default function ContentPage() {
           </CardHeader>
           <CardContent>
             {!dir ? (
-              <div className="flex flex-col items-center gap-3 py-16 text-center">
-                <FileText className="h-10 w-10 text-zinc-300" />
-                <p className="text-sm text-zinc-500">Выберите платформу для генерации контента</p>
+              <div className="flex flex-col items-center gap-4 py-16 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-blue-50">
+                  <Sparkles className="h-8 w-8 text-blue-400" />
+                </div>
+                <div>
+                  <p className="font-medium">Generate platform-specific company descriptions</p>
+                  <p className="mt-1 text-sm text-zinc-500 max-w-md">
+                    Select a platform above to generate AI-optimized content tailored for directory submissions.
+                  </p>
+                </div>
+                <div className="mt-4 grid grid-cols-3 gap-3 w-full max-w-md">
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
+                    <p className="text-xs font-medium text-zinc-700">Company description</p>
+                    <p className="mt-1 text-[10px] text-zinc-400">~50-300 words</p>
+                  </div>
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
+                    <p className="text-xs font-medium text-zinc-700">SEO keywords</p>
+                    <p className="mt-1 text-[10px] text-zinc-400">Primary + secondary</p>
+                  </div>
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
+                    <p className="text-xs font-medium text-zinc-700">Categories</p>
+                    <p className="mt-1 text-[10px] text-zinc-400">Platform-specific</p>
+                  </div>
+                </div>
+                {(directories?.length || 0) > 0 && (
+                  <p className="text-xs text-zinc-400 mt-2">
+                    {directories?.filter(d => d.generatedContent).length || 0} of {directories?.length || 0} platforms already have AI content
+                  </p>
+                )}
               </div>
             ) : !gc ? (
               <div className="flex flex-col items-center gap-3 py-16 text-center">

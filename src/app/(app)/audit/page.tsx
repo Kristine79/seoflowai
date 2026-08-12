@@ -165,7 +165,9 @@ export default function AuditPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">AI SEO Аудит</h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Комплексный анализ возможностей подачи в каталоги
+            {s.total > 0
+              ? `${s.total} platforms analyzed — shows AI-scored results only, not all catalog platforms`
+              : "Комплексный анализ возможностей подачи в каталоги"}
           </p>
         </div>
         <Button

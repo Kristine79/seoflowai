@@ -44,6 +44,8 @@ import { waitForVerificationLink } from "../src/lib/automation/email-verifier";
 import { extractFormStructure } from "../src/lib/automation/form-analyzer";
 import { mapFieldsWithAI } from "../src/lib/automation/field-mapper";
 import { handleSelectField } from "../src/lib/automation/submission-runner";
+import { detectEmailDomainMismatch, collectFormResponses } from "../src/lib/automation/submission-runner";
+import type { ServerResponseSample } from "../src/lib/automation/submission-runner";
 import { discoverRegistrationPage } from "../src/lib/automation/registration-discovery";
 import { dismissCookieConsent } from "../src/lib/automation/cookie-consent";
 import fs from "fs";
@@ -760,6 +762,12 @@ async function processPlatform(entry: QueueEntry, autoReg = false): Promise<{ st
     log(`Baseline: url=${baseline.url}, success-words=${baseline.successWordsPresent.size}, textLen=${baseline.textLen}`);
     await attachSubmitListener(page, log);
 
+    // Registration email domain-mismatch safeguard: if the server rejects the
+    // registration email (domain doesn't match the website), automation must
+    // NOT substitute another email — return NEEDS_MANUAL with the reason.
+    const submitResponses: ServerResponseSample[] = [];
+    page.on("response", collectFormResponses(page, submitResponses));
+
     // HUMAN: verify + submit (180s timeout) — proof-based.
     log(`\n  ┏━━━ HUMAN ACTION ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓`);
     log(`  ┃ 1. Solve captcha/Cloudflare (if still present) ┃`);
@@ -776,6 +784,12 @@ async function processPlatform(entry: QueueEntry, autoReg = false): Promise<{ st
     await page.waitForTimeout(2000);
     await screenshotToFile(page, path.join(logDir, "postsubmit.png"));
     log(`Post-submit screenshot saved`);
+
+    const emailMismatch = detectEmailDomainMismatch(submitResponses);
+    if (emailMismatch) {
+      log(`✗ ${emailMismatch}`);
+      return { status: "NEEDS_MANUAL", error: emailMismatch };
+    }
 
     if (result.ok) {
       log(`✓ SUBMITTED — proof: ${result.reason} (профиль НЕ подтверждён — нужна проверка публичного URL)!`);

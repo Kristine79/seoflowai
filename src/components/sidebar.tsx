@@ -12,11 +12,13 @@ import {
   FileText,
   Settings,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 
 const navItems = [
-  { href: "/", label: "Главная", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Главная", icon: LayoutDashboard },
   { href: "/campaigns", label: "Кампании", icon: Briefcase },
+  { href: "/case-studies/seo-agency-directory-campaign", label: "Кейс: 77 Platforms", icon: Sparkles },
   { href: "/company", label: "Компания", icon: Building2 },
   { href: "/directories", label: "Каталоги", icon: ListTree },
   { href: "/audit", label: "SEO Аудит", icon: Search },

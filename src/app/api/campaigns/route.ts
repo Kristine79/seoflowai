@@ -6,10 +6,23 @@ export async function GET() {
     include: {
       company: true,
       _count: { select: { directories: true } },
+      directories: {
+        select: { status: true },
+      },
     },
     orderBy: { createdAt: "desc" },
   });
-  return NextResponse.json(campaigns);
+
+  const enriched = campaigns.map((c) => {
+    const statusCounts: Record<string, number> = {};
+    c.directories.forEach((d) => {
+      statusCounts[d.status] = (statusCounts[d.status] || 0) + 1;
+    });
+    const { directories, ...rest } = c;
+    return { ...rest, statusCounts };
+  });
+
+  return NextResponse.json(enriched);
 }
 
 export async function POST(request: Request) {

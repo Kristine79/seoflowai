@@ -17,13 +17,28 @@ export function translateStatus(status: string): string {
   const map: Record<string, string> = {
     PENDING: "Ожидает",
     AI_PREPARED: "AI подготовлен",
-    READY: "Готов",
+    READY: "Готов к подаче",
     IN_PROGRESS: "В процессе",
-    WAITING_VERIFICATION: "Ожидает верификации",
-    VERIFICATION_REQUIRED: "Требуется проверка",
-    COMPLETED: "Завершён",
-    REJECTED: "Отклонён",
+    WAITING_VERIFICATION: "Ожидает модерации",
+    VERIFICATION_REQUIRED: "Требуется действие",
+    COMPLETED: "Завершено",
+    REJECTED: "Отклонено",
     PAYMENT_REQUIRED: "Требуется оплата",
+  };
+  return map[status] || status;
+}
+
+export function deriveNextAction(status: string): string {
+  const map: Record<string, string> = {
+    PENDING: "Запустить аудит",
+    AI_PREPARED: "Проверить контент",
+    READY: "Отправить заявку",
+    IN_PROGRESS: "Продолжить подачу",
+    WAITING_VERIFICATION: "Проверить статус",
+    VERIFICATION_REQUIRED: "Проверить размещение",
+    COMPLETED: "Завершено",
+    REJECTED: "Подать повторно",
+    PAYMENT_REQUIRED: "Оплатить",
   };
   return map[status] || status;
 }

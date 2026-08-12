@@ -239,6 +239,65 @@ async function detectEmailVerification(page: Page): Promise<boolean> {
 }
 
 /**
+ * Email domain-mismatch safeguard.
+ *
+ * When the server rejects a registration because the registration email domain
+ * does not match the submitted website domain, automation MUST NOT silently
+ * substitute REGISTRATION_EMAIL with COMPANY_EMAIL, a company contact address,
+ * or any other email. The correct response is NEEDS_MANUAL with an explicit
+ * reason so the client can confirm which email to use.
+ *
+ * Synthetic regression: scripts/test-registration-email-guard.ts
+ */
+export interface ServerResponseSample {
+  status: number;
+  url: string;
+  body: string;
+}
+
+export const EMAIL_DOMAIN_MISMATCH_MESSAGE =
+  "Registration email rejected: website requires an email matching the website domain. Client confirmation required.";
+
+export function detectEmailDomainMismatch(responses: ServerResponseSample[]): string | null {
+  for (const r of responses) {
+    if (r.status < 200 || r.status >= 400) continue;
+    const b = r.body.toLowerCase();
+    if (!b.includes("email")) continue;
+    if (
+      b.includes("mismatch_email") ||
+      b.includes("email domain doesn't match") ||
+      /domain doesn'?t match.*(?:website|site)/.test(b)
+    ) {
+      return EMAIL_DOMAIN_MISMATCH_MESSAGE;
+    }
+  }
+  return null;
+}
+
+/**
+ * Collects server POST responses fired while a form is submitted. Body reads
+ * are bounded so a streaming/never-ending response cannot hang the pipeline.
+ */
+export function collectFormResponses(
+  page: Page,
+  responses: ServerResponseSample[]
+): (resp: import("playwright").Response) => void {
+  return (resp: import("playwright").Response) => {
+    if (resp.request().method() !== "POST") return;
+    if (!/registr|submit|apply|signup|account|create|login/i.test(resp.url())) return;
+    (async () => {
+      try {
+        const body = await Promise.race([
+          resp.text(),
+          new Promise((res) => setTimeout(() => res(""), 3000)),
+        ]);
+        responses.push({ status: resp.status(), url: resp.url().slice(0, 120), body: String(body).slice(0, 800) });
+      } catch {}
+    })();
+  };
+}
+
+/**
  * Confirmed submit evidence: clicking a submit button is NOT proof that the
  * form was actually submitted. Returns the kind of confirmation, or null
  * when no evidence of a successful submission exists.
@@ -865,7 +924,7 @@ async function handleSearchPage(
     log(`Add business click method: JS click on #add-business-link`);
 
     await page.evaluate(() => {
-      const btn = document.querySelector('#add-business-link');
+      const btn = document.querySelector('#add-business-link') as HTMLElement | null;
       if (btn) btn.click();
     });
 
@@ -1718,6 +1777,8 @@ export async function runSubmission(
       if (submitBtn) {
         log(`Submit button found: "${submitBtn.text}" (${submitBtn.selector})`);
         const urlBeforeSubmit = activePage.url();
+        const submitResponses: ServerResponseSample[] = [];
+        activePage.on("response", collectFormResponses(activePage, submitResponses));
         try {
           const submitLocator = activePage.locator(`button:has-text("${submitBtn.text}")`).first();
           await submitLocator.click({ timeout: 8000 });
@@ -1726,6 +1787,18 @@ export async function runSubmission(
         } catch (clickErr) {
           const clickMsg = clickErr instanceof Error ? clickErr.message.slice(0, 120) : "unknown";
           log(`Could not click submit button: ${clickMsg}`);
+        }
+
+        const emailMismatch = detectEmailDomainMismatch(submitResponses);
+        if (emailMismatch) {
+          log(`Email domain mismatch in server response: ${emailMismatch}`);
+          const screenshot = await takeScreenshot(activePage);
+          await closePage(page);
+          if (newPage) await closePage(newPage);
+          return {
+            success: false, logs, screenshot,
+            error: emailMismatch,
+          };
         }
 
         const emailVerify = await detectEmailVerification(activePage);

@@ -15,6 +15,8 @@ import {
   TrendingUp,
   Layers,
   FileSpreadsheet,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { translateStatus } from "@/lib/utils";
@@ -28,6 +30,13 @@ type DashboardData = {
   pending: number;
   inProgress: number;
   aiPrepared: number;
+  ready: number;
+  waitingVerification: number;
+  verificationRequired: number;
+  rejected: number;
+  paymentRequired: number;
+  readyToSubmit: number;
+  needsAction: number;
   averageSeoScore: number;
   automationEasy: number;
   automationMedium: number;
@@ -68,6 +77,13 @@ export default function Dashboard() {
     pending: 0,
     inProgress: 0,
     aiPrepared: 0,
+    ready: 0,
+    waitingVerification: 0,
+    verificationRequired: 0,
+    rejected: 0,
+    paymentRequired: 0,
+    readyToSubmit: 0,
+    needsAction: 0,
     averageSeoScore: 0,
     automationEasy: 0,
     automationMedium: 0,
@@ -76,6 +92,11 @@ export default function Dashboard() {
     byCategory: {},
     recentDirectories: [],
   };
+
+  const nextActionReady = stats.readyToSubmit > 0;
+  const nextActionNeedsVerification = stats.waitingVerification + stats.verificationRequired > 0;
+  const nextActionNeedsAction = stats.needsAction > 0;
+  const campaignProgress = stats.completed + stats.inProgress + stats.readyToSubmit + stats.pending;
 
   return (
     <div className="space-y-8">
@@ -193,30 +214,134 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Статусы</CardTitle>
+            <CardTitle className="text-base">Ход кампании</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">{translateStatus("PENDING")}</span>
-                <span className="font-medium">{stats.pending}</span>
+                <span className="text-zinc-500">Завершено</span>
+                <span className="font-medium text-emerald-600">{stats.completed}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">{translateStatus("AI_PREPARED")}</span>
-                <span className="font-medium text-blue-600">{stats.aiPrepared}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">{translateStatus("IN_PROGRESS")}</span>
+                <span className="text-zinc-500">В процессе</span>
                 <span className="font-medium text-amber-600">{stats.inProgress}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-zinc-500">{translateStatus("COMPLETED")}</span>
-                <span className="font-medium text-emerald-600">{stats.completed}</span>
+                <span className="text-zinc-500">Готово к подаче</span>
+                <span className="font-medium text-blue-600">{stats.readyToSubmit}</span>
               </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-500">Требуют внимания</span>
+                <span className="font-medium text-red-600">{stats.needsAction}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-zinc-500">Ожидает модерации</span>
+                <span className="font-medium text-orange-600">{stats.waitingVerification + stats.verificationRequired}</span>
+              </div>
+              <Separator className="my-2" />
+              <Progress
+                value={campaignProgress ? (stats.completed / campaignProgress) * 100 : 0}
+                className="h-2"
+              />
             </div>
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="text-base">Что делать дальше</CardTitle>
+          <Link href={nextActionReady ? "/directories?status=READY" : "/campaigns"}>
+            <Button variant="outline" size="sm" className="gap-1 text-xs">
+              {nextActionReady ? "Продолжить →" : "К кампаниям"}
+            </Button>
+          </Link>
+        </CardHeader>
+        <CardContent>
+          {stats.totalDirectories === 0 ? (
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-zinc-100">
+                <FileSpreadsheet className="h-6 w-6 text-zinc-400" />
+              </div>
+              <div>
+                <p className="font-medium">Начните с импорта платформ</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Загрузите Excel-файл со списком каталогов для запуска кампании.
+                </p>
+              </div>
+            </div>
+          ) : nextActionReady ? (
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                <Zap className="h-6 w-6 text-blue-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">{stats.readyToSubmit} платформ готовы к подаче</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  AI-контент подготовлен. Запустите автоматическую или ручную подачу.
+                </p>
+              </div>
+              <Link href="/directories?status=READY">
+                <Button className="gap-2">
+                  <Zap className="h-4 w-4" />
+                  К подаче
+                </Button>
+              </Link>
+            </div>
+          ) : nextActionNeedsVerification ? (
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
+                <Target className="h-6 w-6 text-orange-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">Проверьте статус размещений</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  {stats.waitingVerification + stats.verificationRequired} платформ ожидают проверки или требуют действия.
+                </p>
+              </div>
+              <Link href="/directories?status=WAITING_VERIFICATION">
+                <Button variant="outline" className="gap-2">
+                  Проверить
+                </Button>
+              </Link>
+            </div>
+          ) : nextActionNeedsAction ? (
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                <AlertCircle className="h-6 w-6 text-red-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">{stats.needsAction} платформ требуют действия</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Требуется оплата, повторная подача или проверка отклонённых заявок.
+                </p>
+              </div>
+              <Link href="/directories?status=REJECTED">
+                <Button variant="outline" className="gap-2">
+                  Исправить
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4 py-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
+                <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+              </div>
+              <div className="flex-1">
+                <p className="font-medium">Кампания завершена</p>
+                <p className="mt-1 text-sm text-zinc-500">
+                  Все {stats.totalDirectories} платформ обработаны. Посмотрите отчёт.
+                </p>
+              </div>
+              <Link href="/campaigns">
+                <Button variant="outline" className="gap-2">
+                  Отчёт
+                </Button>
+              </Link>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">

@@ -1,1961 +1,2125 @@
 [
-  {
-    "name": "Alignable",
-    "url": "https://www.alignable.com",
-    "submissionUrl": "https://www.alignable.com/biz_users/sign_up?content_code=Website_Geo&invite_code=geo",
-    "type": "A",
-    "priority": 1,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual business identity verification via Alignable Support (Verify Manually)",
-    "notes": "REGISTERED (аккаунт создан: email itllect.marketing@gmail.com, CAPTCHA вручную). Онбординг остановлен на Business Identity Verification. SMS/Phone Call НЕ используем (не вводить личный телефон). Требуется Manual Verification через Support: Secretary of State registry URL, EIN, NMLS number (не придумывать EIN/NMLS). Публичный профиль НЕ создан. НЕ повторять регистрацию.",
-    "status": "NEEDS_MANUAL",
-    "result": "NEEDS_MANUAL: аккаунт создан (REGISTERED), остановлен на Business Identity Verification — требуется Manual Verification через Alignable Support; SMS/Phone Call не используем",
-    "history": [
-      {
-        "date": "2026-08-08T07:52:33.902Z",
-        "action": "pre-flight",
-        "outcome": "ready",
-        "error": null,
-        "evidence": [
-          "https://www.alignable.com/biz_users/sign_up"
-        ]
-      },
-      {
-        "date": "2026-08-08 07:53:41Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 08:03:15Z",
-        "action": "run",
-        "outcome": "SUBMITTED",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08T08:16:53.087Z",
-        "action": "sign-up (manual email+recaptcha)",
-        "outcome": "REGISTERED",
-        "error": null,
-        "evidence": [
-          "https://www.alignable.com/onboarding?invite_code=geo",
-          "human-submit-out/alignable/postsubmit.png"
-        ],
-        "note": "email itllect.marketing@gmail.com, капча решена оператором; онбординг на шаге Name; SUBMITTED отменён — профиль не размещён"
-      },
-      {
-        "date": "2026-08-08T08:33:37.192Z",
-        "action": "stop",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "human-submit-out/alignable/diag.png",
-          "human-submit-out/alignable/resume-start.png"
-        ],
-        "note": "Business Identity Verification screen: SMS/Phone Call не используем (личный телефон). Verify Manually через Support. Не придумывать EIN/NMLS. Не повторять регистрацию."
-      }
+ {
+  "name": "Alignable",
+  "url": "https://www.alignable.com",
+  "submissionUrl": "https://www.alignable.com/biz_users/sign_up?content_code=Website_Geo&invite_code=geo",
+  "type": "A",
+  "priority": 1,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual business identity verification via Alignable Support (Verify Manually)",
+  "notes": "REGISTERED (аккаунт создан: email itllect.marketing@gmail.com, CAPTCHA вручную). Онбординг остановлен на Business Identity Verification. SMS/Phone Call НЕ используем (не вводить личный телефон). Требуется Manual Verification через Support: Secretary of State registry URL, EIN, NMLS number (не придумывать EIN/NMLS). Публичный профиль НЕ создан. НЕ повторять регистрацию.",
+  "status": "NEEDS_MANUAL",
+  "result": "NEEDS_MANUAL: аккаунт создан (REGISTERED), остановлен на Business Identity Verification — требуется Manual Verification через Alignable Support; SMS/Phone Call не используем",
+  "history": [
+   {
+    "date": "2026-08-08T07:52:33.902Z",
+    "action": "pre-flight",
+    "outcome": "ready",
+    "error": null,
+    "evidence": [
+     "https://www.alignable.com/biz_users/sign_up"
     ]
-  },
-  {
-    "name": "Brownbook",
-    "url": "https://www.brownbook.net",
-    "submissionUrl": "https://www.brownbook.net/add-business",
-    "type": "A",
-    "priority": 1,
-    "category": "Business Directory",
-    "previewStatus": "FORM_READY",
-    "previewFields": 20,
-    "previewFilled": 0,
-    "humanAction": "confirm email from Brownbook (info@itllect-agency.com) or wait moderation",
-    "notes": "SUBMITTED 07.08: заявка отправлена (submit прошёл, SUCCESS-сигнал скрипта), но публичный профиль НЕ найден: поиск /search/business/itllect = Results Found 0 (проверено 4 вариациями). Вероятно, требуется email-подтверждение на info@itllect-agency.com (в ящике itllect.marketing@gmail.com писем от Brownbook нет). Статус VERIFIED_SUCCESS будет установлен после появления публичного профиля.",
-    "status": "SUBMITTED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T17:52:03.288Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.brownbook.net/business/itllect-llc -> https://www.brownbook.net/404 (len=152, itllect=false, 404=true, soft404=false, login=true)",
-          "Direct: https://www.brownbook.net/business/itllect -> https://www.brownbook.net/404 (len=152, itllect=false, 404=true, soft404=false, login=true)",
-          "Search: https://www.brownbook.net/search/business/itllect -> https://www.brownbook.net/search/business/itllect (len=449, itllect=true, noResults=false)",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\brownbook\\monitor-search-results-1786211522888.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08 07:53:41Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/postsubmit.png"
     ]
-  },
-  {
-    "name": "CityLocalPro",
-    "url": "https://www.citylocalpro.com",
-    "submissionUrl": "https://www.citylocalpro.com/add-your-business",
-    "type": "A",
-    "priority": 1,
-    "category": "Business Directory",
-    "previewStatus": "FORM_READY",
-    "previewFields": 17,
-    "previewFilled": 0,
-    "humanAction": "wait moderation (reCAPTCHA v2 solved manually)",
-    "notes": "SUBMITTED 07.08: заявка отправлена (reCAPTCHA v2 решена вручную, submit прошёл), но публичный профиль НЕ найден: /biz/itllect=404, /biz/itllect-llc=404, /biz/itllect-agency=soft-404, поиск q=itllect = No result. Листинг, вероятно, на модерации (в ящике itllect.marketing@gmail.com писем нет; email формы: info@itllect-agency.com). VERIFIED_SUCCESS будет установлен после публикации профиля.",
-    "status": "SUBMITTED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T17:52:30.282Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.citylocalpro.com/biz/itllect -> https://citylocalpro.com/biz/itllect (len=624, itllect=false, 404=true, soft404=false, login=true)",
-          "Direct: https://www.citylocalpro.com/biz/itllect-llc -> https://citylocalpro.com/biz/itllect-llc (len=624, itllect=false, 404=true, soft404=false, login=true)",
-          "Direct: https://www.citylocalpro.com/biz/itllect-agency -> https://citylocalpro.com/biz/itllect-agency (len=4104, itllect=false, 404=false, soft404=false, login=true)",
-          "Search: https://www.citylocalpro.com/search?q=itllect -> https://citylocalpro.com/search?q=itllect (len=903, itllect=true, noResults=false)",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\citylocalpro\\monitor-search-results-1786211549960.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08 08:03:15Z",
+    "action": "run",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\alignable/postsubmit.png"
     ]
-  },
-  {
-    "name": "Crunchbase",
-    "url": "https://www.crunchbase.com",
-    "submissionUrl": "https://www.crunchbase.com/discover/principal.investors",
-    "type": "D",
-    "priority": 1,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "REGISTERED",
-    "result": null
-  },
-  {
-    "name": "DesignRush",
-    "url": "https://www.designrush.com",
-    "submissionUrl": "https://www.designrush.com/submit/agency",
-    "type": "C",
-    "priority": 1,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 11,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login required; needs account creation before agency submission",
-    "status": "SUBMITTED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T17:46:17.995Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.designrush.com/agency/itllect -> https://www.designrush.com/agency/itllect (len=1450, itllect=false, 404=false, soft404=false, login=false)",
-          "Direct: https://www.designrush.com/agency/itllect-llc -> https://www.designrush.com/agency/itllect-llc (len=1450, itllect=false, 404=false, soft404=false, login=false)",
-          "Search: https://www.designrush.com/search/agencies?q=itllect -> https://www.designrush.com/search/agencies?q=itllect (len=1450, itllect=false, noResults=false)"
-        ]
-      },
-      {
-        "date": "2026-08-08T17:52:48.209Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.designrush.com/agency/itllect -> https://www.designrush.com/agency/itllect (len=1450, itllect=false, 404=false, soft404=false, login=false)",
-          "Direct: https://www.designrush.com/agency/itllect-llc -> https://www.designrush.com/agency/itllect-llc (len=1450, itllect=false, 404=false, soft404=false, login=false)",
-          "Search: https://www.designrush.com/search/agencies?q=itllect -> https://www.designrush.com/search/agencies?q=itllect (len=1450, itllect=false, noResults=false)"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T08:16:53.087Z",
+    "action": "sign-up (manual email+recaptcha)",
+    "outcome": "REGISTERED",
+    "error": null,
+    "evidence": [
+     "https://www.alignable.com/onboarding?invite_code=geo",
+     "human-submit-out/alignable/postsubmit.png"
+    ],
+    "note": "email itllect.marketing@gmail.com, капча решена оператором; онбординг на шаге Name; SUBMITTED отменён — профиль не размещён"
+   },
+   {
+    "date": "2026-08-08T08:33:37.192Z",
+    "action": "stop",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "human-submit-out/alignable/diag.png",
+     "human-submit-out/alignable/resume-start.png"
+    ],
+    "note": "Business Identity Verification screen: SMS/Phone Call не используем (личный телефон). Verify Manually через Support. Не придумывать EIN/NMLS. Не повторять регистрацию."
+   }
+  ]
+ },
+ {
+  "name": "Brownbook",
+  "url": "https://www.brownbook.net",
+  "submissionUrl": "https://www.brownbook.net/add-business",
+  "type": "A",
+  "priority": 1,
+  "category": "Business Directory",
+  "previewStatus": "FORM_READY",
+  "previewFields": 20,
+  "previewFilled": 0,
+  "humanAction": "confirm email from Brownbook (info@itllect-agency.com) or wait moderation",
+  "notes": "SUBMITTED 07.08: заявка отправлена (submit прошёл, SUCCESS-сигнал скрипта), но публичный профиль НЕ найден: поиск /search/business/itllect = Results Found 0 (проверено 4 вариациями). Вероятно, требуется email-подтверждение на info@itllect-agency.com (в ящике itllect.marketing@gmail.com писем от Brownbook нет). Статус VERIFIED_SUCCESS будет установлен после появления публичного профиля.",
+  "status": "SUBMITTED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T17:52:03.288Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.brownbook.net/business/itllect-llc -> https://www.brownbook.net/404 (len=152, itllect=false, 404=true, soft404=false, login=true)",
+     "Direct: https://www.brownbook.net/business/itllect -> https://www.brownbook.net/404 (len=152, itllect=false, 404=true, soft404=false, login=true)",
+     "Search: https://www.brownbook.net/search/business/itllect -> https://www.brownbook.net/search/business/itllect (len=449, itllect=true, noResults=false)",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\brownbook\\monitor-search-results-1786211522888.png"
     ]
-  },
-  {
-    "name": "GoodFirms",
-    "url": "https://www.goodfirms.co",
-    "submissionUrl": "https://www.goodfirms.co/list-your-company",
-    "type": "C",
-    "priority": 1,
-    "previewStatus": "FORM_READY",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "captcha (turnstile)",
-    "notes": "PREVIEW 3f OK; SUBMIT blocked by CF turnstile on /get-listed",
-    "status": "SUBMITTED",
-    "result": "Подтверждено в headed-сессии 31.07 (turnstile решён, submit отправлен)",
-    "history": [
-      {
-        "date": "2026-08-08T17:46:38.291Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.goodfirms.co/company/itllect -> https://www.goodfirms.co/ (len=9063, itllect=false, 404=false, soft404=false, login=true)",
-          "Direct: https://www.goodfirms.co/itllect-llc -> https://www.goodfirms.co/itllect-llc (len=1137, itllect=false, 404=true, soft404=false, login=true)",
-          "Search: https://www.goodfirms.co/search?q=itllect -> https://www.goodfirms.co/search?q=itllect (len=264, itllect=false, noResults=false)"
-        ]
-      },
-      {
-        "date": "2026-08-08T17:53:03.686Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://www.goodfirms.co/company/itllect -> https://www.goodfirms.co/ (len=8856, itllect=false, 404=false, soft404=false, login=true)",
-          "Direct: https://www.goodfirms.co/itllect-llc -> https://www.goodfirms.co/itllect-llc (len=1137, itllect=false, 404=true, soft404=false, login=true)",
-          "Search: https://www.goodfirms.co/search?q=itllect -> https://www.goodfirms.co/search?q=itllect (len=1025, itllect=false, noResults=false)"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "CityLocalPro",
+  "url": "https://www.citylocalpro.com",
+  "submissionUrl": "https://www.citylocalpro.com/add-your-business",
+  "type": "A",
+  "priority": 1,
+  "category": "Business Directory",
+  "previewStatus": "FORM_READY",
+  "previewFields": 17,
+  "previewFilled": 0,
+  "humanAction": "wait moderation (reCAPTCHA v2 solved manually)",
+  "notes": "SUBMITTED 07.08: заявка отправлена (reCAPTCHA v2 решена вручную, submit прошёл), но публичный профиль НЕ найден: /biz/itllect=404, /biz/itllect-llc=404, /biz/itllect-agency=soft-404, поиск q=itllect = No result. Листинг, вероятно, на модерации (в ящике itllect.marketing@gmail.com писем нет; email формы: info@itllect-agency.com). VERIFIED_SUCCESS будет установлен после публикации профиля.",
+  "status": "SUBMITTED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T17:52:30.282Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.citylocalpro.com/biz/itllect -> https://citylocalpro.com/biz/itllect (len=624, itllect=false, 404=true, soft404=false, login=true)",
+     "Direct: https://www.citylocalpro.com/biz/itllect-llc -> https://citylocalpro.com/biz/itllect-llc (len=624, itllect=false, 404=true, soft404=false, login=true)",
+     "Direct: https://www.citylocalpro.com/biz/itllect-agency -> https://citylocalpro.com/biz/itllect-agency (len=4104, itllect=false, 404=false, soft404=false, login=true)",
+     "Search: https://www.citylocalpro.com/search?q=itllect -> https://citylocalpro.com/search?q=itllect (len=903, itllect=true, noResults=false)",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\citylocalpro\\monitor-search-results-1786211549960.png"
     ]
-  },
-  {
-    "name": "HubSpot Agency Dir",
-    "url": "https://www.hubspot.com/agencies",
-    "submissionUrl": "https://partners.hubspot.com/agency-partner-application",
-    "type": "E",
-    "priority": 1,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: ecosystem.hubspot.com has public agency directory. Partner app leads to listing.",
-    "status": "NEEDS_MANUAL",
-    "result": "reset for post-fix retest",
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.332Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: ecosystem.hubspot.com has public agency directory. Partner app leads to listing."
-        ]
-      },
-      {
-        "date": "2026-08-09 13:45:07Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "No form detected (0 fields) and no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/postsubmit.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Crunchbase",
+  "url": "https://www.crunchbase.com",
+  "submissionUrl": "https://www.crunchbase.com/organization/itllect",
+  "type": "D",
+  "priority": 1,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "BLOCKED: Cloudflare 403 — 'Sorry, you have been blocked' (headed + headless, 11.08); no login session, no saved credentials, OAuth-only per docs",
+  "status": "BLOCKED",
+  "result": "EXTERNAL BLOCK: Cloudflare hard block on https://www.crunchbase.com/organization/itllect even in headed browser with human-crunchbase profile (evidence: human-submit-out/crunchbase/cb-org-headed.png). Homepage loads but all deep paths (/organization/*, /search/*) return 'Sorry, you have been blocked'. No session cookie, 0 saved logins, no password recorded anywhere; docs mark Crunchbase OAuth-only; registration email inbox inaccessible (IMAP invalid). Per site-block rules: no further automated attempts, do not create a new account.",
+  "history": [
+   {
+    "date": "2026-08-11T12:00:00.000Z",
+    "action": "verify",
+    "result": "FAILED",
+    "detail": "Headed verify with human-crunchbase profile: homepage loads (no CF challenge), but /organization/itllect and /search/* return hard Cloudflare block 'Sorry, you have been blocked'. Not logged in (no session cookie). Evidence: human-submit-out/crunchbase/crunchbase-step1.png, cb-org-headed.png, cb-org-headed.json."
+   }
+  ]
+ },
+ {
+  "name": "DesignRush",
+  "url": "https://www.designrush.com",
+  "submissionUrl": "https://www.designrush.com/submit/agency",
+  "type": "C",
+  "priority": 1,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 11,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Login required; needs account creation before agency submission",
+  "status": "SUBMITTED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T17:46:17.995Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.designrush.com/agency/itllect -> https://www.designrush.com/agency/itllect (len=1450, itllect=false, 404=false, soft404=false, login=false)",
+     "Direct: https://www.designrush.com/agency/itllect-llc -> https://www.designrush.com/agency/itllect-llc (len=1450, itllect=false, 404=false, soft404=false, login=false)",
+     "Search: https://www.designrush.com/search/agencies?q=itllect -> https://www.designrush.com/search/agencies?q=itllect (len=1450, itllect=false, noResults=false)"
     ]
-  },
-  {
-    "name": "Manta",
-    "url": "https://www.manta.com",
-    "submissionUrl": "https://www.manta.com/claim",
-    "type": "A",
-    "priority": 1,
-    "previewStatus": "EMPTY",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual check required",
-    "notes": "FAILED: Cloudflare block (403) — 'Performing security verification'. Предыдущий SUCCESS не верифицирован. Домен недоступен для автоматизации.",
-    "status": "BLOCKED",
-    "result": "Cloudflare block",
-    "history": [
-      {
-        "date": "2026-08-08T18:23:21.059Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still inaccessible",
-        "evidence": [
-          "Accessed: https://www.manta.com/claim",
-          "Accessible: false",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 261",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\manta\\reprobe\\reprobe-1786213400858.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T17:52:48.209Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.designrush.com/agency/itllect -> https://www.designrush.com/agency/itllect (len=1450, itllect=false, 404=false, soft404=false, login=false)",
+     "Direct: https://www.designrush.com/agency/itllect-llc -> https://www.designrush.com/agency/itllect-llc (len=1450, itllect=false, 404=false, soft404=false, login=false)",
+     "Search: https://www.designrush.com/search/agencies?q=itllect -> https://www.designrush.com/search/agencies?q=itllect (len=1450, itllect=false, noResults=false)"
     ]
-  },
-  {
-    "name": "Medium",
-    "url": "https://medium.com",
-    "submissionUrl": "https://medium.com/new-story",
-    "type": "D",
-    "priority": 1,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "REGISTERED",
-    "result": null
-  },
-  {
-    "name": "Opendi",
-    "url": "https://www.opendi.us",
-    "submissionUrl": "https://service.opendi.us/listings",
-    "type": "A",
-    "priority": 1,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 2,
-    "previewFilled": 0,
-    "humanAction": "solve turnstile + complete 3-step listing",
-    "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.; REPROBE 2026-08-08: Site accessible, form detected — needs submission attempt; SUBMIT FAILED 08.08: CF turnstile not passable in headed mode either",
-    "status": "BLOCKED",
-    "result": "CF turnstile verification failed after multiple attempts in headed browser",
-    "history": [
-      {
-        "date": "2026-08-08T18:24:00.704Z",
-        "action": "reprobe",
-        "outcome": "FORM_READY",
-        "error": null,
-        "evidence": [
-          "Accessed: https://service.opendi.us/listings",
-          "Accessible: true",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 852",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\opendi\\reprobe\\reprobe-1786213440013.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 18:26:29Z",
-        "action": "run",
-        "outcome": "running"
-      },
-      {
-        "date": "2026-08-08T18:31:39.429Z",
-        "action": "reprobe-submit",
-        "outcome": "BLOCKED",
-        "error": "Cloudflare turnstile — verification failed after several attempts",
-        "evidence": [
-          "Headed browser, no stealth, multiple CF verification attempts all failed"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "GoodFirms",
+  "url": "https://www.goodfirms.co",
+  "submissionUrl": "https://www.goodfirms.co/list-your-company",
+  "type": "C",
+  "priority": 1,
+  "previewStatus": "FORM_READY",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "captcha (turnstile)",
+  "notes": "PREVIEW 3f OK; SUBMIT blocked by CF turnstile on /get-listed",
+  "status": "SUBMITTED",
+  "result": "Подтверждено в headed-сессии 31.07 (turnstile решён, submit отправлен)",
+  "history": [
+   {
+    "date": "2026-08-08T17:46:38.291Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.goodfirms.co/company/itllect -> https://www.goodfirms.co/ (len=9063, itllect=false, 404=false, soft404=false, login=true)",
+     "Direct: https://www.goodfirms.co/itllect-llc -> https://www.goodfirms.co/itllect-llc (len=1137, itllect=false, 404=true, soft404=false, login=true)",
+     "Search: https://www.goodfirms.co/search?q=itllect -> https://www.goodfirms.co/search?q=itllect (len=264, itllect=false, noResults=false)"
     ]
-  },
-  {
-    "name": "Semrush Agency Partners",
-    "url": "https://www.semrush.com/agencies",
-    "submissionUrl": "https://www.semrush.com/agencies/become-a-partner",
-    "type": "E",
-    "priority": 1,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: agencies.semrush.com has public directory with \"List your agency\" self-service flow.",
-    "status": "NEEDS_MANUAL",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.333Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: agencies.semrush.com has public directory with \"List your agency\" self-service flow."
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T17:53:03.686Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://www.goodfirms.co/company/itllect -> https://www.goodfirms.co/ (len=8856, itllect=false, 404=false, soft404=false, login=true)",
+     "Direct: https://www.goodfirms.co/itllect-llc -> https://www.goodfirms.co/itllect-llc (len=1137, itllect=false, 404=true, soft404=false, login=true)",
+     "Search: https://www.goodfirms.co/search?q=itllect -> https://www.goodfirms.co/search?q=itllect (len=1025, itllect=false, noResults=false)"
     ]
-  },
-  {
-    "name": "Shopify Partners",
-    "url": "https://www.shopify.com/partners",
-    "submissionUrl": "https://partners.shopify.com/",
-    "type": "E",
-    "priority": 1,
-    "previewStatus": "EMPTY",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "find form path",
-    "notes": "Page loaded but no form detected",
-    "status": "REGISTERED",
-    "result": null
-  },
-  {
-    "name": "Trustpilot",
-    "url": "https://www.trustpilot.com",
-    "submissionUrl": "https://signup.business.trustpilot.com/create-account?locale=en-us&cta=free-signup_header_home",
-    "type": "B",
-    "priority": 1,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per NOT_APPLICABLE audit 08.08: claim business + domain verify. Not NA — listing IS possible.",
-    "status": "NEEDS_MANUAL",
-    "result": "Human action timeout (180s) — no proof of submission",
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.329Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per NOT_APPLICABLE audit 08.08: claim business + domain verify. Not NA — listing IS possible."
-        ]
-      },
-      {
-        "date": "2026-08-08T20:13:04.027Z",
-        "action": "fix-url",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "submissionUrl updated per user instruction",
-          "https://signup.business.trustpilot.com/create-account?locale=en-us&cta=free-signup_header_home",
-          "Previous FAILED was due to wrong URL (business.trustpilot.com/claim)"
-        ]
-      },
-      {
-        "date": "2026-08-09 07:28:27Z",
-        "action": "run",
-        "outcome": "running"
-      },
-      {
-        "date": "2026-08-09 07:36:27Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/postsubmit.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "HubSpot Agency Dir",
+  "url": "https://www.hubspot.com/agencies",
+  "submissionUrl": "https://partners.hubspot.com/agency-partner-application",
+  "type": "E",
+  "priority": 1,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "SUBMITTED 10.08. Flow 2026: /partners/solutions → Get Started → modal hsforms (firstname/lastname/email/phone/website/country_dropdown/employees__c) → POST 200 accepted. Старый URL partners.hubspot.com/agency-partner-application редиректит на ecosystem.hubspot.com/marketplace/solutions; /agency-directory = 404. Листинг в marketplace появляется только после ручного ревью HubSpot (реп-медиатированный онбординг). Эндпоинты: forms.hsforms.com/submissions/v3/public/submit/formsnext/multipart/53/e0bf70bb-7a74-4466-8dc4-8bbe1dfe7037.",
+  "status": "SUBMITTED",
+  "result": "SUBMITTED 10.08 (server-verified): Solutions Partner application form submitted. hsforms POST 200, accepted=true, conversionId=ebfea33c-ea1d-4482-8cbb-6703963b564c, formGuid=e0bf70bb-7a74-4466-8dc4-8bbe1dfe7037 (portal 53). Data: [REDACTED] / itllect.marketing@gmail.com / [REDACTED] / https://itllect.com / United States / 2 to 5. Marketplace listing NOT visible yet — requires HubSpot manual review (rep will contact). No duplicate (marketplace search: no ITllect).",
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.332Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: ecosystem.hubspot.com has public agency directory. Partner app leads to listing."
     ]
-  },
-  {
-    "name": "Yellow Pages",
-    "url": "https://www.yellowpages.com",
-    "submissionUrl": "https://www.yellowpages.com/biz",
-    "type": "A",
-    "priority": 1,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.",
-    "status": "BLOCKED",
-    "result": "EXTERNAL BLOCK — Cloudflare/access restriction; possible IP reputation block; automation detected. Домен недоступен, повторные запросы запрещены.",
-    "history": [
-      {
-        "date": "2026-08-08T18:23:14.134Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still Cloudflare blocked after 15s wait",
-        "evidence": [
-          "Accessed: https://www.yellowpages.com/biz",
-          "Accessible: false",
-          "CF: true, 403: true, 5xx: false",
-          "Text len: 696",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\yellow-pages\\reprobe\\reprobe-1786213393608.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-09 13:45:07Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "No form detected (0 fields) and no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\hubspot-agency-dir/postsubmit.png"
     ]
-  },
-  {
-    "name": "ActiveCampaign",
-    "url": "https://www.activecampaign.com/partners",
-    "submissionUrl": "https://www.activecampaign.com/partner",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 10,
-    "previewFilled": 0,
-    "humanAction": "not applicable — partner ecosystem (reseller/commission program)",
-    "notes": "Partner ecosystem, not a business directory. ActiveCampaign is a SaaS marketing-automation platform with an Agency Partner / Certified Consultant / White-Label program. The /partner page only has sales-lead capture forms (Request a Demo, Request Pricing, Free trial) — submitting them generates sales leads for ActiveCampaign, NOT a public company profile or directory listing. No public directory of agencies exists. Partner application requires talking to sales (/partner/contact) and/or logging into a separate reseller portal (partner-auth.activecampaign.com). Note: queue URL /partners/become-a-partner returns 404; live page is /partner. Not a citation/listing channel — NOT_APPLICABLE. No account or test registration created.",
-    "status": "NOT_APPLICABLE",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08 07:27:29Z",
-        "action": "run",
-        "outcome": "FAILED",
-        "error": "page.screenshot: Target page, context or browser has been closed",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\activecampaign/human-submit.log"
-        ]
-      },
-      {
-        "date": "2026-08-08 07:35:32Z",
-        "action": "verify",
-        "outcome": "NOT_APPLICABLE",
-        "error": "partner ecosystem, not a business directory (no public catalog/listing)",
-        "evidence": [
-          "human-submit-out/activecampaign/partner-ecosystem-evidence.md",
-          "https://www.activecampaign.com/partner"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-10 14:12:17Z",
+    "action": "real-apply",
+    "outcome": "SUBMITTED",
+    "error": null,
+    "evidence": [
+     "C:hpgithubseoflowaihuman-submit-outhubspot-agency-dir\real-apply\real-apply.log",
+     "C:hpgithubseoflowaihuman-submit-outhubspot-agency-dir\real-applyhsforms-post.json",
+     "C:hpgithubseoflowaihuman-submit-outhubspot-agency-dir\real-applypost-submit.png"
+    ],
+    "note": "hsforms POST 200 accepted=true, conversionId=ebfea33c-ea1d-4482-8cbb-6703963b564c; inline: Thanks for contacting us. A representative will be in touch shortly. Listing pending HubSpot review."
+   }
+  ]
+ },
+ {
+  "name": "Manta",
+  "url": "https://www.manta.com",
+  "submissionUrl": "https://www.manta.com/claim",
+  "type": "A",
+  "priority": 1,
+  "previewStatus": "EMPTY",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual check required",
+  "notes": "FAILED: Cloudflare block (403) — 'Performing security verification'. Предыдущий SUCCESS не верифицирован. Домен недоступен для автоматизации.",
+  "status": "BLOCKED",
+  "result": "Cloudflare block",
+  "history": [
+   {
+    "date": "2026-08-08T18:23:21.059Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still inaccessible",
+    "evidence": [
+     "Accessed: https://www.manta.com/claim",
+     "Accessible: false",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 261",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\manta\\reprobe\\reprobe-1786213400858.png"
     ]
-  },
-  {
-    "name": "Agency Spotter",
-    "url": "https://www.agencyspotter.com",
-    "submissionUrl": "https://www.agencyspotter.com/add-agency",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve; REPROBE 2026-08-08: Site accessible, form detected — needs submission attempt; SUBMIT FAILED 08.08: CF not passable in headed mode",
-    "status": "BLOCKED",
-    "result": "Cloudflare not passable in headed browser either (human action timeout)",
-    "history": [
-      {
-        "date": "2026-08-08T18:24:23.066Z",
-        "action": "reprobe",
-        "outcome": "FORM_READY",
-        "error": null,
-        "evidence": [
-          "Accessed: https://www.agencyspotter.com/login",
-          "Accessible: true",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 476",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\agency-spotter\\reprobe\\reprobe-1786213462736.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 18:35:49Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Cloudflare not solved in 120s",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\agency-spotter/human-submit.log"
-        ]
-      },
-      {
-        "date": "2026-08-08T18:38:26.964Z",
-        "action": "reprobe-submit",
-        "outcome": "BLOCKED",
-        "error": "Cloudflare challenge not solved in 120s headed mode"
-      }
+   }
+  ]
+ },
+ {
+  "name": "Medium",
+  "url": "https://medium.com",
+  "submissionUrl": "https://medium.com/new-story",
+  "type": "D",
+  "priority": 1,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "BLOCKED: Cloudflare 403 — 'Sorry, you have been blocked' (headed, 11.08); no login session persisted, account inaccessible due to external block. Per site-block rules: do not repeat.",
+  "status": "BLOCKED",
+  "result": "EXTERNAL BLOCK: Cloudflare hard block 'Sorry, you have been blocked' even in headed browser with human-medium profile. Evidence: human-submit-out/medium/medium-block-evidence.png.",
+  "history": [
+   {
+    "date": "2026-08-11T12:00:00.000Z",
+    "action": "verify",
+    "result": "FAILED",
+    "detail": "Headed check with human-medium profile: First attempt showed homepage, but subsequent attempts returned hard Cloudflare block 'Sorry, you have been blocked'. Session not active. Evidence saved."
+   }
+  ]
+ },
+ {
+  "name": "Opendi",
+  "url": "https://www.opendi.us",
+  "submissionUrl": "https://service.opendi.us/listings",
+  "type": "A",
+  "priority": 1,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 2,
+  "previewFilled": 0,
+  "humanAction": "solve turnstile + complete 3-step listing",
+  "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.; REPROBE 2026-08-08: Site accessible, form detected — needs submission attempt; SUBMIT FAILED 08.08: CF turnstile not passable in headed mode either",
+  "status": "BLOCKED",
+  "result": "CF turnstile verification failed after multiple attempts in headed browser",
+  "history": [
+   {
+    "date": "2026-08-08T18:24:00.704Z",
+    "action": "reprobe",
+    "outcome": "FORM_READY",
+    "error": null,
+    "evidence": [
+     "Accessed: https://service.opendi.us/listings",
+     "Accessible: true",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 852",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\opendi\\reprobe\\reprobe-1786213440013.png"
     ]
-  },
-  {
-    "name": "AngelList/Wellfound",
-    "url": "https://wellfound.com",
-    "submissionUrl": "https://wellfound.com/companies/new",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: startup directory. Company CAN create profile.",
-    "status": "NEEDS_MANUAL",
-    "result": "reset for post-fix retest",
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.332Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: startup directory. Company CAN create profile."
-        ]
-      },
-      {
-        "date": "2026-08-09 13:51:10Z",
-        "action": "run",
-        "outcome": "SUBMITTED",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/postsubmit.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08 18:26:29Z",
+    "action": "run",
+    "outcome": "running"
+   },
+   {
+    "date": "2026-08-08T18:31:39.429Z",
+    "action": "reprobe-submit",
+    "outcome": "BLOCKED",
+    "error": "Cloudflare turnstile — verification failed after several attempts",
+    "evidence": [
+     "Headed browser, no stealth, multiple CF verification attempts all failed"
     ]
-  },
-  {
-    "name": "Bark.com",
-    "url": "https://www.bark.com",
-    "submissionUrl": "https://www.bark.com/en/us/sellers/create/",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 15,
-    "previewFilled": 0,
-    "humanAction": "manual navigate + submit",
-    "notes": "Ожил после DEAD; SPA; телефон в форме OPTIONAL (не обязателен); сервер нестабилен (500), переходы между шагами флаки 25-75s+; аккаунт НЕ создан; профиль human-bark-com зафлагован антиботом (SPA не рендерится) — работать через human-bark2",
-    "status": "NEEDS_MANUAL",
-    "result": "reset for post-fix retest",
-    "history": [
-      {
-        "date": "2026-08-08T09:17:30.077Z",
-        "action": "pre-flight",
-        "outcome": "ready",
-        "error": null,
-        "evidence": [],
-        "note": "auth cookies отсутствуют (только трекинг) — аккаунт НЕ создан; профили bark-com/human-bark-com/quick-bark-com без login-сессии; старая сессия 30.07 прервана (browser closed)"
-      },
-      {
-        "date": "2026-08-08 09:18:38Z",
-        "action": "run",
-        "outcome": "FAILED",
-        "error": "page.screenshot: Target page, context or browser has been closed",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08T09:24:05.912Z",
-        "action": "fix-url",
-        "outcome": "updated",
-        "error": null,
-        "evidence": [
-          "https://www.bark.com/en/us/sellers/create/"
-        ],
-        "note": "submissionUrl заменён на /en/us/sellers/create/ (правильная ссылка регистрации)"
-      },
-      {
-        "date": "2026-08-08 09:28:33Z",
-        "action": "run",
-        "outcome": "FAILED",
-        "error": "page.waitForTimeout: Target page, context or browser has been closed",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 10:00:27Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 13:30:00Z",
-        "action": "research",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\adapter.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\adapter-v15-details.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\net-diag.png"
-        ],
-        "note": "Глубокая отладка флоу: URL /en/us/sellers/create-account/?cn=search-engine-optimization (SEO Specialists). Шаги: ZIP(33324) → details (name/companyName/email + website + опции: website=Yes, size=2-10, sales/social пропущены) → Your business address (google-autocomplete + suite/city/state/postcode). Телефон (ph=optional) НЕ вводился. Профиль human-bark-com сломан (SPA не рендерится — антибот-куки), работает только human-bark2 (свежий). Переходы Next занимают 17-75s+: API api.bark.com/bark/seller/email?email=...&captchaToken=... возвращает 500 Internal Server Error (нестабильность сервера). 10+ прогонов; аккаунт НЕ создан (до submit не дошли). Вывод: телефон не требуется, нужен повторный прогон при стабильном сервере или ручное завершение."
-      },
-      {
-        "date": "2026-08-09 13:33:59Z",
-        "action": "run",
-        "outcome": "FAILED",
-        "error": "page.evaluate: ReferenceError: SEARCH_FIELD_PATTERN is not defined\n    at eval (eval at evaluate (:311:30), <anonymous>:1:2396)\n    at NodeList.forEach (<anonymous>)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:208)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 14:26:58Z",
-        "action": "run",
-        "outcome": "SUBMITTED",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Semrush Agency Partners",
+  "url": "https://www.semrush.com/agencies",
+  "submissionUrl": "https://www.semrush.com/agencies/get-started/",
+  "type": "E",
+  "priority": 1,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "register (Semrush account signup)",
+  "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: agencies.semrush.com has public directory with \"List your agency\" self-service flow. | DISCOVERY 11.08: /become-a-partner=404; self-service flow: agencies.semrush.com (public dir, no ITllect profile found) → /agencies/get-started/ → signup (email+password+consent, invisible reCAPTCHA) → agency profile. | RESULT 11.08: account created and verified (user ID 30496074, auth works). Agency profile creation requires Agency Partners Platform purchase $90/mo (official KB 1078) - client decision on payment; free-tier has no agency listing path",
+  "status": "NEEDS_MANUAL",
+  "result": "Account created (user ID 30496074, itllect.marketing@gmail.com, logged in). Agency listing requires paid Agency Partners Platform ($90/mo) - payment decision of the client",
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.333Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: agencies.semrush.com has public directory with \"List your agency\" self-service flow."
     ]
-  },
-  {
-    "name": "Behance",
-    "url": "https://www.behance.net",
-    "submissionUrl": "https://www.behance.net/signup",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "Site unreachable (chrome-error)",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "Broward County Chamber",
-    "url": "https://browardchamber.com",
-    "submissionUrl": "https://browardchamber.com/membership-application/",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Digital Agency Net",
-    "url": "https://digitalagencynetwork.com",
-    "submissionUrl": "https://digitalagencynetwork.com/add-agency/",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "FORM_READY",
-    "previewFields": 4,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "PREVIEW 4f OK; needs registration before add-agency",
-    "status": "SUBMITTED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T17:47:04.483Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://digitalagencynetwork.com/agency/itllect-llc -> https://digitalagencynetwork.com/agency/itllect-llc (len=1329, itllect=false, 404=true, soft404=false, login=true)",
-          "Search: https://digitalagencynetwork.com/search?q=itllect -> https://digitalagencynetwork.com/wp-content/uploads/2020/08/search.svg (len=0, itllect=false, noResults=false)"
-        ]
-      },
-      {
-        "date": "2026-08-08T17:53:20.959Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": [
-          "Direct: https://digitalagencynetwork.com/agency/itllect -> https://digitalagencynetwork.com/agency/itllect (len=1329, itllect=false, 404=true, soft404=false, login=true)",
-          "Direct: https://digitalagencynetwork.com/agency/itllect-llc -> https://digitalagencynetwork.com/agency/itllect-llc (len=1329, itllect=false, 404=true, soft404=false, login=true)",
-          "Search: https://digitalagencynetwork.com/search?q=itllect -> https://digitalagencynetwork.com/wp-content/uploads/2020/08/search.svg (len=0, itllect=false, noResults=false)"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-11 07:31:40Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\semrush-agency-partners/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\semrush-agency-partners/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\semrush-agency-partners/postsubmit.png"
     ]
-  },
-  {
-    "name": "Dribbble",
-    "url": "https://dribbble.com",
-    "submissionUrl": "https://dribbble.com/signup",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 2,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "FAILED",
-    "result": "page.waitForTimeout: Target page, context or browser has been closed"
-  },
-  {
-    "name": "Expertise.com",
-    "url": "https://www.expertise.com",
-    "submissionUrl": "https://www.expertise.com/business-application",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "FAILED",
-    "result": "page.waitForTimeout: Target page, context or browser has been closed"
-  },
-  {
-    "name": "Express Update USA",
-    "url": "https://www.expressupdate.com",
-    "submissionUrl": "https://www.expressupdate.com/claim",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim InfoGroup listing via phone/postcard. Not NA.",
-    "status": "NEEDS_MANUAL",
-    "result": "reset for post-fix retest",
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.332Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim InfoGroup listing via phone/postcard. Not NA."
-        ]
-      },
-      {
-        "date": "2026-08-09 13:55:46Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Registration page not found (flow=CLAIM): Registration page not found (homepage/landing without registration evidence)",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\express-update-usa/human-submit.log"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-11",
+    "action": "account-created",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "C:hpgithubseoflowaihuman-submit-outsemrush-agency-partners\billing-final.log",
+     "C:hpgithubseoflowaihuman-submit-outsemrush-agency-partners\billing-after-click.log",
+     "C:hpgithubseoflowaihuman-submit-outsemrush-agency-partnersagencies-logged-in.log",
+     "Semrush KB 1078: Agency Partners Platform $90/mo required"
     ]
-  },
-  {
-    "name": "EZlocal",
-    "url": "https://www.ezlocal.com",
-    "submissionUrl": "https://www.ezlocal.com/business-directory/add-business",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "BLOCKED",
-    "result": "page.waitForTimeout: Target page, context or browser has been closed",
-    "history": [
-      {
-        "date": "2026-08-08T18:23:54.296Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still returning 403 / access denied",
-        "evidence": [
-          "Accessed: https://www.ezlocal.com/business-directory/add-business",
-          "Accessible: false",
-          "CF: false, 403: true, 5xx: false",
-          "Text len: 286",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\ezlocal\\reprobe\\reprobe-1786213433388.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Shopify Partners",
+  "url": "https://www.shopify.com/partners",
+  "submissionUrl": "https://partners.shopify.com/",
+  "type": "E",
+  "priority": 1,
+  "previewStatus": "EMPTY",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "find form path",
+  "notes": "Page loaded but no form detected; account logged in — manual login credentials required to access partner dashboard and complete profile",
+  "status": "NEEDS_MANUAL",
+  "result": "NEEDS_MANUAL: login credentials required — no session cookie, no stored credentials, no OAuth flow; partner dashboard inaccessible without user-provided credentials",
+  "history": [
+   {
+    "date": "2026-07-30T22:31:37Z",
+    "action": "profile-check",
+    "result": "NOT_LOGGED_IN",
+    "detail": "Profile human-shopify-partners loaded — cookies present but no session cookie (sid); no login data; no partner dashboard elements found (form detection failed). User must provide login credentials for partner dashboard access."
+   }
+  ]
+ },
+ {
+  "name": "Trustpilot",
+  "url": "https://www.trustpilot.com",
+  "submissionUrl": "https://signup.business.trustpilot.com/create-account?locale=en-us&cta=free-signup_header_home",
+  "type": "B",
+  "priority": 1,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per NOT_APPLICABLE audit 08.08: claim business + domain verify. Not NA — listing IS possible.",
+  "status": "NEEDS_MANUAL",
+  "result": "Human action timeout (180s) — no proof of submission",
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.329Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per NOT_APPLICABLE audit 08.08: claim business + domain verify. Not NA — listing IS possible."
     ]
-  },
-  {
-    "name": "FL Business Dir",
-    "url": "https://www.floridabusiness.com",
-    "submissionUrl": "https://www.floridabusiness.com/add-listing",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "Site unreachable (chrome-error)",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "Foursquare Business",
-    "url": "https://business.foursquare.com",
-    "submissionUrl": "https://business.foursquare.com/claim",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim venue + phone verify. Business CAN be listed.",
-    "status": "NEEDS_MANUAL",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.332Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim venue + phone verify. Business CAN be listed."
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T20:13:04.027Z",
+    "action": "fix-url",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "submissionUrl updated per user instruction",
+     "https://signup.business.trustpilot.com/create-account?locale=en-us&cta=free-signup_header_home",
+     "Previous FAILED was due to wrong URL (business.trustpilot.com/claim)"
     ]
-  },
-  {
-    "name": "Ft Lauderdale Chamber",
-    "url": "https://www.ftlchamber.com",
-    "submissionUrl": "https://business.ftlchamber.com/application",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 2,
-    "previewFilled": 0,
-    "humanAction": "not applicable — paid membership",
-    "notes": "Paid membership platform, requires separate client approval and budget. Not included in standard directory submission workflow. GrowthZone multi-step form: tier selection (cheapest for-profit: New Member GENERAL-GFLCC $574/year + $50 one-time, non-refundable, auto-renewal with stored card) → contact info → payment.",
-    "status": "NOT_APPLICABLE",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08 05:32:54Z",
-        "action": "verify",
-        "outcome": "NOT_APPLICABLE",
-        "evidence": [
-          "human-submit-out/ft-lauderdale-chamber/paid-membership-evidence.md",
-          "https://business.ftlchamber.com/application"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-09 07:28:27Z",
+    "action": "run",
+    "outcome": "running"
+   },
+   {
+    "date": "2026-08-09 07:36:27Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\trustpilot/postsubmit.png"
     ]
-  },
-  {
-    "name": "G2",
-    "url": "https://www.g2.com",
-    "submissionUrl": "https://www.g2.com/claim-listing",
-    "type": "B",
-    "priority": 2,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "register + claim business + verify email/domain",
-    "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.",
-    "status": "BLOCKED",
-    "result": "EXTERNAL BLOCK — Cloudflare/access restriction; possible IP reputation block; automation detected. Домен недоступен, повторные запросы запрещены.",
-    "history": [
-      {
-        "date": "2026-08-08T18:24:42.237Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still inaccessible",
-        "evidence": [
-          "Accessed: https://www.g2.com/claim-listing",
-          "Accessible: false",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 940",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\g2\\reprobe\\reprobe-1786213481885.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Yellow Pages",
+  "url": "https://www.yellowpages.com",
+  "submissionUrl": "https://www.yellowpages.com/biz",
+  "type": "A",
+  "priority": 1,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.",
+  "status": "BLOCKED",
+  "result": "EXTERNAL BLOCK — Cloudflare/access restriction; possible IP reputation block; automation detected. Домен недоступен, повторные запросы запрещены.",
+  "history": [
+   {
+    "date": "2026-08-08T18:23:14.134Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still Cloudflare blocked after 15s wait",
+    "evidence": [
+     "Accessed: https://www.yellowpages.com/biz",
+     "Accessible: false",
+     "CF: true, 403: true, 5xx: false",
+     "Text len: 696",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\yellow-pages\\reprobe\\reprobe-1786213393608.png"
     ]
-  },
-  {
-    "name": "GitHub",
-    "url": "https://github.com",
-    "submissionUrl": "https://github.com/organizations/new",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Hotfrog",
-    "url": "https://www.hotfrog.com",
-    "submissionUrl": "https://www.hotfrog.com/add-business",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual check required",
-    "notes": "FAILED: Cloudflare block (403) — 'Performing security verification'. Предыдущий SUCCESS не верифицирован. Домен недоступен для автоматизации.",
-    "status": "BLOCKED",
-    "result": "Cloudflare block",
-    "history": [
-      {
-        "date": "2026-08-08T18:23:29.391Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still inaccessible",
-        "evidence": [
-          "Accessed: https://www.hotfrog.com/add-business",
-          "Accessible: false",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 1455",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\hotfrog\\reprobe\\reprobe-1786213409142.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "ActiveCampaign",
+  "url": "https://www.activecampaign.com/partners",
+  "submissionUrl": "https://www.activecampaign.com/partner",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 10,
+  "previewFilled": 0,
+  "humanAction": "not applicable — partner ecosystem (reseller/commission program)",
+  "notes": "Partner ecosystem, not a business directory. ActiveCampaign is a SaaS marketing-automation platform with an Agency Partner / Certified Consultant / White-Label program. The /partner page only has sales-lead capture forms (Request a Demo, Request Pricing, Free trial) — submitting them generates sales leads for ActiveCampaign, NOT a public company profile or directory listing. No public directory of agencies exists. Partner application requires talking to sales (/partner/contact) and/or logging into a separate reseller portal (partner-auth.activecampaign.com). Note: queue URL /partners/become-a-partner returns 404; live page is /partner. Not a citation/listing channel — NOT_APPLICABLE. No account or test registration created.",
+  "status": "NOT_APPLICABLE",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08 07:27:29Z",
+    "action": "run",
+    "outcome": "FAILED",
+    "error": "page.screenshot: Target page, context or browser has been closed",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\activecampaign/human-submit.log"
     ]
-  },
-  {
-    "name": "Local.com",
-    "url": "https://www.local.com",
-    "submissionUrl": "https://www.local.com/claim-listing",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "unreachable",
-    "notes": "claim-listing = Page not found (404); форма нерабочая",
-    "status": "FAILED",
-    "result": "404"
-  },
-  {
-    "name": "Merchant Circle",
-    "url": "https://www.merchantcircle.com",
-    "submissionUrl": "https://www.merchantcircle.com/signup",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 2,
-    "previewFilled": 0,
-    "humanAction": "manual check required",
-    "notes": "FAILED: /registration=404, /login=404, /signup=403 (access denied). Площадка недоступна для автоматической регистрации.",
-    "status": "FAILED",
-    "result": "403/404"
-  },
-  {
-    "name": "n49",
-    "url": "https://www.n49.com",
-    "submissionUrl": "https://www.n49.com/business/",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 0f; REPROBE 2026-08-08: n49 accessible but no business listing form — not a directory",
-    "status": "NOT_APPLICABLE",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T18:24:10.763Z",
-        "action": "reprobe",
-        "outcome": "NOT_APPLICABLE",
-        "error": null,
-        "evidence": [
-          "Accessed: https://business.n49.ca/",
-          "Accessible: true",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 533",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\n49\\reprobe\\reprobe-1786213450484.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08 07:35:32Z",
+    "action": "verify",
+    "outcome": "NOT_APPLICABLE",
+    "error": "partner ecosystem, not a business directory (no public catalog/listing)",
+    "evidence": [
+     "human-submit-out/activecampaign/partner-ecosystem-evidence.md",
+     "https://www.activecampaign.com/partner"
     ]
-  },
-  {
-    "name": "Neustar Localeze",
-    "url": "https://www.neustarlocaleze.biz",
-    "submissionUrl": "https://www.neustarlocaleze.biz/signup",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "partner application (manual review)",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Nextdoor Business",
-    "url": "https://business.nextdoor.com",
-    "submissionUrl": "https://business.nextdoor.com/business-signup",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 2,
-    "previewFilled": 0,
-    "humanAction": "manual submit needed",
-    "notes": "NOT_APPLICABLE: 2f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: create business page + postcard verify. Not NA.",
-    "status": "NEEDS_MANUAL",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T19:58:35.332Z",
-        "action": "reclassify",
-        "outcome": "NEEDS_MANUAL",
-        "error": null,
-        "evidence": [
-          "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
-          "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: create business page + postcard verify. Not NA."
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Agency Spotter",
+  "url": "https://www.agencyspotter.com",
+  "submissionUrl": "https://www.agencyspotter.com/add-agency",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve; REPROBE 2026-08-08: Site accessible, form detected — needs submission attempt; SUBMIT FAILED 08.08: CF not passable in headed mode",
+  "status": "BLOCKED",
+  "result": "Cloudflare not passable in headed browser either (human action timeout)",
+  "history": [
+   {
+    "date": "2026-08-08T18:24:23.066Z",
+    "action": "reprobe",
+    "outcome": "FORM_READY",
+    "error": null,
+    "evidence": [
+     "Accessed: https://www.agencyspotter.com/login",
+     "Accessible: true",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 476",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\agency-spotter\\reprobe\\reprobe-1786213462736.png"
     ]
-  },
-  {
-    "name": "Pinterest Business",
-    "url": "https://business.pinterest.com",
-    "submissionUrl": "https://business.pinterest.com/business/create/",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Plantation Chamber",
-    "url": "https://www.plantationchamber.org",
-    "submissionUrl": "https://www.plantationchamber.org/join",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "SUBMITTED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T17:47:23.986Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": []
-      },
-      {
-        "date": "2026-08-08T17:53:33.538Z",
-        "action": "verify",
-        "outcome": "PENDING",
-        "error": "profile not yet published",
-        "evidence": []
-      }
+   },
+   {
+    "date": "2026-08-08 18:35:49Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Cloudflare not solved in 120s",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\agency-spotter/human-submit.log"
     ]
-  },
-  {
-    "name": "ProductHunt",
-    "url": "https://www.producthunt.com",
-    "submissionUrl": "https://www.producthunt.com/posts/new",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "ProvenExpert",
-    "url": "https://www.provenexpert.com",
-    "submissionUrl": "https://www.provenexpert.com/en/business/",
-    "type": "B",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "manual check required",
-    "notes": "Account created (customer 2377210), profile published. Public URL: https://www.provenexpert.com/itllect/",
-    "status": "VERIFIED_SUCCESS",
-    "result": "Profile published",
-    "history": [
-      {
-        "date": "2026-08-08T18:24:49.218Z",
-        "action": "reprobe",
-        "outcome": "FORM_READY",
-        "error": null,
-        "evidence": [
-          "Accessed: https://www.provenexpert.com/en-us/",
-          "Accessible: true",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 5059",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\\reprobe\\reprobe-1786213487255.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 18:38:57Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 08:11:32Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 09:08:50Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 10:35:28Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 11:02:18Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 12:33:37Z",
-        "action": "manual-verified",
-        "outcome": "VERIFIED_SUCCESS",
-        "error": null,
-        "evidence": [
-          "Account created: customer 2377210",
-          "Onboarding completed (name/password/profile/industry)",
-          "Profile created: Contact Details + Company Information + Online Presence",
-          "Published: https://www.provenexpert.com/itllect/",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\u000berify\\dashboard.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\\publish\\public-profile.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T18:38:26.964Z",
+    "action": "reprobe-submit",
+    "outcome": "BLOCKED",
+    "error": "Cloudflare challenge not solved in 120s headed mode"
+   }
+  ]
+ },
+ {
+  "name": "AngelList/Wellfound",
+  "url": "https://wellfound.com",
+  "submissionUrl": "https://wellfound.com/company/itllect",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "Real success verified via live public profile URL + onboarding progress (green check on Set up your account). Replaces earlier FALSE POSITIVE SUBMITTED (404 on /companies/new).",
+  "status": "SUBMITTED",
+  "result": "Company profile created and live at https://wellfound.com/company/itllect (slug itllect). Step 1 (Set up your account) complete; invite step pending.",
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.332Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: startup directory. Company CAN create profile."
     ]
-  },
-  {
-    "name": "Quora",
-    "url": "https://www.quora.com",
-    "submissionUrl": "https://www.quora.com/",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "SmartCustomer",
-    "url": "https://www.smartcustomer.com",
-    "submissionUrl": "https://biz.smartcustomer.com/register",
-    "type": "B",
-    "priority": 2,
-    "previewStatus": "FORM_READY",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "Registration URL обновлён по указанию пользователя: https://biz.smartcustomer.com/register (правильная страница регистрации). На главной /business капчи и формы нет.",
-    "status": "FORM_READY",
-    "result": "reset for post-fix retest",
-    "history": [
-      {
-        "date": "2026-08-08 17:08:24Z",
-        "action": "run",
-        "outcome": "running"
-      },
-      {
-        "date": "2026-08-09 13:36:24Z",
-        "action": "run",
-        "outcome": "running"
-      },
-      {
-        "date": "2026-08-09 13:59:19Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "No form detected (0 fields) and no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-09 14:35:23Z",
-        "action": "run",
-        "outcome": "running"
-      }
+   },
+   {
+    "date": "2026-08-09 13:51:10Z",
+    "action": "run",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound/postsubmit.png"
     ]
-  },
-  {
-    "name": "Sortlist",
-    "url": "https://www.sortlist.com",
-    "submissionUrl": "https://www.sortlist.com/become-partner",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "BLOCKED",
-    "result": "Human action timeout (180s)",
-    "history": [
-      {
-        "date": "2026-08-08T18:24:34.613Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still inaccessible",
-        "evidence": [
-          "Accessed: https://www.sortlist.com/become-partner",
-          "Accessible: false",
-          "CF: false, 403: false, 5xx: false",
-          "Text len: 82",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\sortlist\\reprobe\\reprobe-1786213473917.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-11T11:44:56.637Z",
+    "action": "manual-submit",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "https://wellfound.com/company/itllect (public profile verified live)",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound\\wf-after-submit2.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound\\wf-public-profile.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound\\wf-invite-final.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\angellist-wellfound\\wf-company2.log"
     ]
-  },
-  {
-    "name": "Stripe Partner",
-    "url": "https://stripe.com/partners",
-    "submissionUrl": "https://stripe.com/partners/apply",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "EMPTY",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "find form path",
-    "notes": "Page loaded but no form detected",
-    "status": "NEEDS_MANUAL",
-    "result": "Human action timeout (180s)"
-  },
-  {
-    "name": "Superpages",
-    "url": "https://www.superpages.com",
-    "submissionUrl": "https://www.superpages.com/add-listing",
-    "type": "A",
-    "priority": 2,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "BLOCKED",
-    "result": "page.waitForTimeout: Target page, context or browser has been closed",
-    "history": [
-      {
-        "date": "2026-08-08T18:23:48.765Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still Cloudflare blocked after 15s wait",
-        "evidence": [
-          "Accessed: https://www.superpages.com/add-listing",
-          "Accessible: false",
-          "CF: true, 403: true, 5xx: false",
-          "Text len: 691",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\superpages\\reprobe\\reprobe-1786213428599.png"
-        ]
-      }
+   }
+  ]
+ },
+ {
+  "name": "Bark.com",
+  "url": "https://www.bark.com",
+  "submissionUrl": "https://www.bark.com/en/us/sellers/create/",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 15,
+  "previewFilled": 0,
+  "humanAction": "manual navigate + submit",
+  "notes": "VERIFIED SUCCESS 10.08. Телефон OPTIONAL (не вводился). Сервер: 500/флаки переходы. Работать через human-bark2. Аккаунт создаётся серверно на шаге address Next (create-account SPA без финального submit); после создания /create/ редиректит на /sellers/dashboard/. Блокеры, обойдённые 10.08: force-click на Next не срабатывал (нужен actionable click), #cmpwrapper (ConsentManager) перехватывал pointer events (удалять перед кликом), address autocomplete — выбор стрелками+Enter с commit-verify (click по контейнеру саджестов коммитил чужой адрес), категория — exact-матч.",
+  "status": "SUCCESS",
+  "result": "VERIFIED 10.08: account created 2026-08-10 13:39:13 by real-walk address-Next click. seller spf_id=4708659, user_id=40829222, email=itllect.marketing@gmail.com, company=ITllect, seller_name=[REDACTED], website=https://itllect-agency.com/, location=Plantation FL 33324. Dashboard live (15 matching leads, 3 services, 1 location). No duplicates. Preceding 08.09 SUBMITTED was nav-only (no account) — superseded by verified real registration.",
+  "history": [
+   {
+    "date": "2026-08-08T09:17:30.077Z",
+    "action": "pre-flight",
+    "outcome": "ready",
+    "error": null,
+    "evidence": [],
+    "note": "auth cookies отсутствуют (только трекинг) — аккаунт НЕ создан; профили bark-com/human-bark-com/quick-bark-com без login-сессии; старая сессия 30.07 прервана (browser closed)"
+   },
+   {
+    "date": "2026-08-08 09:18:38Z",
+    "action": "run",
+    "outcome": "FAILED",
+    "error": "page.screenshot: Target page, context or browser has been closed",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png"
     ]
-  },
-  {
-    "name": "The Manifest",
-    "url": "https://themanifest.com",
-    "submissionUrl": "https://www.clutch.co/get-listed",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "EMPTY",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "blocked — Cloudflare challenge-loop on vendor.clutch.co; manual human session in regular browser required",
-    "notes": "The Manifest has no own form (/listings/list-your-company = 404). /get-listed explains: registration via Clutch.co. CTA 'Create a Free Profile' -> https://vendor.clutch.co/profile/create/basic (Basic tier, free). Main clutch.co/get-listed loads (CF clears ~30s; tiers: Basic Free / Verified $499/yr / Advertiser). But vendor.clutch.co CF challenge-loop: 'Verification successful. Waiting for vendor.clutch.co to respond' — origin does not respond (Ray ID a27c85757b9b543b). 2 attempts waited 120s and 288s, both stuck. 3 false-positive SUBMITTED outcomes reverted (0 fields). BLOCKED per site-handling rules — no loop reopening. Manual human session in regular browser may work.",
-    "status": "BLOCKED",
-    "result": "Block on Clutch.co (Cloudflare challenge loop /get-listed)",
-    "history": [
-      {
-        "date": "2026-08-08 05:50:19Z",
-        "action": "run",
-        "outcome": "SUBMITTED",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 05:52:55Z",
-        "action": "verify",
-        "outcome": "NEEDS_MANUAL",
-        "error": "false-positive SUBMITTED — 0 fields, no real submit",
-        "evidence": [
-          "human-submit-out/the-manifest/human-submit.log",
-          "human-submit-out/the-manifest/presubmit.png",
-          "human-submit-out/the-manifest/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 06:13:21Z",
-        "action": "run",
-        "outcome": "SUBMITTED",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 06:16:26Z",
-        "action": "verify",
-        "outcome": "NEEDS_MANUAL",
-        "error": "false-positive — 0 fields, no real submit",
-        "evidence": [
-          "human-submit-out/the-manifest/human-submit.log",
-          "human-submit-out/the-manifest/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 06:20:03Z",
-        "action": "verify",
-        "outcome": "BLOCKED",
-        "error": "Cloudflare challenge loop on Clutch.co/get-listed",
-        "evidence": [
-          "human-submit-out/the-manifest/blocked-clutch-cf-loop.md",
-          "human-submit-out/the-manifest/page-after-cf.png",
-          "human-submit-out/the-manifest/get-listed-page.png",
-          "human-submit-out/the-manifest/postsubmit.png",
-          "human-submit-out/the-manifest/human-submit.log"
-        ]
-      },
-      {
-        "date": "2026-08-08 06:50:57Z",
-        "action": "verify-retry",
-        "outcome": "BLOCKED",
-        "error": "Clutch.co/get-listed loads (Basic tier free), but vendor.clutch.co/profile/create/basic CF challenge-loop — origin does not respond (Ray ID a27c85757b9b543b), waited 120s+288s",
-        "evidence": [
-          "human-submit-out/the-manifest/blocked-clutch-cf-loop.md",
-          "human-submit-out/the-manifest/clutch-getlisted-page.png",
-          "human-submit-out/the-manifest/clutch-register-form.png",
-          "human-submit-out/the-manifest/clutch-vendor-register.png",
-          "human-submit-out/the-manifest/get-listed-page.png",
-          "human-submit-out/the-manifest/page-after-cf.png"
-        ]
-      },
-      {
-        "date": "2026-08-08T18:24:26.983Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still returning 403 / access denied",
-        "evidence": [
-          "Accessed: https://www.clutch.co/get-listed",
-          "Accessible: false",
-          "CF: false, 403: true, 5xx: false",
-          "Text len: 284",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest\\reprobe\\reprobe-1786213466648.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08T09:24:05.912Z",
+    "action": "fix-url",
+    "outcome": "updated",
+    "error": null,
+    "evidence": [
+     "https://www.bark.com/en/us/sellers/create/"
+    ],
+    "note": "submissionUrl заменён на /en/us/sellers/create/ (правильная ссылка регистрации)"
+   },
+   {
+    "date": "2026-08-08 09:28:33Z",
+    "action": "run",
+    "outcome": "FAILED",
+    "error": "page.waitForTimeout: Target page, context or browser has been closed",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png"
     ]
-  },
-  {
-    "name": "TopSEOs",
-    "url": "https://www.topseos.com",
-    "submissionUrl": "https://www.topseos.com/registration",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "FORM_READY",
-    "previewFields": 10,
-    "previewFilled": 0,
-    "humanAction": "manual submit",
-    "notes": "OAuth-only: регистрация только через LinkedIn («Sign up with Linkedin»). Из автоматизации исключён — только ручной LinkedIn-вход. Подтверждено запуском: форма на /?#register не содержит email-поля, AI mapping 17 полей, Filled 2/18 (11 failed), ручное подтверждение за 180s не получено.",
-    "status": "NEEDS_MANUAL",
-    "result": "Human action timeout (180s) — no proof of submission",
-    "history": [
-      {
-        "date": "2026-08-08 15:26:48Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 18:36:00Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "No submission proof (180s human action timeout); LinkedIn OAuth-only form",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\postsubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\human-submit.log"
-        ],
-        "note": "Один запуск (--only TopSEOs). submissionUrl /registration редиректит на https://www.topseos.com/?#register (форма на главной). Fields 18, AI mapping 17, Filled 2/18 (11 failed). Email-поля в форме отсутствуют — подтверждает OAuth-only (LinkedIn) регистрацию. Pre-flight: публичного профиля ITllect на topseos.com нет (websearch). HUMAN ACTION 180s — подтверждение не получено. LinkedIn OAuth не автоматизируем (правила). Итог: NEEDS_MANUAL — нужен ручной вход через LinkedIn-аккаунт."
-      },
-      {
-        "date": "2026-08-08 16:20:34Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/postsubmit.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-08 10:00:27Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
     ]
-  },
-  {
-    "name": "Tumblr",
-    "url": "https://www.tumblr.com",
-    "submissionUrl": "https://www.tumblr.com/register",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "FAILED",
-    "result": "page.waitForTimeout: Target page, context or browser has been closed"
-  },
-  {
-    "name": "Twitter / X",
-    "url": "https://twitter.com",
-    "submissionUrl": "https://twitter.com/i/flow/signup",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Upcity",
-    "url": "https://upcity.com",
-    "submissionUrl": "https://upcity.com/partners",
-    "type": "C",
-    "priority": 2,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "register agency profile + fill services/portfolio + submit",
-    "notes": "Site unreachable (chrome-error)",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "Webflow Partner",
-    "url": "https://webflow.com/partners",
-    "submissionUrl": "https://webflow.com/partners/apply",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "partner application (manual review)",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "WooCommerce Agency",
-    "url": "https://woocommerce.com/agencies",
-    "submissionUrl": "https://woocommerce.com/woocommerce-agencies/wooexpert-application/",
-    "type": "E",
-    "priority": 2,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "selectors missing",
-    "notes": "Form fields not found by Playwright",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "YouTube Channel",
-    "url": "https://www.youtube.com",
-    "submissionUrl": "https://www.youtube.com/create_channel",
-    "type": "D",
-    "priority": 2,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "REGISTERED",
-    "result": null
-  },
-  {
-    "name": "Awwwards",
-    "url": "https://www.awwwards.com",
-    "submissionUrl": "https://www.awwwards.com/sites/submit",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "NEEDS_MANUAL",
-    "result": null
-  },
-  {
-    "name": "Broward County Biz",
-    "url": "https://www.broward.org/business",
-    "submissionUrl": "https://www.broward.org/business",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 1f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Business2Community",
-    "url": "https://business2community.com",
-    "submissionUrl": "https://business2community.com/contribute",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "FORM_LIKELY",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "register + submit",
-    "notes": "Aweber email capture (form-sorry?message=notactivecustomer), не листинг",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "City of Plantation",
-    "url": "https://www.plantation.org/business",
-    "submissionUrl": "https://www.plantation.org/business",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "CSS Design Awards",
-    "url": "https://www.cssdesignawards.com",
-    "submissionUrl": "https://www.cssdesignawards.com/sites/submit",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "Site unreachable (chrome-error)",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "Data Axle",
-    "url": "https://www.data-axle.com",
-    "submissionUrl": "https://www.data-axle.com/partner/",
-    "type": "E",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "partner application (manual review)",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "EzineArticles",
-    "url": "https://ezinearticles.com",
-    "submissionUrl": "https://ezinearticles.com/submit-article/",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "DEAD",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "Site unreachable (chrome-error)",
-    "status": "FAILED",
-    "result": null
-  },
-  {
-    "name": "Find Best SEO",
-    "url": "https://www.findbestseo.com",
-    "submissionUrl": "https://www.findbestseo.com/submit-agency",
-    "type": "C",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "register agency profile + fill services/portfolio + submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "FL DEO Business",
-    "url": "https://floridajobs.org",
-    "submissionUrl": "https://floridajobs.org/business-resources",
-    "type": "E",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "partner application (manual review)",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "FL SBDC Network",
-    "url": "https://www.floridasbdc.org",
-    "submissionUrl": "https://www.floridasbdc.org/request-advising/",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 3,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 3f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "HubPages",
-    "url": "https://hubpages.com",
-    "submissionUrl": "https://hubpages.com/user/register",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "manual check required",
-    "notes": "FAILED: /user/register=404, /signup=404, /register=404, /join=404. Все URL регистрации недоступны.",
-    "status": "FAILED",
-    "result": "404"
-  },
-  {
-    "name": "Influencer Mkt Hub",
-    "url": "https://influencermarketinghub.com",
-    "submissionUrl": "https://influencermarketinghub.com/submit-agency/",
-    "type": "C",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "register agency profile + fill services/portfolio + submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Mailchimp Partner",
-    "url": "https://mailchimp.com/partner-directory",
-    "submissionUrl": "https://mailchimp.com/partners/apply/",
-    "type": "E",
-    "priority": 3,
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "login + register",
-    "notes": "Login/registration required",
-    "status": "NEEDS_MANUAL",
-    "result": null
-  },
-  {
-    "name": "Miami Chamber",
-    "url": "https://www.miamichamber.com",
-    "submissionUrl": "https://www.miamichamber.com/membership",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "SBA.gov Business",
-    "url": "https://www.sba.gov",
-    "submissionUrl": "https://www.sba.gov/local-assistance/find",
-    "type": "E",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "partner application (manual review)",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "SCORE Mentor Network",
-    "url": "https://www.score.org",
-    "submissionUrl": "https://www.score.org/find-mentor",
-    "type": "E",
-    "priority": 3,
-    "previewStatus": "FORM_READY",
-    "previewFields": 29,
-    "previewFilled": 0,
-    "humanAction": "human assisted fill + submit",
-    "notes": "MASTER_LIST: NOT_APPLICABLE для listing (Government mentoring resource). Запуск подтвердил: реальной формы нет",
-    "status": "NOT_APPLICABLE",
-    "result": "No listing form on score.org — /find-mentor redirects to informational /how-mentoring-works/ page (mentoring program, not a business directory)",
-    "history": [
-      {
-        "date": "2026-08-08 14:33:18Z",
-        "action": "run",
-        "outcome": "NEEDS_MANUAL",
-        "error": "Human action timeout (180s) — no proof of submission",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/human-submit.log",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/postsubmit.png"
-        ]
-      },
-      {
-        "date": "2026-08-08 16:30:00Z",
-        "action": "run",
-        "outcome": "NOT_APPLICABLE",
-        "error": "Redirect to informational page; no listing form found",
-        "evidence": [
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network\\presubmit.png",
-          "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network\\postsubmit.png"
-        ],
-        "note": "Один запуск. submissionUrl /find-mentor редиректит на https://www.score.org/how-mentoring-works/ (информационная страница про mentoring). '152 полей' — DOM-шум (меню/служебные элементы), реальной формы листинга нет; email-поля в форме отсутствуют (Filled 3/152, 10 failed); HUMAN ACTION 180s без подтверждения. SCORE — government mentoring program, не каталог бизнеса → NOT_APPLICABLE для listing."
-      }
+   },
+   {
+    "date": "2026-08-08 13:30:00Z",
+    "action": "research",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\adapter.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\adapter-v15-details.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\net-diag.png"
+    ],
+    "note": "Глубокая отладка флоу: URL /en/us/sellers/create-account/?cn=search-engine-optimization (SEO Specialists). Шаги: ZIP(33324) → details (name/companyName/email + website + опции: website=Yes, size=2-10, sales/social пропущены) → Your business address (google-autocomplete + suite/city/state/postcode). Телефон (ph=optional) НЕ вводился. Профиль human-bark-com сломан (SPA не рендерится — антибот-куки), работает только human-bark2 (свежий). Переходы Next занимают 17-75s+: API api.bark.com/bark/seller/email?email=...&captchaToken=... возвращает 500 Internal Server Error (нестабильность сервера). 10+ прогонов; аккаунт НЕ создан (до submit не дошли). Вывод: телефон не требуется, нужен повторный прогон при стабильном сервере или ручное завершение."
+   },
+   {
+    "date": "2026-08-09 13:33:59Z",
+    "action": "run",
+    "outcome": "FAILED",
+    "error": "page.evaluate: ReferenceError: SEARCH_FIELD_PATTERN is not defined\n    at eval (eval at evaluate (:311:30), <anonymous>:1:2396)\n    at NodeList.forEach (<anonymous>)\n    at eval (eval at evaluate (:311:30), <anonymous>:1:208)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
     ]
-  },
-  {
-    "name": "Semfirms",
-    "url": "https://semfirms.com",
-    "submissionUrl": "https://www.semfirms.com/add-listing",
-    "type": "C",
-    "priority": 3,
-    "category": "Business Directory",
-    "previewStatus": "LOGIN_REQUIRED",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "completed",
-    "notes": "VERIFIED_SUCCESS: Профиль создан и подтверждён. URL: https://www.semfirms.com/profile/itllect-llc. Аккаунт: itllect.marketing@gmail.com / [REDACTED]. Блокировало: поле title требовало 'Itllect LLC' (полное юридическое название). Drupal валидация отклоняла форму без полного названия компании.",
-    "status": "VERIFIED_SUCCESS",
-    "result": "https://www.semfirms.com/profile/itllect-llc"
-  },
-  {
-    "name": "SiteInspire",
-    "url": "https://www.siteinspire.com",
-    "submissionUrl": "https://www.siteinspire.com/submit",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "SlideShare",
-    "url": "https://www.slideshare.net",
-    "submissionUrl": "https://www.slideshare.net/signup",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 1,
-    "previewFilled": 0,
-    "humanAction": "create account + create profile + publish content",
-    "notes": "NOT_APPLICABLE: 1f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "South FL Biz Journal",
-    "url": "https://www.bizjournals.com/southflorida",
-    "submissionUrl": "https://www.bizjournals.com/southflorida/submit",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "BLOCKED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T18:24:55.877Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still returning 403 / access denied",
-        "evidence": [
-          "Accessed: https://www.bizjournals.com/southflorida/submit",
-          "Accessible: false",
-          "CF: false, 403: true, 5xx: false",
-          "Text len: 290",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\south-fl-biz-journal\\reprobe\\reprobe-1786213495727.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-09 14:26:58Z",
+    "action": "run",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com/postsubmit.png"
     ]
-  },
-  {
-    "name": "Spoke",
-    "url": "https://spoke.com",
-    "submissionUrl": "",
-    "type": "A",
-    "priority": 3,
-    "previewStatus": "NOT_APPLICABLE",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "fill form + manual submit",
-    "notes": "NOT_APPLICABLE: 0f",
-    "status": "NOT_APPLICABLE",
-    "result": null
-  },
-  {
-    "name": "Stack Overflow",
-    "url": "https://stackoverflow.com/jobs",
-    "submissionUrl": "https://stackoverflow.com/users/signup",
-    "type": "D",
-    "priority": 3,
-    "previewStatus": "CF_BLOCKED",
-    "previewFields": 0,
-    "previewFilled": 0,
-    "humanAction": "captcha (Cloudflare)",
-    "notes": "CF blocked in headless; needs headed stealth + manual solve",
-    "status": "BLOCKED",
-    "result": null,
-    "history": [
-      {
-        "date": "2026-08-08T18:25:02.150Z",
-        "action": "reprobe",
-        "outcome": "BLOCKED",
-        "error": "Still returning 403 / access denied",
-        "evidence": [
-          "Accessed: https://stackoverflow.com/users/signup",
-          "Accessible: false",
-          "CF: false, 403: true, 5xx: false",
-          "Text len: 288",
-          "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\stack-overflow\\reprobe\\reprobe-1786213501463.png"
-        ]
-      }
+   },
+   {
+    "date": "2026-08-10 13:39:13Z",
+    "action": "real-walk",
+    "outcome": "SUCCESS",
+    "error": null,
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\real-walk\\real-walk.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\real-walk\\step5-address-filled.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\real-walk\\post-submit.png"
+    ],
+    "note": "Адрес-Next клик создал аккаунт (4 API-запроса: 3 валидации + create). URL остался create-account (SPA), но created_at=13:39:13 подтверждает создание. Дальше — onboarding (добавление сервисов)."
+   },
+   {
+    "date": "2026-08-10 13:50:04Z",
+    "action": "verify",
+    "outcome": "VERIFIED",
+    "error": null,
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\SUCCESS.md",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\dashboard-verify\\identity.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\dashboard-verify\\seller-self-0.json",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\dashboard-verify\\dashboard.png"
+    ],
+    "note": "seller/self: user_id=40829222, spf_id=4708659, account_email=itllect.marketing@gmail.com, company=ITllect, seller_name=[REDACTED], created_at=2026-08-10 13:39:13. Dashboard live: 15 leads, 3 services, 1 location. Предыдущий 08.09 SUBMITTED — только навигация, аккаунта не было."
+   }
+  ]
+ },
+ {
+  "name": "Behance",
+  "url": "https://www.behance.net",
+  "submissionUrl": "https://www.behance.net/signup",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "Site unreachable (chrome-error)",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "Broward County Chamber",
+  "url": "https://browardchamber.com",
+  "submissionUrl": "https://browardchamber.com/membership-application/",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Digital Agency Net",
+  "url": "https://digitalagencynetwork.com",
+  "submissionUrl": "https://digitalagencynetwork.com/add-agency/",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "FORM_READY",
+  "previewFields": 4,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "PREVIEW 4f OK; needs registration before add-agency",
+  "status": "SUBMITTED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T17:47:04.483Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://digitalagencynetwork.com/agency/itllect-llc -> https://digitalagencynetwork.com/agency/itllect-llc (len=1329, itllect=false, 404=true, soft404=false, login=true)",
+     "Search: https://digitalagencynetwork.com/search?q=itllect -> https://digitalagencynetwork.com/wp-content/uploads/2020/08/search.svg (len=0, itllect=false, noResults=false)"
     ]
-  },
-  {
-    "name": "FindUsHere",
-    "url": "https://www.find-us-here.com",
-    "submissionUrl": "https://www.find-us-here.com/register.php",
-    "type": "A",
-    "priority": 2,
-    "category": "Business Directory",
-    "previewStatus": "FORM_READY",
-    "previewFields": 12,
-    "previewFilled": 0,
-    "humanAction": "completed",
-    "notes": "VERIFIED_SUCCESS: Профиль создан и публично доступен. URL: https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/. Аккаунт: itllect / [REDACTED]. Заполнены: контакты, адрес, категория (Advertising - Direct Mail), описание. Email verification не требуется (аккаунт активирован сразу).",
-    "status": "VERIFIED_SUCCESS",
-    "result": "https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/"
-  }
+   },
+   {
+    "date": "2026-08-08T17:53:20.959Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": [
+     "Direct: https://digitalagencynetwork.com/agency/itllect -> https://digitalagencynetwork.com/agency/itllect (len=1329, itllect=false, 404=true, soft404=false, login=true)",
+     "Direct: https://digitalagencynetwork.com/agency/itllect-llc -> https://digitalagencynetwork.com/agency/itllect-llc (len=1329, itllect=false, 404=true, soft404=false, login=true)",
+     "Search: https://digitalagencynetwork.com/search?q=itllect -> https://digitalagencynetwork.com/wp-content/uploads/2020/08/search.svg (len=0, itllect=false, noResults=false)"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Dribbble",
+  "url": "https://dribbble.com",
+  "submissionUrl": "https://dribbble.com/signup",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 2,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Площадка ориентирована на дизайнерские профили и портфолио; подходящего профиля компании/SEO-агентства для размещения ITllect в рамках данного заказа не найдено.",
+  "status": "NOT_RELEVANT",
+  "result": null
+ },
+ {
+  "name": "Expertise.com",
+  "url": "https://www.expertise.com",
+  "submissionUrl": "https://www.expertise.com/business-application",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Login/registration required",
+  "status": "FAILED",
+  "result": "page.waitForTimeout: Target page, context or browser has been closed"
+ },
+ {
+  "name": "Express Update USA",
+  "url": "https://www.expressupdate.com",
+  "submissionUrl": "https://www.expressupdate.com/claim",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim InfoGroup listing via phone/postcard. Not NA.",
+  "status": "NEEDS_MANUAL",
+  "result": "reset for post-fix retest",
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.332Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim InfoGroup listing via phone/postcard. Not NA."
+    ]
+   },
+   {
+    "date": "2026-08-09 13:55:46Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Registration page not found (flow=CLAIM): Registration page not found (homepage/landing without registration evidence)",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\express-update-usa/human-submit.log"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "EZlocal",
+  "url": "https://www.ezlocal.com",
+  "submissionUrl": "https://www.ezlocal.com/business-directory/add-business",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve",
+  "status": "BLOCKED",
+  "result": "page.waitForTimeout: Target page, context or browser has been closed",
+  "history": [
+   {
+    "date": "2026-08-08T18:23:54.296Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still returning 403 / access denied",
+    "evidence": [
+     "Accessed: https://www.ezlocal.com/business-directory/add-business",
+     "Accessible: false",
+     "CF: false, 403: true, 5xx: false",
+     "Text len: 286",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\ezlocal\\reprobe\\reprobe-1786213433388.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "FL Business Dir",
+  "url": "https://www.floridabusiness.com",
+  "submissionUrl": "https://www.floridabusiness.com/add-listing",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "Site unreachable (chrome-error)",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "Foursquare Business",
+  "url": "https://business.foursquare.com",
+  "submissionUrl": "https://business.foursquare.com/claim",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "NOT_APPLICABLE: 0f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim venue + phone verify. Business CAN be listed.",
+  "status": "NEEDS_MANUAL",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.332Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: claim venue + phone verify. Business CAN be listed."
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Ft Lauderdale Chamber",
+  "url": "https://www.ftlchamber.com",
+  "submissionUrl": "https://business.ftlchamber.com/application",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 2,
+  "previewFilled": 0,
+  "humanAction": "not applicable — paid membership",
+  "notes": "Paid membership platform, requires separate client approval and budget. Not included in standard directory submission workflow. GrowthZone multi-step form: tier selection (cheapest for-profit: New Member GENERAL-GFLCC $574/year + $50 one-time, non-refundable, auto-renewal with stored card) → contact info → payment.",
+  "status": "NOT_APPLICABLE",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08 05:32:54Z",
+    "action": "verify",
+    "outcome": "NOT_APPLICABLE",
+    "evidence": [
+     "human-submit-out/ft-lauderdale-chamber/paid-membership-evidence.md",
+     "https://business.ftlchamber.com/application"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "G2",
+  "url": "https://www.g2.com",
+  "submissionUrl": "https://www.g2.com/claim-listing",
+  "type": "B",
+  "priority": 2,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "register + claim business + verify email/domain",
+  "notes": "Блокировка сайта — не переоткрывать, перейти к следующим площадкам.",
+  "status": "BLOCKED",
+  "result": "EXTERNAL BLOCK — Cloudflare/access restriction; possible IP reputation block; automation detected. Домен недоступен, повторные запросы запрещены.",
+  "history": [
+   {
+    "date": "2026-08-08T18:24:42.237Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still inaccessible",
+    "evidence": [
+     "Accessed: https://www.g2.com/claim-listing",
+     "Accessible: false",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 940",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\g2\\reprobe\\reprobe-1786213481885.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "GitHub",
+  "url": "https://github.com",
+  "submissionUrl": "https://github.com/organizations/new",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Hotfrog",
+  "url": "https://www.hotfrog.com",
+  "submissionUrl": "https://www.hotfrog.com/add-business",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual check required",
+  "notes": "FAILED: Cloudflare block (403) — 'Performing security verification'. Предыдущий SUCCESS не верифицирован. Домен недоступен для автоматизации.",
+  "status": "BLOCKED",
+  "result": "Cloudflare block",
+  "history": [
+   {
+    "date": "2026-08-08T18:23:29.391Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still inaccessible",
+    "evidence": [
+     "Accessed: https://www.hotfrog.com/add-business",
+     "Accessible: false",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 1455",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\hotfrog\\reprobe\\reprobe-1786213409142.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Local.com",
+  "url": "https://www.local.com",
+  "submissionUrl": "https://www.local.com/claim-listing",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "unreachable",
+  "notes": "claim-listing = Page not found (404); форма нерабочая",
+  "status": "FAILED",
+  "result": "404"
+ },
+ {
+  "name": "Merchant Circle",
+  "url": "https://www.merchantcircle.com",
+  "submissionUrl": "https://www.merchantcircle.com/signup",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 2,
+  "previewFilled": 0,
+  "humanAction": "manual check required",
+  "notes": "FAILED: /registration=404, /login=404, /signup=403 (access denied). Площадка недоступна для автоматической регистрации.",
+  "status": "FAILED",
+  "result": "403/404"
+ },
+ {
+  "name": "n49",
+  "url": "https://www.n49.com",
+  "submissionUrl": "https://www.n49.com/business/",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 0f; REPROBE 2026-08-08: n49 accessible but no business listing form — not a directory",
+  "status": "NOT_APPLICABLE",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T18:24:10.763Z",
+    "action": "reprobe",
+    "outcome": "NOT_APPLICABLE",
+    "error": null,
+    "evidence": [
+     "Accessed: https://business.n49.ca/",
+     "Accessible: true",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 533",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\n49\\reprobe\\reprobe-1786213450484.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Neustar Localeze",
+  "url": "https://www.neustarlocaleze.biz",
+  "submissionUrl": "https://www.neustarlocaleze.biz/signup",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application (manual review)",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Nextdoor Business",
+  "url": "https://business.nextdoor.com",
+  "submissionUrl": "https://business.nextdoor.com/business-signup",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 2,
+  "previewFilled": 0,
+  "humanAction": "manual submit needed",
+  "notes": "NOT_APPLICABLE: 2f; RECLASSIFIED 08.08: NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: create business page + postcard verify. Not NA.",
+  "status": "NEEDS_MANUAL",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T19:58:35.332Z",
+    "action": "reclassify",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "NOT_APPLICABLE audit 08.08 — client-report/not-applicable-final-audit.md",
+     "NOT_APPLICABLE → NEEDS_MANUAL per audit 08.08: create business page + postcard verify. Not NA."
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Pinterest Business",
+  "url": "https://business.pinterest.com",
+  "submissionUrl": "https://business.pinterest.com/business/create/",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Plantation Chamber",
+  "url": "https://www.plantationchamber.org",
+  "submissionUrl": "https://www.plantationchamber.org/join",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Login/registration required",
+  "status": "SUBMITTED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T17:47:23.986Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": []
+   },
+   {
+    "date": "2026-08-08T17:53:33.538Z",
+    "action": "verify",
+    "outcome": "PENDING",
+    "error": "profile not yet published",
+    "evidence": []
+   }
+  ]
+ },
+ {
+  "name": "ProductHunt",
+  "url": "https://www.producthunt.com",
+  "submissionUrl": "https://www.producthunt.com/posts/new",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "ProvenExpert",
+  "url": "https://www.provenexpert.com",
+  "submissionUrl": "https://www.provenexpert.com/en/business/",
+  "type": "B",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "manual check required",
+  "notes": "Account created (customer 2377210), profile published. Public URL: https://www.provenexpert.com/itllect/",
+  "status": "VERIFIED_SUCCESS",
+  "result": "Profile published",
+  "history": [
+   {
+    "date": "2026-08-08T18:24:49.218Z",
+    "action": "reprobe",
+    "outcome": "FORM_READY",
+    "error": null,
+    "evidence": [
+     "Accessed: https://www.provenexpert.com/en-us/",
+     "Accessible: true",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 5059",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\\reprobe\\reprobe-1786213487255.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 18:38:57Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 08:11:32Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 09:08:50Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 10:35:28Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 11:02:18Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 12:33:37Z",
+    "action": "manual-verified",
+    "outcome": "VERIFIED_SUCCESS",
+    "error": null,
+    "evidence": [
+     "Account created: customer 2377210",
+     "Onboarding completed (name/password/profile/industry)",
+     "Profile created: Contact Details + Company Information + Online Presence",
+     "Published: https://www.provenexpert.com/itllect/",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\u000berify\\dashboard.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\provenexpert\\publish\\public-profile.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Quora",
+  "url": "https://www.quora.com",
+  "submissionUrl": "https://www.quora.com/",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "SmartCustomer",
+  "url": "https://www.smartcustomer.com",
+  "submissionUrl": "https://biz.smartcustomer.com/register",
+  "type": "B",
+  "priority": 2,
+  "previewStatus": "FORM_READY",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "ЗАВЕРШЕНА на текущем этапе (10.08): итог для клиента — \"Регистрация технически выполнена, но площадка требует корпоративный email домена; требуется подтверждение адреса со стороны клиента.\" Исходный регистрационный email (itllect.marketing@gmail.com) отклонён сервером: mismatch_email (email domain doesn't match website domain). Альтернативный email info@itllect.com использован ВРУЧНУЮ во время диагностики (подмена зафиксирована и разобрана; добавлен generic safeguard: detectEmailDomainMismatch → NEEDS_MANUAL, тест 10/10 PASS). Аккаунт sid 127601 сохранён как CREATED_BUT_WRONG_EMAIL. Статус НЕ VERIFIED_SUCCESS (подтверждение email клиентом не выполнено).",
+  "status": "NEEDS_MANUAL",
+  "result": "CREATED_BUT_WRONG_EMAIL: регистрация технически выполнена (seller ID 127601, POST /registration → status OK, страница: \"Thank you for registering\"), НО аккаунт создан на info@itllect.com (email подтверждения ушёл туда), т.к. площадка отклонила исходный регистрационный email itllect.marketing@gmail.com с ошибкой mismatch_email (требует соответствия домена email ↔ website). Подтверждение аккаунта требует доступа к указанной почте/решения клиента. НЕ удалять аккаунт, НЕ создавать второй, НЕ отправлять login code, НЕ подтверждать email автоматически.",
+  "history": [
+   {
+    "date": "2026-08-08 17:08:24Z",
+    "action": "run",
+    "outcome": "running"
+   },
+   {
+    "date": "2026-08-09 13:36:24Z",
+    "action": "run",
+    "outcome": "running"
+   },
+   {
+    "date": "2026-08-09 13:59:19Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "No form detected (0 fields) and no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\smartcustomer/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-09 14:35:23Z",
+    "action": "run",
+    "outcome": "running"
+   },
+   {
+    "date": "2026-08-10 15:45:17Z",
+    "action": "real-apply",
+    "outcome": "REJECTED",
+    "error": "mismatch_email: email itllect.marketing@gmail.com domain doesn't match website https://itllect.com",
+    "evidence": [
+     "C:hpgithubseoflowaihuman-submit-outsmartcustomer\real-applylive.log"
+    ],
+    "note": "Прогон 1: поля заполнены корректно (email itllect.marketing@gmail.com), POST /registration вернул {\"status\":\"ERROR\",\"code\":\"mismatch_email\"}. Аккаунт НЕ создан."
+   },
+   {
+    "date": "2026-08-10 15:54:59Z",
+    "action": "real-apply",
+    "outcome": "CREATED_BUT_WRONG_EMAIL",
+    "error": null,
+    "evidence": [
+     "C:hpgithubseoflowaihuman-submit-outsmartcustomer\real-apply\real-apply.log",
+     "C:hpgithubseoflowaihuman-submit-outsmartcustomer\real-applysubmits.json",
+     "C:hpgithubseoflowaihuman-submit-outsmartcustomer\real-applypost-submit.png"
+    ],
+    "note": "Прогон 2 (после ручной подмены email на info@itllect.com): POST /registration → {\"status\":\"OK\",\"sid\":127601}, страница \"Thank you for registering — check your email\". Confirmation email отправлен на info@itllect.com. Подтверждение аккаунта невозможно без доступа к почте."
+   },
+   {
+    "date": "2026-08-10 16:00:00Z",
+    "action": "finalize",
+    "outcome": "NEEDS_MANUAL",
+    "error": null,
+    "evidence": [
+     "C:hpgithubseoflowaiscripts\test-registration-email-guard.ts"
+    ],
+    "note": "Площадка зафиксирована как завершённая на текущем этапе: CREATED_BUT_WRONG_EMAIL / NEEDS_MANUAL (email verification pending). Generic safeguard добавлен и проверен (10/10 PASS). Ожидание решения клиента по корпоративному email."
+   }
+  ]
+ },
+ {
+  "name": "Sortlist",
+  "url": "https://www.sortlist.com",
+  "submissionUrl": "https://www.sortlist.com/become-partner",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve",
+  "status": "BLOCKED",
+  "result": "Human action timeout (180s)",
+  "history": [
+   {
+    "date": "2026-08-08T18:24:34.613Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still inaccessible",
+    "evidence": [
+     "Accessed: https://www.sortlist.com/become-partner",
+     "Accessible: false",
+     "CF: false, 403: false, 5xx: false",
+     "Text len: 82",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\sortlist\\reprobe\\reprobe-1786213473917.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Shopify Partners",
+  "url": "https://www.shopify.com/partners",
+  "submissionUrl": "https://partners.shopify.com/",
+  "type": "E",
+  "priority": 1,
+  "previewStatus": "EMPTY",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "find form path",
+  "notes": "NEEDS_MANUAL: requires client login to access Partner Directory; existing human-shopify-partners profile exists but no active session cookie or credential data; manual login required to complete profile registration",
+  "status": "NEEDS_MANUAL",
+  "result": "NEEDS_MANUAL: login credentials required — session activation needed via client-provided credentials; no automatic profile creation possible",
+  "history": [
+   {
+    "date": "2026-07-30T22:31:37Z",
+    "action": "profile-check",
+    "result": "NOT_LOGGED_IN",
+    "detail": "human-shopify-partners profile verified — cookies present but no active session; dashboard access requires client-provided login credentials; partnership profile placement eligibility confirmed but access blocked without manual login"
+   }
+  ]
+ },
+ {
+  "name": "Superpages",
+  "url": "https://www.superpages.com",
+  "submissionUrl": "https://www.superpages.com/add-listing",
+  "type": "A",
+  "priority": 2,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve",
+  "status": "BLOCKED",
+  "result": "page.waitForTimeout: Target page, context or browser has been closed",
+  "history": [
+   {
+    "date": "2026-08-08T18:23:48.765Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still Cloudflare blocked after 15s wait",
+    "evidence": [
+     "Accessed: https://www.superpages.com/add-listing",
+     "Accessible: false",
+     "CF: true, 403: true, 5xx: false",
+     "Text len: 691",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\superpages\\reprobe\\reprobe-1786213428599.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "The Manifest",
+  "url": "https://themanifest.com",
+  "submissionUrl": "https://www.clutch.co/get-listed",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "EMPTY",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "blocked — Cloudflare challenge-loop on vendor.clutch.co; manual human session in regular browser required",
+  "notes": "The Manifest has no own form (/listings/list-your-company = 404). /get-listed explains: registration via Clutch.co. CTA 'Create a Free Profile' -> https://vendor.clutch.co/profile/create/basic (Basic tier, free). Main clutch.co/get-listed loads (CF clears ~30s; tiers: Basic Free / Verified $499/yr / Advertiser). But vendor.clutch.co CF challenge-loop: 'Verification successful. Waiting for vendor.clutch.co to respond' — origin does not respond (Ray ID a27c85757b9b543b). 2 attempts waited 120s and 288s, both stuck. 3 false-positive SUBMITTED outcomes reverted (0 fields). BLOCKED per site-handling rules — no loop reopening. Manual human session in regular browser may work.",
+  "status": "BLOCKED",
+  "result": "Block on Clutch.co (Cloudflare challenge loop /get-listed)",
+  "history": [
+   {
+    "date": "2026-08-08 05:50:19Z",
+    "action": "run",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 05:52:55Z",
+    "action": "verify",
+    "outcome": "NEEDS_MANUAL",
+    "error": "false-positive SUBMITTED — 0 fields, no real submit",
+    "evidence": [
+     "human-submit-out/the-manifest/human-submit.log",
+     "human-submit-out/the-manifest/presubmit.png",
+     "human-submit-out/the-manifest/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 06:13:21Z",
+    "action": "run",
+    "outcome": "SUBMITTED",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 06:16:26Z",
+    "action": "verify",
+    "outcome": "NEEDS_MANUAL",
+    "error": "false-positive — 0 fields, no real submit",
+    "evidence": [
+     "human-submit-out/the-manifest/human-submit.log",
+     "human-submit-out/the-manifest/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 06:20:03Z",
+    "action": "verify",
+    "outcome": "BLOCKED",
+    "error": "Cloudflare challenge loop on Clutch.co/get-listed",
+    "evidence": [
+     "human-submit-out/the-manifest/blocked-clutch-cf-loop.md",
+     "human-submit-out/the-manifest/page-after-cf.png",
+     "human-submit-out/the-manifest/get-listed-page.png",
+     "human-submit-out/the-manifest/postsubmit.png",
+     "human-submit-out/the-manifest/human-submit.log"
+    ]
+   },
+   {
+    "date": "2026-08-08 06:50:57Z",
+    "action": "verify-retry",
+    "outcome": "BLOCKED",
+    "error": "Clutch.co/get-listed loads (Basic tier free), but vendor.clutch.co/profile/create/basic CF challenge-loop — origin does not respond (Ray ID a27c85757b9b543b), waited 120s+288s",
+    "evidence": [
+     "human-submit-out/the-manifest/blocked-clutch-cf-loop.md",
+     "human-submit-out/the-manifest/clutch-getlisted-page.png",
+     "human-submit-out/the-manifest/clutch-register-form.png",
+     "human-submit-out/the-manifest/clutch-vendor-register.png",
+     "human-submit-out/the-manifest/get-listed-page.png",
+     "human-submit-out/the-manifest/page-after-cf.png"
+    ]
+   },
+   {
+    "date": "2026-08-08T18:24:26.983Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still returning 403 / access denied",
+    "evidence": [
+     "Accessed: https://www.clutch.co/get-listed",
+     "Accessible: false",
+     "CF: false, 403: true, 5xx: false",
+     "Text len: 284",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\the-manifest\\reprobe\\reprobe-1786213466648.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "TopSEOs",
+  "url": "https://www.topseos.com",
+  "submissionUrl": "https://www.topseos.com/registration",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "FORM_READY",
+  "previewFields": 10,
+  "previewFilled": 0,
+  "humanAction": "manual submit",
+  "notes": "OAuth-only: регистрация только через LinkedIn («Sign up with Linkedin»). Из автоматизации исключён — только ручной LinkedIn-вход. Подтверждено запуском: форма на /?#register не содержит email-поля, AI mapping 17 полей, Filled 2/18 (11 failed), ручное подтверждение за 180s не получено.",
+  "status": "NEEDS_MANUAL",
+  "result": "Human action timeout (180s) — no proof of submission",
+  "history": [
+   {
+    "date": "2026-08-08 15:26:48Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 18:36:00Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "No submission proof (180s human action timeout); LinkedIn OAuth-only form",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\postsubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos\\human-submit.log"
+    ],
+    "note": "Один запуск (--only TopSEOs). submissionUrl /registration редиректит на https://www.topseos.com/?#register (форма на главной). Fields 18, AI mapping 17, Filled 2/18 (11 failed). Email-поля в форме отсутствуют — подтверждает OAuth-only (LinkedIn) регистрацию. Pre-flight: публичного профиля ITllect на topseos.com нет (websearch). HUMAN ACTION 180s — подтверждение не получено. LinkedIn OAuth не автоматизируем (правила). Итог: NEEDS_MANUAL — нужен ручной вход через LinkedIn-аккаунт."
+   },
+   {
+    "date": "2026-08-08 16:20:34Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\topseos/postsubmit.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Tumblr",
+  "url": "https://www.tumblr.com",
+  "submissionUrl": "https://www.tumblr.com/register",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Контентная/социальная платформа, а не релевантный бизнес-каталог для текущей задачи размещения компании.",
+  "status": "NOT_RELEVANT",
+  "result": "page.waitForTimeout: Target page, context or browser has been closed"
+ },
+ {
+  "name": "Twitter / X",
+  "url": "https://twitter.com",
+  "submissionUrl": "https://twitter.com/i/flow/signup",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Upcity",
+  "url": "https://upcity.com",
+  "submissionUrl": "https://upcity.com/partners",
+  "type": "C",
+  "priority": 2,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "register agency profile + fill services/portfolio + submit",
+  "notes": "Site unreachable (chrome-error)",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "Webflow Partner",
+  "url": "https://webflow.com/partners",
+  "submissionUrl": "https://webflow.com/partners/apply",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application (manual review)",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "WooCommerce Agency",
+  "url": "https://woocommerce.com/agencies",
+  "submissionUrl": "https://woocommerce.com/woocommerce-agencies/wooexpert-application/",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "selectors missing",
+  "notes": "Form fields not found by Playwright",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "YouTube Channel",
+  "url": "https://www.youtube.com",
+  "submissionUrl": "https://www.youtube.com/create_channel",
+  "type": "D",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "YouTube является видеоплатформой, а не бизнес-каталогом; создание брендового канала не соответствует цели текущего заказа по добавлению компании в каталоги.",
+  "status": "NOT_RELEVANT",
+  "result": null
+ },
+ {
+  "name": "Awwwards",
+  "url": "https://www.awwwards.com",
+  "submissionUrl": "https://www.awwwards.com/sites/submit",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Login/registration required",
+  "status": "NEEDS_MANUAL",
+  "result": null
+ },
+ {
+  "name": "Broward County Biz",
+  "url": "https://www.broward.org/business",
+  "submissionUrl": "https://www.broward.org/business",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 1f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Business2Community",
+  "url": "https://business2community.com",
+  "submissionUrl": "https://business2community.com/contribute",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "FORM_LIKELY",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "register + submit",
+  "notes": "Aweber email capture (form-sorry?message=notactivecustomer), не листинг",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "City of Plantation",
+  "url": "https://www.plantation.org/business",
+  "submissionUrl": "https://www.plantation.org/business",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "CSS Design Awards",
+  "url": "https://www.cssdesignawards.com",
+  "submissionUrl": "https://www.cssdesignawards.com/sites/submit",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "Site unreachable (chrome-error)",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "Data Axle",
+  "url": "https://www.data-axle.com",
+  "submissionUrl": "https://www.data-axle.com/partner/",
+  "type": "E",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application (manual review)",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "EzineArticles",
+  "url": "https://ezinearticles.com",
+  "submissionUrl": "https://ezinearticles.com/submit-article/",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "DEAD",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "Site unreachable (chrome-error)",
+  "status": "FAILED",
+  "result": null
+ },
+ {
+  "name": "Find Best SEO",
+  "url": "https://www.findbestseo.com",
+  "submissionUrl": "https://www.findbestseo.com/submit-agency",
+  "type": "C",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "register agency profile + fill services/portfolio + submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "FL DEO Business",
+  "url": "https://floridajobs.org",
+  "submissionUrl": "https://floridajobs.org/business-resources",
+  "type": "E",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application (manual review)",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "FL SBDC Network",
+  "url": "https://www.floridasbdc.org",
+  "submissionUrl": "https://www.floridasbdc.org/request-advising/",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 3,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 3f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "HubPages",
+  "url": "https://hubpages.com",
+  "submissionUrl": "https://hubpages.com/user/register",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "manual check required",
+  "notes": "FAILED: /user/register=404, /signup=404, /register=404, /join=404. Все URL регистрации недоступны.",
+  "status": "FAILED",
+  "result": "404"
+ },
+ {
+  "name": "Influencer Mkt Hub",
+  "url": "https://influencermarketinghub.com",
+  "submissionUrl": "https://influencermarketinghub.com/submit-agency/",
+  "type": "C",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "register agency profile + fill services/portfolio + submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Mailchimp Partner",
+  "url": "https://mailchimp.com/partner-directory",
+  "submissionUrl": "https://mailchimp.com/partners/apply/",
+  "type": "E",
+  "priority": 3,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Login/registration required",
+  "status": "NEEDS_MANUAL",
+  "result": null
+ },
+ {
+  "name": "Miami Chamber",
+  "url": "https://www.miamichamber.com",
+  "submissionUrl": "https://www.miamichamber.com/membership",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "SBA.gov Business",
+  "url": "https://www.sba.gov",
+  "submissionUrl": "https://www.sba.gov/local-assistance/find",
+  "type": "E",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application (manual review)",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "SCORE Mentor Network",
+  "url": "https://www.score.org",
+  "submissionUrl": "https://www.score.org/find-mentor",
+  "type": "E",
+  "priority": 3,
+  "previewStatus": "FORM_READY",
+  "previewFields": 29,
+  "previewFilled": 0,
+  "humanAction": "human assisted fill + submit",
+  "notes": "MASTER_LIST: NOT_APPLICABLE для listing (Government mentoring resource). Запуск подтвердил: реальной формы нет",
+  "status": "NOT_APPLICABLE",
+  "result": "No listing form on score.org — /find-mentor redirects to informational /how-mentoring-works/ page (mentoring program, not a business directory)",
+  "history": [
+   {
+    "date": "2026-08-08 14:33:18Z",
+    "action": "run",
+    "outcome": "NEEDS_MANUAL",
+    "error": "Human action timeout (180s) — no proof of submission",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/human-submit.log",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network/postsubmit.png"
+    ]
+   },
+   {
+    "date": "2026-08-08 16:30:00Z",
+    "action": "run",
+    "outcome": "NOT_APPLICABLE",
+    "error": "Redirect to informational page; no listing form found",
+    "evidence": [
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network\\presubmit.png",
+     "C:\\hp\\github\\seoflowai\\human-submit-out\\score-mentor-network\\postsubmit.png"
+    ],
+    "note": "Один запуск. submissionUrl /find-mentor редиректит на https://www.score.org/how-mentoring-works/ (информационная страница про mentoring). '152 полей' — DOM-шум (меню/служебные элементы), реальной формы листинга нет; email-поля в форме отсутствуют (Filled 3/152, 10 failed); HUMAN ACTION 180s без подтверждения. SCORE — government mentoring program, не каталог бизнеса → NOT_APPLICABLE для listing."
+   }
+  ]
+ },
+ {
+  "name": "Semfirms",
+  "url": "https://semfirms.com",
+  "submissionUrl": "https://www.semfirms.com/add-listing",
+  "type": "C",
+  "priority": 3,
+  "category": "Business Directory",
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "completed",
+  "notes": "VERIFIED_SUCCESS: Профиль создан и подтверждён. URL: https://www.semfirms.com/profile/itllect-llc. Аккаунт: itllect.marketing@gmail.com / [REDACTED]. Блокировало: поле title требовало 'Itllect LLC' (полное юридическое название). Drupal валидация отклоняла форму без полного названия компании.",
+  "status": "VERIFIED_SUCCESS",
+  "result": "https://www.semfirms.com/profile/itllect-llc"
+ },
+ {
+  "name": "SiteInspire",
+  "url": "https://www.siteinspire.com",
+  "submissionUrl": "https://www.siteinspire.com/submit",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "SlideShare",
+  "url": "https://www.slideshare.net",
+  "submissionUrl": "https://www.slideshare.net/signup",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 1,
+  "previewFilled": 0,
+  "humanAction": "create account + create profile + publish content",
+  "notes": "NOT_APPLICABLE: 1f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "South FL Biz Journal",
+  "url": "https://www.bizjournals.com/southflorida",
+  "submissionUrl": "https://www.bizjournals.com/southflorida/submit",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve",
+  "status": "BLOCKED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T18:24:55.877Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still returning 403 / access denied",
+    "evidence": [
+     "Accessed: https://www.bizjournals.com/southflorida/submit",
+     "Accessible: false",
+     "CF: false, 403: true, 5xx: false",
+     "Text len: 290",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\south-fl-biz-journal\\reprobe\\reprobe-1786213495727.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Spoke",
+  "url": "https://spoke.com",
+  "submissionUrl": "",
+  "type": "A",
+  "priority": 3,
+  "previewStatus": "NOT_APPLICABLE",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "fill form + manual submit",
+  "notes": "NOT_APPLICABLE: 0f",
+  "status": "NOT_APPLICABLE",
+  "result": null
+ },
+ {
+  "name": "Stack Overflow",
+  "url": "https://stackoverflow.com/jobs",
+  "submissionUrl": "https://stackoverflow.com/users/signup",
+  "type": "D",
+  "priority": 3,
+  "previewStatus": "CF_BLOCKED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "captcha (Cloudflare)",
+  "notes": "CF blocked in headless; needs headed stealth + manual solve",
+  "status": "BLOCKED",
+  "result": null,
+  "history": [
+   {
+    "date": "2026-08-08T18:25:02.150Z",
+    "action": "reprobe",
+    "outcome": "BLOCKED",
+    "error": "Still returning 403 / access denied",
+    "evidence": [
+     "Accessed: https://stackoverflow.com/users/signup",
+     "Accessible: false",
+     "CF: false, 403: true, 5xx: false",
+     "Text len: 288",
+     "Screenshot: C:\\hp\\github\\seoflowai\\human-submit-out\\stack-overflow\\reprobe\\reprobe-1786213501463.png"
+    ]
+   }
+  ]
+ },
+ {
+  "name": "FindUsHere",
+  "url": "https://www.find-us-here.com",
+  "submissionUrl": "https://www.find-us-here.com/register.php",
+  "type": "A",
+  "priority": 2,
+  "category": "Business Directory",
+  "previewStatus": "FORM_READY",
+  "previewFields": 12,
+  "previewFilled": 0,
+  "humanAction": "completed",
+  "notes": "VERIFIED_SUCCESS: Профиль создан и публично доступен. URL: https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/. Аккаунт: itllect / [REDACTED]. Заполнены: контакты, адрес, категория (Advertising - Direct Mail), описание. Email verification не требуется (аккаунт активирован сразу).",
+  "status": "VERIFIED_SUCCESS",
+  "result": "https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/"
+ },
+ {
+  "name": "Sitejabber",
+  "url": "https://www.sitejabber.com",
+  "submissionUrl": "https://www.sitejabber.com/business",
+  "type": "B",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "login + register",
+  "notes": "Аккаунт создавался ранее; повторный прогон не стартовал (ошибка браузера).",
+  "status": "REGISTERED",
+  "result": null
+ },
+ {
+  "name": "Stripe Partner",
+  "url": "https://stripe.com/partners",
+  "submissionUrl": "https://stripe.com/partners/apply",
+  "type": "E",
+  "priority": 2,
+  "previewStatus": "LOGIN_REQUIRED",
+  "previewFields": 0,
+  "previewFilled": 0,
+  "humanAction": "partner application review",
+  "notes": "Требуется найти способ подачи партнёрской заявки.",
+  "status": "NEEDS_MANUAL",
+  "result": "Требуется ручное действие / поиск способа подачи заявки"
+ }
 ]

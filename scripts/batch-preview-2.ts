@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { PrismaClient, type TaskStatus } from "../src/generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 import { chromium, Browser, Page } from "playwright";
@@ -141,7 +141,7 @@ async function main() {
     if (existing) {
       await prisma.directory.update({
         where: { id: existing.id },
-        data: { status: "BLOCKED", automationMode: "MANUAL" }
+        data: { status: "BLOCKED" as TaskStatus, automationMode: "MANUAL" }
       });
     }
   }

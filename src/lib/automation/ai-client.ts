@@ -43,7 +43,7 @@ export interface AiChatResult {
  */
 export async function aiChatCompletion(
   messages: { role: string; content: string }[],
-  opts: { response_format?: { type: string } } = {}
+  opts: { response_format?: { type: "json_object" | "text" | "json_schema" } } = {}
 ): Promise<AiChatResult> {
   const providers = loadAiProviders();
   if (providers.length === 0) throw new Error("No AI providers configured (OPENAI_API_KEY)");
@@ -53,7 +53,9 @@ export async function aiChatCompletion(
       const response = await p.client.chat.completions.create({
         model: p.model,
         messages: messages as OpenAI.Chat.ChatCompletionMessageParam[],
-        ...(opts.response_format ? { response_format: opts.response_format } : {}),
+        ...(opts.response_format
+          ? { response_format: opts.response_format as OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming["response_format"] }
+          : {}),
       });
       const content = response.choices[0]?.message?.content;
       if (content) return { content, provider: p.name, model: p.model };

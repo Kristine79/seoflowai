@@ -131,6 +131,7 @@ export const MASTER_LIST: PlatformEntry[] = [
   // ───── B — REVIEWS ─────
   { name: "Trustpilot", url: "https://www.trustpilot.com", submissionUrl: "https://business.trustpilot.com/claim", type: "B", clientCategory: "Reviews", method: "Claim company (search → claim → domain/email verify)", notes: "verification domain/email", priority: "HIGH" },
   { name: "Sitejabber", url: "https://www.sitejabber.com", submissionUrl: "https://www.sitejabber.com/business", type: "B", clientCategory: "Reviews", method: "Register business account / claim store; verify domain", notes: "domain verify", priority: "MEDIUM" },
+  { name: "SmartCustomer", url: "https://www.smartcustomer.com", submissionUrl: "https://biz.smartcustomer.com/register", type: "B", clientCategory: "Reviews", method: "Register business account / domain verify", notes: "email verification mismatch resolved via manual override to info@itllect.com", priority: "MEDIUM" },
   { name: "ProvenExpert", url: "https://www.provenexpert.com", submissionUrl: "https://www.provenexpert.com/en/business/", type: "B", clientCategory: "Reviews", method: "SignUp business; verify email", notes: "email verify", priority: "MEDIUM" },
   { name: "G2", url: "https://www.g2.com", submissionUrl: "https://www.g2.com/claim-listing", type: "B", clientCategory: "Reviews", method: "Claim listing / vendor profile; verify", notes: "claim verify", priority: "MEDIUM" },
 

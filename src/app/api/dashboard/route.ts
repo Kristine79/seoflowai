@@ -15,6 +15,11 @@ export async function GET() {
   const pending = directories.filter((d) => d.status === "PENDING").length;
   const inProgress = directories.filter((d) => d.status === "IN_PROGRESS").length;
   const aiPrepared = directories.filter((d) => d.status === "AI_PREPARED").length;
+  const ready = directories.filter((d) => d.status === "READY").length;
+  const waitingVerification = directories.filter((d) => d.status === "WAITING_VERIFICATION").length;
+  const verificationRequired = directories.filter((d) => d.status === "VERIFICATION_REQUIRED").length;
+  const rejected = directories.filter((d) => d.status === "REJECTED").length;
+  const paymentRequired = directories.filter((d) => d.status === "PAYMENT_REQUIRED").length;
 
   const audited = directories.filter((d) => d.seoAudit?.seoScore);
   const averageSeoScore = audited.length
@@ -39,6 +44,9 @@ export async function GET() {
     seoScore: d.seoAudit?.seoScore || null,
   }));
 
+  const readyToSubmit = ready + aiPrepared;
+  const needsAction = rejected + paymentRequired + verificationRequired;
+
   return NextResponse.json({
     totalDirectories,
     highPriority,
@@ -48,6 +56,13 @@ export async function GET() {
     pending,
     inProgress,
     aiPrepared,
+    ready,
+    waitingVerification,
+    verificationRequired,
+    rejected,
+    paymentRequired,
+    readyToSubmit,
+    needsAction,
     averageSeoScore,
     automationEasy,
     automationMedium,

@@ -49,7 +49,7 @@ export async function waitForVerificationLink(
     while (Date.now() - start < timeoutMs) {
       const lock = await client.getMailboxLock("INBOX");
       try {
-        for await (const msg of client.fetch({ unseen: true }, { uid: true, envelope: true, source: true })) {
+        for await (const msg of client.fetch({ unseen: true } as any, { uid: true, envelope: true, source: true })) {
           if (seenIds.has(msg.uid)) continue;
           seenIds.add(msg.uid);
 
@@ -131,7 +131,7 @@ export async function waitForVerificationCode(
     while (Date.now() - start < timeoutMs) {
       const lock = await client.getMailboxLock("INBOX");
       try {
-        for await (const msg of client.fetch({ unseen: true }, { uid: true, envelope: true, source: true })) {
+        for await (const msg of client.fetch({ unseen: true } as any, { uid: true, envelope: true, source: true })) {
           if (seenIds.has(msg.uid)) continue;
           seenIds.add(msg.uid);
 

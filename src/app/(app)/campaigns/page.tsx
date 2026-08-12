@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,11 +17,14 @@ import {
   CheckCircle2,
   AlertCircle,
   FileText,
+  BarChart3,
+  Search,
+  Sparkles,
+  CheckSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { formatDate } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { formatDate, translateStatus, cn } from "@/lib/utils";
 
 type Campaign = {
   id: string;
@@ -29,6 +33,7 @@ type Campaign = {
   status: string;
   createdAt: string;
   _count: { directories: number };
+  statusCounts: Record<string, number>;
 };
 
 type UploadResult = {
@@ -268,56 +273,174 @@ export default function CampaignsPage() {
             </CardContent>
           </Card>
         ) : (
-          campaigns.map((campaign) => (
-            <Card key={campaign.id}>
-              <CardContent className="flex items-center justify-between p-6">
-                <div>
-                  <div className="flex items-center gap-3">
-                    <h3 className="font-medium">{campaign.name}</h3>
-                    <Badge variant={campaign.status === "ACTIVE" ? "success" : "secondary"}>
-                      {campaign.status === "ACTIVE" ? "Активна" : campaign.status}
-                    </Badge>
-                  </div>
-                  {campaign.description && (
-                    <p className="mt-1 text-sm text-zinc-500">{campaign.description}</p>
-                  )}
-                  <p className="mt-2 text-xs text-zinc-400">
-                    Создана {formatDate(campaign.createdAt)} • {campaign._count.directories} каталогов
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <label className="cursor-pointer">
-                    <input
-                      type="file"
-                      accept=".xlsx,.xls,.csv"
-                      className="hidden"
-                      onChange={(e) => {
-                        const f = e.target.files?.[0] || null;
-                        setFile(f);
-                        setSelectedCampaign(campaign.id);
-                        setUploadResult(null);
+          campaigns.map((campaign) => {
+            const sc = campaign.statusCounts || {};
+            const completed = sc["COMPLETED"] || 0;
+            const inProgress = sc["IN_PROGRESS"] || 0;
+            const readyToSubmit = (sc["READY"] || 0) + (sc["AI_PREPARED"] || 0);
+            const pending = sc["PENDING"] || 0;
+            const waitingVerification = (sc["WAITING_VERIFICATION"] || 0) + (sc["VERIFICATION_REQUIRED"] || 0);
+            const needsAction = (sc["REJECTED"] || 0) + (sc["PAYMENT_REQUIRED"] || 0);
+            const total = campaign._count.directories;
+            const processed = completed + inProgress;
+            const progressPct = total > 0 ? Math.round((processed / total) * 100) : 0;
 
-                        if (f) {
-                          console.log(`[Upload] Файл выбран: ${f.name}, размер: ${f.size}, тип: ${f.type}`);
-                        }
-                      }}
-                    />
-                    <Button variant="outline" size="sm" className="gap-2" asChild>
-                      <span>
-                        <Upload className="h-4 w-4" />
-                        Загрузить Excel
-                      </span>
-                    </Button>
-                  </label>
-                  <Link href={`/directories?campaignId=${campaign.id}`}>
-                    <Button variant="ghost" size="sm" className="gap-1">
-                      Смотреть <ArrowUpRight className="h-3 w-3" />
-                    </Button>
-                  </Link>
+            const workflowSteps = [
+              { id: 1, label: "Audit", icon: Search, key: "audit" },
+              { id: 2, label: "Select", icon: BarChart3, key: "select" },
+              { id: 3, label: "Prepare", icon: Sparkles, key: "prepare" },
+              { id: 4, label: "Submit", icon: ArrowUpRight, key: "submit" },
+              { id: 5, label: "Verify", icon: CheckSquare, key: "verify" },
+              { id: 6, label: "Report", icon: Sparkles, key: "report" },
+            ];
+
+            let currentStep = 0;
+            if (total === 0) currentStep = 0;
+            else if (completed > 0 && completed >= total) currentStep = 6;
+            else if (waitingVerification > 0 || needsAction > 0) currentStep = 5;
+            else if (inProgress > 0) currentStep = 4;
+            else if (readyToSubmit > 0) currentStep = 4;
+            else if (sc["AI_PREPARED"] > 0) currentStep = 3;
+            else if (sc["PENDING"] === total) currentStep = 2;
+            else if (total > 0) currentStep = 3;
+
+            return (
+            <Card key={campaign.id}>
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <h3 className="font-medium">{campaign.name}</h3>
+                      <Badge variant={campaign.status === "ACTIVE" ? "success" : "secondary"}>
+                        {campaign.status === "ACTIVE" ? "Активна" : campaign.status}
+                      </Badge>
+                    </div>
+                    {campaign.description && (
+                      <p className="mt-1 text-sm text-zinc-500">{campaign.description}</p>
+                    )}
+                    <p className="mt-2 text-xs text-zinc-400">
+                      Создана {formatDate(campaign.createdAt)} • {total} каталогов
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label className="cursor-pointer">
+                      <input
+                        type="file"
+                        accept=".xlsx,.xls,.csv"
+                        className="hidden"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0] || null;
+                          setFile(f);
+                          setSelectedCampaign(campaign.id);
+                          setUploadResult(null);
+                          if (f) {
+                            console.log(`[Upload] Файл выбран: ${f.name}, размер: ${f.size}, тип: ${f.type}`);
+                          }
+                        }}
+                      />
+                      <Button variant="outline" size="sm" className="gap-2" asChild>
+                        <span>
+                          <Upload className="h-4 w-4" />
+                          Загрузить Excel
+                        </span>
+                      </Button>
+                    </label>
+                    <Link href={`/directories?campaignId=${campaign.id}`}>
+                      <Button variant="ghost" size="sm" className="gap-1">
+                        Смотреть <ArrowUpRight className="h-3 w-3" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
+
+                {total > 0 && (
+                  <>
+                    <div className="flex items-center gap-1 mb-4">
+                      {workflowSteps.map((step, i) => (
+                        <div key={step.id} className="flex items-center gap-1">
+                          <div
+                            className={cn(
+                              "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
+                              currentStep >= step.id
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-zinc-400"
+                            )}
+                          >
+                            <step.icon className="h-3 w-3" />
+                            <span className="hidden sm:inline">{step.label}</span>
+                          </div>
+                          {i < workflowSteps.length - 1 && (
+                            <div
+                              className={cn(
+                                "h-px w-3",
+                                currentStep > step.id ? "bg-blue-300" : "bg-zinc-200"
+                              )}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-3 mb-4">
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-emerald-600">{completed}</div>
+                        <div className="text-[10px] text-zinc-400">Завершено</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-amber-600">{inProgress}</div>
+                        <div className="text-[10px] text-zinc-400">В процессе</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-blue-600">{readyToSubmit}</div>
+                        <div className="text-[10px] text-zinc-400">К подаче</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-orange-600">{waitingVerification}</div>
+                        <div className="text-[10px] text-zinc-400">На проверке</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-red-600">{needsAction}</div>
+                        <div className="text-[10px] text-zinc-400">Требуют действия</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex-1">
+                        <Progress value={progressPct} className="h-2" />
+                      </div>
+                      <span className="text-xs text-zinc-500 min-w-[3rem] text-right">{progressPct}%</span>
+                    </div>
+
+                    {readyToSubmit > 0 && (
+                      <Link href={`/directories?status=READY&campaignId=${campaign.id}`}>
+                        <Button className="gap-2 w-full">
+                          <ArrowUpRight className="h-4 w-4" />
+                          Продолжить кампанию — {readyToSubmit} к подаче
+                        </Button>
+                      </Link>
+                    )}
+                    {inProgress > 0 && readyToSubmit === 0 && (
+                      <Link href={`/directories?status=IN_PROGRESS&campaignId=${campaign.id}`}>
+                        <Button className="gap-2 w-full">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Продолжить — {inProgress} в процессе
+                        </Button>
+                      </Link>
+                    )}
+                    {total > 0 && readyToSubmit === 0 && inProgress === 0 && waitingVerification === 0 && needsAction === 0 && completed < total && (
+                      <Link href={`/directories?campaignId=${campaign.id}`}>
+                        <Button variant="outline" className="gap-2 w-full">
+                          <Rocket className="h-4 w-4" />
+                          Запустить AI аудит
+                        </Button>
+                      </Link>
+                    )}
+                  </>
+                )}
               </CardContent>
             </Card>
-          ))
+            );
+          })
         )}
       </div>
 

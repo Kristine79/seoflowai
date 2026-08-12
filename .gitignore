@@ -90,3 +90,14 @@ urlcheck-*.png
 verify-*.png
 temp-logo.png
 test-findushere.png
+preview_*.png
+wellfound-logo.png
+topseos_*.png
+semfirms-*.png
+
+# Local tool dirs / scratch files
+/.kilo/
+/.playwright-mcp/
+test-browser.js
+worker-test-runner.mjs
+worker-test-wrapper.cjs

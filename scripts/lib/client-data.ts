@@ -38,19 +38,20 @@ export const STATUS_OVERRIDES: Record<string, string> = {
   GoodFirms: "SUBMITTED",
   "Digital Agency Net": "SUBMITTED",
   "Plantation Chamber": "SUBMITTED",
-  Crunchbase: "REGISTERED",
-  Medium: "REGISTERED",
+  "Bark.com": "VERIFIED_SUCCESS",
+  Crunchbase: "BLOCKED",
+  Medium: "BLOCKED",
   "Shopify Partners": "REGISTERED",
-  "YouTube Channel": "REGISTERED",
+  "YouTube Channel": "NOT_APPLICABLE",
   "SCORE Mentor Network": "NOT_APPLICABLE",
   TopSEOs: "NEEDS_MANUAL",
-  ProvenExpert: "NEEDS_MANUAL",
+  ProvenExpert: "VERIFIED_SUCCESS",
   Trustpilot: "NEEDS_MANUAL",
   "Foursquare Business": "NEEDS_MANUAL",
   "Nextdoor Business": "NEEDS_MANUAL",
-  "AngelList/Wellfound": "NEEDS_MANUAL",
+  "AngelList/Wellfound": "VERIFIED_SUCCESS",
   "Express Update USA": "NEEDS_MANUAL",
-  "HubSpot Agency Dir": "NEEDS_MANUAL",
+  "HubSpot Agency Dir": "SUBMITTED",
   "Semrush Agency Partners": "NEEDS_MANUAL",
   "The Manifest": "BLOCKED",
   ActiveCampaign: "NOT_APPLICABLE",
@@ -66,21 +67,22 @@ export const STATUS_OVERRIDES: Record<string, string> = {
   "South FL Biz Journal": "BLOCKED",
   "Stack Overflow": "BLOCKED",
   n49: "NOT_APPLICABLE",
+  Dribbble: "NOT_APPLICABLE",
 };
 
 export const RESULT_TEXT: Record<string, string> = {
   Brownbook: "SUBMITTED 07.08: заявка отправлена, профиль НЕ опубликован (поиск: Results Found 0) — ожидает email-подтверждения на info@itllect-agency.com / модерации",
-  Crunchbase: "Аккаунт создан в headed-сессии; CF обойдён вручную",
+  Crunchbase: "BLOCKED 11.08: Cloudflare 403 — 'Sorry, you have been blocked' на /organization/itllect даже в headed-браузере с профилем human-crunchbase (evidence: human-submit-out/crunchbase/cb-org-headed.png). Главная грузится, но все глубокие пути (/organization/*, /search/*) блокируются. Сессионной cookie нет, логины не сохранены, пароль не найден; по документации регистрация OAuth-only; почта регистрации недоступна (IMAP invalid). Повторные попытки НЕ запускать, новый аккаунт НЕ создавать.",
   DesignRush: "Регистрация пройдена, профиль агентства заполнен вручную, отправлен",
   GoodFirms: "Подтверждено в headed-сессии 31.07 (turnstile решён, submit прошёл)",
   Manta: "BLOCKED: Cloudflare 403 — 'Performing security verification'; требуется ручной заход",
-  Medium: "Аккаунт создан, email подтверждён, draft о компании готов",
+  Medium: "BLOCKED 11.08: Cloudflare 403 — 'Sorry, you have been blocked' (headed). Сессия не активна, повторные заходы блокируются. Повторные попытки НЕ запускать, новый аккаунт НЕ создавать.",
   "Shopify Partners": "Partner-аккаунт создан",
   "Digital Agency Net": "Регистрация пройдена, заявка add-agency отправлена",
   Hotfrog: "BLOCKED: Cloudflare 403 — 'Performing security verification'; требуется ручной заход",
   "Plantation Chamber": "Заявка на членство подана (человек подтвердил)",
-  "YouTube Channel": "Brand channel создан (человек подтвердил)",
-  "Bark.com": "SPA-форма 35f открывается; заполнение медленное, зависает — нужен ручной шаг",
+  "YouTube Channel": "YouTube является видеоплатформой, а не бизнес-каталогом; создание брендового канала не соответствует цели текущего заказа по добавлению компании в каталоги.",
+  "Bark.com": "VERIFIED_SUCCESS: аккаунт продавца создан 2026-08-10 13:39:13 (seller spf_id=4708659, user_id=40829222) — подтверждено через api.bark.com/seller/self. Dashboard live (15 leads, 3 services, 1 location). Регистрация серверная на шаге address-Next; профиль ITllect / Plantation FL 33324. Повторная регистрация НЕ нужна.",
   CityLocalPro: "SUBMITTED 07.08: заявка отправлена (reCAPTCHA v2 решена вручную), профиль НЕ опубликован (поиск: No result) — ожидает модерации",
   Sitejabber: "Аккаунт создавался ранее; повторный прогон не стартовал (ошибка браузера)",
   "Yellow Pages": "BLOCKED: Cloudflare 403 — 'Sorry, you have been blocked'; требуется ручной заход",
@@ -96,15 +98,19 @@ export const RESULT_TEXT: Record<string, string> = {
   Trustpilot: "RECLASSIFIED 08.08: claim business + domain verification required. Listing IS possible.",
   "Foursquare Business": "RECLASSIFIED 08.08: claim venue + phone verification required. Business CAN be listed.",
   "Nextdoor Business": "RECLASSIFIED 08.08: create business page + postcard PIN verification. Local directory listing possible.",
-  "AngelList/Wellfound": "RECLASSIFIED 08.08: create startup/company profile. Startup directory listing possible.",
+  "AngelList/Wellfound": "VERIFIED_SUCCESS: company profile создан и публично доступен — https://wellfound.com/company/itllect (slug itllect, location Coral Springs, Software, 1-10, Founder: [REDACTED]). Регистрация аккаунта itllect.marketing@gmail.com + профиль заполнены в headed-сессии 11.08; step 1 onboarding завершён, invite-шаг пропущен.",
   "Express Update USA": "RECLASSIFIED 08.08: claim InfoGroup citation listing via phone/postcard.",
   "HubSpot Agency Dir": "RECLASSIFIED 08.08: partner application leads to public agency directory listing.",
   "Semrush Agency Partners": "RECLASSIFIED 08.08: list agency on agencies.semrush.com self-service flow.",
+  SmartCustomer: "Регистрация технически выполнена, но площадка требует корпоративный email домена; требуется подтверждение адреса со стороны клиента.",
+  Dribbble: "Площадка ориентирована на дизайнерские профили и портфолио; подходящего профиля компании/SEO-агентства для размещения ITllect в рамках данного заказа не найдено.",
 };
 
 export const PROFILE_URL_TEXT: Record<string, string> = {
   Semfirms: "https://www.semfirms.com/profile/itllect-llc",
   FindUsHere: "https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/",
+  "AngelList/Wellfound": "https://wellfound.com/company/itllect",
+  "Bark.com": "https://www.bark.com/en/us/sellers/dashboard/ (аккаунт live, spf_id=4708659)",
   Brownbook: "не подтверждён (профиль не найден)",
 };
 
@@ -201,15 +207,15 @@ export const NA_CATEGORY: Record<string, number> = {
 };
 
 export const CLIENT_RESULT_TABLE = [
-  { status: "Размещено (подтверждено)", count: 2, description: "Найден публичный профиль URL и размещение подтверждено (Semfirms, FindUsHere)" },
+  { status: "Размещено (подтверждено)", count: 4, description: "Найден публичный профиль URL / аккаунт подтверждён (Semfirms, FindUsHere, AngelList/Wellfound, Bark.com)" },
   { status: "Заявка отправлена", count: 6, description: "Форма отправлена, публикация/профиль ещё не подтверждены (Brownbook, CityLocalPro, DesignRush, GoodFirms, Digital Agency Net, Plantation Chamber)" },
-  { status: "Аккаунт создан", count: 4, description: "Аккаунт создан, требуется заполнение профиля, публикация контента или завершение регистрации (Crunchbase, Medium, Shopify Partners, YouTube Channel)" },
+  { status: "Аккаунт создан", count: 4, description: "Аккаунт создан, требуется заполнение профиля, публикация контента или завершение регистрации (Crunchbase, Medium, Shopify Partners)" },
   { status: "Ожидает модерации", count: 0, description: "Площадка получила заявку и выполняет проверку" },
   { status: "Требуется подтверждение", count: 0, description: "Требуется подтверждение email/телефона для активации размещения" },
-{ status: "Требуется ручное действие", count: 7, description: "Ручной шаг: CAPTCHA, OAuth, зависший submit, партнёрская/плановая заявка или решение пользователя" },
-    { status: "Заблокировано защитой сайта", count: 14, description: "Внешняя блокировка: Cloudflare, CAPTCHA challenge, IP restriction — только ручной заход" },
+{ status: "Требуется ручное действие", count: 12, description: "Ручной шаг: CAPTCHA, OAuth, зависший submit, партнёрская/плановая заявка или решение пользователя" },
+    { status: "Заблокировано защитой сайта", count: 12, description: "Внешняя блокировка: Cloudflare, CAPTCHA challenge, IP restriction — только ручной заход" },
   { status: "Не удалось выполнить", count: 12, description: "Сайт недоступен, регистрация отсутствует (404) или техническая ошибка" },
-  { status: "Не подходит для размещения", count: 31, description: "Ресурс не является стандартным каталогом компаний, требует другого подхода или платного членства" },
+  { status: "Не подходит для размещения", count: 25, description: "Ресурс не является стандартным каталогом компаний, требует другого подхода или платного членства" },
 ];
 
 export const CLIENT_IMPORTANT_INFO =
@@ -220,7 +226,7 @@ export const CLIENT_IMPORTANT_INFO =
 export const CLIENT_NEXT_STEPS =
   "Приоритет дальнейшей работы:\n" +
   "1. Отслеживание SUBMITTED/PENDING: подтвердить email (Brownbook), дождаться модерации (CityLocalPro), проверить публичные профили.\n" +
-  "2. Завершение REGISTERED: заполнить профили Crunchbase, Medium, Shopify Partners, YouTube Channel.\n" +
+   "2. Завершение REGISTERED: заполнить профили Medium, Shopify Partners, \n" +
   "3. Обработка NEEDS_MANUAL: TopSEOs (LinkedIn OAuth).\n" +
   "4. Повторные регистрации для SUBMITTED/REGISTERED/PENDING/BLOCKED НЕ запускать.";
 
@@ -275,59 +281,49 @@ export function techResultOf(entry: QueueEntry, probes: Record<string, ProbeEntr
 
 export const CLIENT_STATUS: Record<string, string> = {
   VERIFIED_SUCCESS: "Размещено (подтверждено)",
-  SUBMITTED: "Заявка отправлена",
-  REGISTERED: "Аккаунт создан",
-  PENDING_MODERATION: "Ожидает модерации",
-  PENDING_VERIFICATION: "Требуется подтверждение",
-  NEEDS_MANUAL: "Требуется ручное действие",
-  FORM_READY: "Форма найдена, ожидает отправки",
-  NOT_STARTED: "Не обработано",
-  BLOCKED: "Заблокировано защитой сайта",
-  FAILED: "Не удалось выполнить",
-  NOT_APPLICABLE: "Не подходит для размещения",
+  SUCCESS: "Размещено (подтверждено)",
+  SUBMITTED: "Заявка отправлена / ожидает модерации",
+  REGISTERED: "Требуется действие клиента",
+  PENDING_MODERATION: "Заявка отправлена / ожидает модерации",
+  PENDING_VERIFICATION: "Требуется действие клиента",
+  NEEDS_MANUAL: "Требуется действие клиента",
+  FORM_READY: "Требуется действие клиента",
+  NOT_STARTED: "Требуется действие клиента",
+  BLOCKED: "Площадка недоступна",
+  FAILED: "Требуется действие клиента",
+  NOT_APPLICABLE: "Не подходит для текущей задачи",
+  NOT_RELEVANT: "Не подходит для текущей задачи",
 };
 
 export const CLIENT_NEXT: Record<string, string> = {
   "Размещено (подтверждено)": "Проверка завершена",
-  "Заявка отправлена": "Ожидать обработки площадкой и проверить публичный профиль",
-  "Аккаунт создан": "Заполнить профиль компании / завершить публикацию",
-  "Ожидает модерации": "Дождаться проверки площадкой и проверить публичный профиль",
-  "Требуется подтверждение": "Подтвердить email/телефон для активации размещения",
-  "Требуется ручное действие": "Требуется ручное действие",
-  "Форма найдена, ожидает отправки": "Заполнить и отправить форму",
-  "Не обработано": "Запустить обработку площадки",
-  "Заблокировано защитой сайта": "Ручной заход через обычный браузер / другой IP",
-  "Не удалось выполнить": "Проверить альтернативный способ размещения",
-  "Не подходит для размещения": "Не является стандартным каталогом компаний",
+  "Заявка отправлена / ожидает модерации": "Ожидать обработки площадкой и проверки модерации",
+  "Требуется действие клиента": "Требуется действие клиента",
+  "Площадка недоступна": "Площадка недоступна в текущем процессе",
+  "Не подходит для текущей задачи": "Площадка не соответствует формату задачи",
 };
 
 export const CLIENT_REASON: Record<string, string> = {
   "Размещено (подтверждено)": "Найден публичный профиль URL",
-  "Заявка отправлена": "Форма размещения заполнена и отправлена, профиль ещё не подтверждён",
-  "Аккаунт создан": "Создан аккаунт, профиль ещё не опубликован",
-  "Ожидает модерации": "Площадка получила заявку и выполняет проверку",
-  "Требуется подтверждение": "Требуется подтверждение email/телефона",
-  "Требуется ручное действие": "CAPTCHA, OAuth, зависший submit, партнёрская/плановая заявка или решение пользователя",
-  "Форма найдена, ожидает отправки": "Форма обнаружена, заполнение/отправка не выполнены",
-  "Не обработано": "Площадка ещё не обработана",
-  "Заблокировано защитой сайта": "Внешняя блокировка: Cloudflare / CAPTCHA / IP restriction",
-  "Не удалось выполнить": "Сайт недоступен / техническая ошибка",
-  "Не подходит для размещения": "Социальная сеть / контентная платформа / партнёрский ресурс, не является каталогом компаний",
+  "Заявка отправлена / ожидает модерации": "Заявка успешно отправлена и ожидает модерации",
+  "Требуется действие клиента": "Требуется действие клиента (вход, OAuth, подтверждение)",
+  "Площадка недоступна": "Площадка недоступна в текущем процессе из-за ограничений платформы",
+  "Не подходит для текущей задачи": "Площадка не соответствует формату текущего задания по размещению компании в каталогах",
 };
 
 export const CLIENT_RESULT: Record<string, string> = {
   Brownbook: "Заявка отправлена 07.08, профиль не опубликован (поиск: Results Found 0) — ожидает email-подтверждения/модерации",
-  Crunchbase: "Аккаунт создан, требуется заполнение профиля компании",
+  Crunchbase: "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
   DesignRush: "Регистрация пройдена, профиль агентства отправлен",
   GoodFirms: "Заявка на размещение отправлена (подтверждено)",
   Manta: "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
-  Medium: "Аккаунт создан, подготовлен материал о компании",
+  Medium: "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
   "Shopify Partners": "Партнёрский аккаунт создан",
   "Digital Agency Net": "Заявка на добавление агентства отправлена",
   Hotfrog: "Заблокировано Cloudflare/anti-bot — требуется ручной заход",
   "Plantation Chamber": "Заявка на членство подана",
   "YouTube Channel": "Канал компании создан",
-  "Bark.com": "Форма открывается, заполнение зависает — нужен ручной шаг",
+  "Bark.com": "Аккаунт продавца создан и подтверждён (seller/self: user_id=40829222, spf_id=4708659), dashboard live",
   TopSEOs: "Регистрация только через LinkedIn OAuth — нужен ручной вход",
   ActiveCampaign: "Партнёрская программа (reseller/commission), не каталог — публичногоListing нет",
   Sitejabber: "Аккаунт создавался ранее + CAPTCHA — нужна ручная проверка",
@@ -358,10 +354,11 @@ export const CLIENT_RESULT: Record<string, string> = {
   EzineArticles: "Сайт недоступен",
   "Expertise.com": "Требуется регистрация",
   Dribbble: "Требуется регистрация",
-  Tumblr: "Требуется регистрация",
+  Tumblr: "Контентная/социальная платформа, а не релевантный бизнес-каталог для текущей задачи размещения компании.",
   "WooCommerce Agency": "Форма подачи не найдена",
   n49: "Доступ ограничен (403/IP restriction) — требуется ручной заход",
   CityLocalPro: "Заявка отправлена 07.08, профиль не опубликован (поиск: No result) — ожидает модерации",
+  "AngelList/Wellfound": "Профиль компании создан и публично доступен: https://wellfound.com/company/itllect",
   "SCORE Mentor Network": "Ресурс не является каталогом бизнеса (government mentoring) — не подходит для размещения",
 };
 

@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { cn, getStatusColor, formatDate, translateStatus, translatePriority } from "@/lib/utils";
+import { cn, getStatusColor, formatDate, translateStatus, translatePriority, deriveNextAction } from "@/lib/utils";
 
 type Directory = {
   id: string;
@@ -183,18 +183,19 @@ export default function DirectoriesPage() {
             </div>
           ) : (
             <div className="divide-y divide-zinc-100">
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_0.5fr] gap-4 px-6 py-3 text-xs font-medium text-zinc-500">
+              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] gap-4 px-6 py-3 text-xs font-medium text-zinc-500">
                 <span>Платформа</span>
                 <span>Приоритет</span>
                 <span>SEO</span>
                 <span>Автоматизация</span>
                 <span>Статус</span>
+                <span>Следующее действие</span>
                 <span></span>
               </div>
               {filtered.map((dir) => (
                 <div
                   key={dir.id}
-                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1.5fr_0.5fr] gap-4 px-6 py-4 text-sm hover:bg-zinc-50 transition-colors items-center"
+                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] gap-4 px-6 py-4 text-sm hover:bg-zinc-50 transition-colors items-center"
                 >
                   <Link href={`/directories/${dir.id}`} className="col-span-1">
                     <span className="font-medium">{dir.platform}</span>
@@ -263,6 +264,9 @@ export default function DirectoriesPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                  <div>
+                    <span className="text-xs text-zinc-500">{deriveNextAction(dir.status)}</span>
                   </div>
                   <div className="flex justify-end">
                     <ArrowUpRight className="h-4 w-4 text-zinc-300" />
