@@ -1,5 +1,9 @@
 # SEOFlow AI — Handoff Document
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 > **Дата:** 31 июля 2026
 > **Цель документа:** полная передача проекта новому AI-кодеру для продолжения клиентского заказа.
 > **Заказ:** размещение компании клиента **ITllect** во всех каталогах из списка клиента (75 площадок).
@@ -345,7 +349,7 @@ EMAIL_PORT        — 993
 
 **Registration email (для авто-регистрации):** `itllect.marketing@gmail.com` (константа `REGISTRATION_EMAIL` в `human-submit.ts`; IMAP credentials — в `.env`).
 
-**Company ID в БД:** `cms3o7jwj0000ssutcych75pi` (из старого handoff). Кампания: Q3 2026.
+**Company ID в БД:** (internal, redacted). Кампания: Q3 2026.
 
 ---
 

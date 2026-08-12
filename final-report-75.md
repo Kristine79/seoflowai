@@ -1,5 +1,9 @@
 # Final Submission Report — ITllect (75 площадок клиента)
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage (75-platform snapshot) and is retained for project history. It is not the current source of truth — the current reference is the 77-platform campaign report (see `REAL_VALIDATION.md`).
+
 Дата: 2026-07-30
 Источник списка: public/87catalogs.xlsx (75 реальных площадок)
 Классификация: A=Business dir, B=Reviews, C=Agency marketplace, D=Content/Profile, E=Partner

@@ -1,156 +1,128 @@
 # SEOFlow AI
 
-SEOFlow is a system for **systematically placing a business/agency in relevant online directories** and **managing the full lifecycle of each placement** — from classification and submission to public-profile verification, ongoing monitoring, and client reporting.
+AI-assisted platform for managing SEO directory campaigns from research to verified results.
 
-SEOFlow is **not** a fully-automatic "submit everywhere" tool. Real directories differ and most require at least one human step (CAPTCHA, Cloudflare, OAuth, email/phone verification, moderation, paid membership). SEOFlow:
+🚀 **Live Demo:** https://seoflowai.vercel.app/
 
-- automates the repetitive parts (navigate, detect form, map fields, fill);
-- stops safely when a human action is required and records that state;
-- keeps **evidence** of what actually happened;
-- keeps a **history** of every attempt to prevent duplicates;
-- never reports success without proof.
+**GitHub:** https://github.com/Kristine79/seoflowai
 
-> The core principle: *automate what can be automated, involve a human when necessary, and never claim a submission or a placement without evidence.*
+## Origin story
 
----
+SEOFlow AI was born from a real problem. A client placed an order to list their company across a large number of SEO and business directories. Instead of doing the same repetitive operations by hand, the project owner automated the process — and the result grew into a dedicated AI tool, which later became a standalone SaaS product.
+
+## Core principle
+
+> "Automate the repetitive work, stop when a human is required, and never claim success without evidence."
+
+SEOFlow is **not** a "submit everywhere" bot. Real directories differ too much for blind automation: CAPTCHA, Cloudflare, OAuth, email/phone verification, moderation, paid memberships. SEOFlow automates what can be automated safely, stops when a human is required, records every state with evidence, and reports nothing as verified without proof.
 
 ## Main workflow
 
 ```
-Client Data
+DISCOVER
    ↓
-Directory List
+AUDIT
    ↓
-Directory Classification
+SELECT
    ↓
-Registration / Claim
+PREPARE
    ↓
-Human Action when required   ← CAPTCHA, Cloudflare, OAuth, phone/email verification
+SUBMIT
    ↓
-Submission Verification
+VERIFY
    ↓
-Public Profile Verification  ← evidence: a real, publicly accessible profile URL
+MONITOR
    ↓
-Monitoring                   ← repeatable checks over time (no re-submission)
-   ↓
-Client Report
+REPORT
 ```
 
----
+## Key capabilities
 
-## What the system actually does
-
-### Automation
-The common engine (Playwright + a stealth-aware headed browser harness) can open a submission page, detect the form structure (`src/lib/automation/form-analyzer.ts`), map company data to fields using label rules first and an LLM fallback (`src/lib/automation/field-mapper.ts`), fill the form, and detect whether a submit really happened. See `DIRECTORY_ENGINE.md`.
-
-### Human-in-the-loop
-When a step requires a human — CAPTCHA, Cloudflare challenge loop, OAuth, phone verification, payment, or an unusual flow — the workflow stops in a headed browser, waits for the human (up to 180s in `scripts/human-submit.ts`), and records the result. See `HUMAN_ACTION.md`.
-
-> Currently, auto email-verification via IMAP exists in code (`src/lib/automation/email-verifier.ts`) but is **not operational**: the registration inbox `itllect.marketing@gmail.com` has invalid IMAP credentials, so email-verification steps are handled manually where required.
-
-### Evidence
-For every important action, evidence is saved: pre/post-submit screenshots, run logs, verification screenshots, and public profile URLs. Evidence goes into `human-submit-out/<platform>/`. Nothing is claimed as `VERIFIED_SUCCESS` without a screenshot-backed public profile URL.
-
-### History
-Every attempt is appended to the queue entry:
-
-```json
-{ "date": "...", "action": "run", "outcome": "SUBMITTED", "error": null, "evidence": ["..."] }
-```
-
-History prevents duplicate attempts, provides an audit trail, and feeds monitoring, re-probe, and client reporting. See `STATUS_MODEL.md`.
-
-### Monitoring
-`scripts/monitor-submitted.ts` re-checks SUBMITTED platforms later to see whether a public profile appeared. It never registers again, never submits again, and does not change a status without evidence. See `MONITORING.md`.
-
-### Re-probe
-`scripts/reprobe-blocked.ts` re-checks old `BLOCKED` platforms with one reasonable attempt per site — no Cloudflare bypass, no stealth hacks, no anti-captcha services. See `MONITORING.md`.
-
-### Client reporting
-`scripts/generate-client-report.ts` renders the queue into `client-report/` (CSV, XLSX, Markdown, priority TOP-10). `human-queue.json` is the operational source of truth; the client report is a human-readable presentation layer. See `CLIENT_REPORTING.md`.
-
----
-
-## Current state
-
-`human-queue.json` snapshot as of **2026-08-08** (git `361b41d`), 76 queue entries:
-
-| Status | Count |
+| Capability | What it does |
 |---|---|
-| VERIFIED_SUCCESS | 2 |
-| SUBMITTED | 6 |
-| REGISTERED | 4 |
-| NEEDS_MANUAL | 14 |
-| FORM_READY | 1 |
-| BLOCKED | 12 |
-| FAILED | 12 |
-| NOT_APPLICABLE | 25 |
+| **Directory research** | Build and maintain a target directory list from client data. |
+| **SEO audit** | Evaluate directories for relevance, accessibility and placement feasibility. |
+| **Platform prioritization** | Rank platforms by expected effort-to-result ratio (see `CLIENT_REPORTING.md`). |
+| **AI-assisted content preparation** | Prepare platform-specific company profiles and descriptions. |
+| **Platform-specific content** | Tailor the same company data to each platform's fields and requirements. |
+| **Campaign management** | Track every platform through its full lifecycle with a complete status model. |
+| **Browser automation** | Playwright-based engine: navigation, form extraction, field mapping, filling, submit detection. |
+| **Human-in-the-loop** | Stop safely when a human action is required; record the outcome in the campaign. |
+| **Evidence capture** | Screenshots and logs for every important action — nothing is claimed without proof. |
+| **Status history** | Append-only attempt history per platform; duplicate protection. |
+| **Monitoring** | Re-check submitted platforms later for a public profile (never re-submits). |
+| **Reporting** | Client-facing reports: CSV, XLSX, Markdown, priority lists. |
 
-`VERIFIED_SUCCESS`: Semfirms and FindUsHere (both public profile URLs confirmed). The six SUBMITTED platforms are waiting on moderation/publication and are the monitoring targets.
+## Human-in-the-loop
 
----
+SEOFlow does **not** try to automatically bypass CAPTCHA, Cloudflare, OAuth, email/phone verification or other external restrictions.
+
+When automation is impossible or unsafe, the system hands the action to a human — in a headed browser with the form already filled — and records the human's result back into the campaign with evidence.
+
+> **AI-assisted automation, not blind automation.**
+
+Human-in-the-loop is a product feature, not an automation failure. See `HUMAN_ACTION.md`.
+
+## Evidence-first verification
+
+A submitted listing is not automatically a verified placement. `VERIFIED_SUCCESS` requires a proven, publicly accessible profile URL with company-specific content, backed by evidence (screenshots). "Thank you" text on a landing page is **not** proof. See `STATUS_MODEL.md` and `DIRECTORY_ENGINE.md`.
+
+## Real-world validation
+
+SEOFlow has been validated on a **real SEO directory campaign of 77 platforms** (a client order, not a synthetic benchmark):
+
+| Result | Count |
+|---|---:|
+| Placed | 5 |
+| Submission sent | 7 |
+| Requires action | 23 |
+| Platform unavailable / externally blocked | 14 |
+| Not suitable | 28 |
+| **Total** | **77** |
+
+77 = 5 + 7 + 23 + 14 + 28.
+
+These numbers describe one specific real campaign — they are **not** a promised conversion rate of the product. The campaign encountered registration flows, moderation, CAPTCHA, Cloudflare, OAuth, manual verification, external blocking, unsuitable platforms, and directory-specific workflows. The main lesson: **a submitted listing is not automatically a verified placement — `VERIFIED_SUCCESS` requires evidence.**
+
+Detailed case study: [`REAL_VALIDATION.md`](REAL_VALIDATION.md) · Machine-readable campaign report: [`public/SEOFlow-77-Platform-Campaign-Report.xlsx`](public/SEOFlow-77-Platform-Campaign-Report.xlsx)
 
 ## Documentation
 
 | Document | Content |
 |---|---|
-| `ARCHITECTURE.md` | Actual repo layout and system layers |
-| `DIRECTORY_ENGINE.md` | Common engine + shared flow patterns |
-| `DIRECTORY_ADAPTERS.md` | Current adapter library (real adapters only) |
-| `STATUS_MODEL.md` | Status semantics, evidence, retry/monitoring policy + current counts |
-| `HUMAN_ACTION.md` | When and how a human is involved |
-| `MONITORING.md` | Monitoring and re-probe scripts |
-| `KNOWLEDGE_BASE.md` | **Roadmap**: knowledge base / RAG / flow classification (not implemented) |
-| `CLIENT_REPORTING.md` | Client report files and generation |
-| `AGENTS.md` | Operational rules for client-order execution |
+| [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md) | Product, problem, solution, architecture and current status |
+| [`REAL_VALIDATION.md`](REAL_VALIDATION.md) | Real-world 77-platform campaign case study |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | Actual repo layout and system layers |
+| [`DIRECTORY_ENGINE.md`](DIRECTORY_ENGINE.md) | Common engine: Playwright, mapping, proof-based submit detection |
+| [`DIRECTORY_ADAPTERS.md`](DIRECTORY_ADAPTERS.md) | Generic engine + directory-specific logic |
+| [`STATUS_MODEL.md`](STATUS_MODEL.md) | Status semantics, evidence, lifecycle, retry/monitoring policy |
+| [`HUMAN_ACTION.md`](HUMAN_ACTION.md) | When and how a human is involved |
+| [`MONITORING.md`](MONITORING.md) | Post-submission monitoring and re-probe |
+| [`CLIENT_REPORTING.md`](CLIENT_REPORTING.md) | Client report files and generation |
+| [`KNOWLEDGE_BASE.md`](KNOWLEDGE_BASE.md) | **Roadmap only** — knowledge base / RAG (not implemented) |
+| [`AGENTS.md`](AGENTS.md) | Operational rules for client-order execution |
+| [`DOCUMENTATION_CHANGELOG.md`](DOCUMENTATION_CHANGELOG.md) | History of this documentation set |
 
-Historical handoff documents (`SEOFlow_AI_HANDOFF.md`, `docs/SEOFlow_HANDOFF.md`, `session-report-*.md`) record earlier stages of the project and **may contain outdated claims**; do not use them as the source of truth. Current-state data lives in `human-queue.json` and this documentation set.
+Historical handoff documents (`SEOFlow_AI_HANDOFF.md`, `docs/SEOFlow_HANDOFF.md`, `session-report-*.md`, `final-report-75.md`, etc.) describe earlier development stages and are explicitly marked **HISTORICAL** — they are retained for project history, not as the current source of truth. Current-state data lives in `human-queue.json` and the current documentation set.
 
----
+## Repo layout (short)
 
-## Running the client-order pipeline
-
-Launch **one platform at a time** (batches corrupt `human-queue.json` via zombie processes):
-
-```bash
-# show the queue
-npx tsx scripts/human-submit.ts --queue
-
-# manual assisted run for one platform
-npx tsx scripts/human-submit.ts --run --only "Brownbook"
-
-# with attempted auto-registration (requires valid IMAP creds)
-npx tsx scripts/human-submit.ts --run --register --only "GoodFirms"
 ```
-
-Monitoring and re-probe:
-
-```bash
-npx tsx scripts/monitor-submitted.ts
-npx tsx scripts/reprobe-blocked.ts
+src/app/                 → Next.js web application (marketing site + dashboard UI)
+src/components/          → shared UI components
+src/lib/automation/      → browser automation library (Playwright, forms, mapping)
+src/lib/directories/     → authoritative platform list (MASTER_LIST.ts)
+src/workers/             → background submission agent
+scripts/                 → client-order pipeline (human-submit, monitor, reprobe, report)
+directory-adapters/      → per-directory workflow notes
+human-queue.json         → operational source of truth (status + history)
+client-report/           → generated client report files
 ```
-
-Client report:
-
-```bash
-npx tsx scripts/generate-client-report.ts
-```
-
-Rules of execution (blocks, duplicates, zombie processes, company data):
-
-- when a site blocks access (Cloudflare / "Access denied" / IP restriction) — do **not** repeat requests; record `BLOCKED`/`FAILED` with the external-block reason and move on;
-- before each session, kill zombie chrome/node processes;
-- old `SUCCESS` statuses are unverified — re-run before including in a report;
-- registration email `itllect.marketing@gmail.com`; IMAP creds invalid — no auto email verification;
-- company: ITllect / ITllect Consulting Inc. / https://itllect.com / info@itllect.com / (123) 636-4087 / 100 N University Dr, Coral Springs FL 33071 US.
-
-See `AGENTS.md` for the authoritative operational rules.
-
----
 
 ## Development
 
 ```bash
+npm install
 npm run dev       # Next.js web app
 npm run build     # production build
 npm run lint      # eslint
@@ -158,8 +130,13 @@ npm run submission-agent        # web worker agent (looping)
 npm run submission-agent:once   # web worker agent (single pass)
 ```
 
-Environment variables (`.env`, see `.env.example`):
+Environment variables (see `.env.example`):
 
 - `DATABASE_URL` — PostgreSQL (app DB, Prisma)
-- `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL` — LLM for field mapping
-- `EMAIL_USER`, `EMAIL_PASS`, `EMAIL_HOST`, `EMAIL_PORT` — IMAP (currently non-functional)
+- `OPENAI_API_KEY`, `OPENAI_MODEL` — LLM for field mapping and content preparation
+
+## Production status
+
+SEOFlow AI is deployed and publicly accessible: **https://seoflowai.vercel.app/**
+
+It is an actively developed SaaS product/demo with a live public deployment — the web application (landing, dashboard, campaigns, audit, company profile) and the automation pipeline that processes real directory campaigns.

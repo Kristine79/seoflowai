@@ -1,5 +1,9 @@
 # SEOFlow Directory Submission — Session Report
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 **Date**: 2026-01-XX  
 **Duration**: ~30 minutes (time-boxed)  
 **Goal**: Получить реальные размещения ITllect + создать универсальный паттерн для SEOFlow
@@ -45,7 +49,7 @@ Submit button click does not trigger POST due to:
 
 #### Manual Completion
 1. Open https://www.semfirms.com/add-listing in regular browser
-2. Login with itllect.marketing@gmail.com / [REDACTED]
+2. Login with itllect.marketing@gmail.com / <PASSWORD_FROM_ENV>
 3. Fill form manually (see directory-adapters/semfirms.md for field mapping)
 4. Upload real logo (not 1x1 PNG)
 5. Click Submit

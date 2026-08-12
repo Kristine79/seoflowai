@@ -1,5 +1,9 @@
 # SEOFlow AI — Retest Report
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 5 previously unsuccessful directories, run one-by-one with `npx tsx scripts/human-submit.ts --run --only "Name"`.
 No code fixes were applied during the retest.
 

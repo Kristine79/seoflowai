@@ -5,6 +5,8 @@
 ### Purpose
 After a form/application is submitted, the public profile may take time to appear (moderation, publication). Monitoring re-checks a submitted platform later to determine whether a public profile now exists.
 
+> **Monitoring does not re-register. Monitoring does not blindly re-submit.** It only checks whether a public result has appeared, and — when evidence is found — may promote the platform to `VERIFIED_SUCCESS`.
+
 Monitoring **must not**:
 
 - re-register or re-submit;
@@ -37,14 +39,14 @@ SUBMITTED / PENDING      (not public yet → monitor again later)
 ```
 
 ### Target set
-The current TARGETS are the six `SUBMITTED` platforms: Brownbook, CityLocalPro, DesignRush, GoodFirms, Digital Agency Net, Plantation Chamber.
+The current `TARGETS` in the script are the `SUBMITTED` platforms (as of the last update: Brownbook, CityLocalPro, DesignRush, GoodFirms, Digital Agency Net, Plantation Chamber; the live queue also contains additional `SUBMITTED` entries — re-derive from `human-queue.json`). Platforms already `VERIFIED_SUCCESS` (Semfirms, FindUsHere, ProvenExpert) are not monitoring targets.
 
 ### Run
 ```bash
 npx tsx scripts/monitor-submitted.ts
 ```
 
-Monitoring is repeatable (e.g., weekly or bi-weekly) without creating duplicates. 2 platforms are already `VERIFIED_SUCCESS` (Semfirms, FindUsHere) and are not in the monitoring target set.
+Monitoring is repeatable (e.g., weekly or bi-weekly) without creating duplicates.
 
 ---
 
@@ -65,8 +67,8 @@ Some older `BLOCKED` platforms may become accessible later (protection rules cha
 npx tsx scripts/reprobe-blocked.ts
 ```
 
-### Current re-probe outcomes
-In the 2026-08-08 pass, most previously-blocked platforms stayed `BLOCKED` (Cloudflare / 403 / IP restriction) and are documented in `CLIENT_REPORTING.md`. Two platforms improved and were re-classified (e.g., to `NEEDS_MANUAL`), and `n49` was confirmed `NOT_APPLICABLE` (accessible but no add-business form).
+### Re-probe outcomes
+In the 2026-08 pass, most previously-blocked platforms stayed `BLOCKED` (Cloudflare / 403 / IP restriction). Two platforms improved and were re-classified (e.g., to `NEEDS_MANUAL`), and `n49` was confirmed `NOT_APPLICABLE` (accessible but no add-business form).
 
 ---
 

@@ -1,5 +1,9 @@
 # Отчёт: Размещение ITllect в каталогах
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 **Дата:** 30 июля 2026  
 **Клиент:** ITllect  
 **Задача:** Размещение компании в 75 каталогах  

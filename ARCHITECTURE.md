@@ -1,37 +1,75 @@
 # SEOFlow AI — Architecture
 
-> This document describes the **actual** implementation as of 2026-08-08 (git `361b41d`). It intentionally separates current implementation from proposed/future architecture (see `KNOWLEDGE_BASE.md`).
+> This document describes the **actual** implementation. It intentionally separates current implementation from proposed/future architecture (see `KNOWLEDGE_BASE.md`).
 
 ## Overview
 
 SEOFlow has two distinct areas of functionality:
 
-1. **A web application** (Next.js + Prisma/PostgreSQL) — directory management UI/API, content/AI audit, campaign UI.
-2. **A client-order pipeline** — the operational engine that actually places a business (ITllect) into directories. This is script-driven and uses `human-queue.json` as its source of truth.
+1. **A web application** (Next.js 16 + Prisma/PostgreSQL) — marketing site, dashboard, campaigns, directory catalog, SEO audit, company profile. Deployed publicly at https://seoflowai.vercel.app/.
+2. **A client-order pipeline** — the operational engine that processes real directory campaigns. This is script-driven and uses `human-queue.json` as its source of truth.
 
-The documentation in this repository is primarily about the **client-order pipeline**, which is the part that processes real directories.
+The architecture can be summarized as:
+
+```
+Next.js Application
+   │
+   ├── Marketing Landing
+   ├── Dashboard
+   ├── Campaigns
+   ├── Directory Catalog
+   ├── SEO Audit
+   └── Company Profile
+           │
+           ↓
+AI-assisted Analysis & Preparation   (LLM field mapping, content preparation)
+           │
+           ↓
+Campaign Workflow                    (status model, history, duplicate protection)
+           │
+           ↓
+Browser Automation                  (Playwright, persistent context, form extraction)
+           ├── Automated action
+           └── Human action         (headed browser, human-in-the-loop)
+                   │
+                   ↓
+Verification                        (proof-based submit check, public profile check)
+           │
+           ↓
+Evidence + Status History           (screenshots, logs, attempt history)
+           │
+           ↓
+Monitoring                          (re-check SUBMITTED, no re-submission)
+           │
+           ↓
+Reporting                           (CSV / XLSX / Markdown client reports)
+```
 
 ```
 Web app (Next.js / Prisma)
-   src/app, src/components, src/lib/directories/MASTER_LIST.ts
+   src/app/*                     → marketing + dashboard routes
+   src/components/*              → shared UI components
+   src/lib/directories/MASTER_LIST.ts → authoritative platform list (77 entries)
 
 Automation library (shared)
-   src/lib/automation/*  → browser, stealth harness, form analysis,
-                           field mapping, email verification, submission runner
+   src/lib/automation/*          → browser, stealth harness, form analysis,
+                                   field mapping, email verification, submission runner
 
 Client-order pipeline (scripts)
-   scripts/human-submit.ts     → assisted submission (headed, human-in-the-loop)
-   scripts/monitor-submitted.ts→ re-check SUBMITTED for public profiles
-   scripts/reprobe-blocked.ts  → re-check old BLOCKED
-   scripts/audit-notapplicable.ts → NOT_APPLICABLE classification audit
+   scripts/human-submit.ts           → assisted submission (headed, human-in-the-loop)
+   scripts/monitor-submitted.ts      → re-check SUBMITTED for public profiles
+   scripts/reprobe-blocked.ts        → re-check old BLOCKED
+   scripts/audit-notapplicable.ts    → NOT_APPLICABLE classification audit
    scripts/generate-client-report.ts → client report files
+   scripts/generate-client-report-final.ts → final client report
 
 Data
-   human-queue.json      → operational source of truth (status + history)
-   probe-results.json    → live form/availability probe results
-   src/lib/directories/MASTER_LIST.ts → authoritative client list (76 entries)
-   seoflowai-temp/agent-profiles/ → persistent browser profiles per platform
-   human-submit-out/     → evidence (logs + screenshots) per platform
+   human-queue.json            → operational source of truth (status + history)
+   probe-results.json          → live form/availability probe results
+   src/lib/directories/MASTER_LIST.ts → authoritative platform list (77 entries)
+   seoflowai-temp/agent-profiles/  → persistent browser profiles per platform
+   human-submit-out/           → evidence (logs + screenshots) per platform
+   client-report/              → generated client report files
 ```
 
 ---
@@ -44,8 +82,11 @@ Data
 | `stealth.ts` | Headed persistent-context harness with lightweight anti-detection init script; Cloudflare "Just a moment" detection; CAPTCHA-type detection; manual-CAPTCHA pause; screenshot helper |
 | `form-analyzer.ts` | Extracts form structure from the live page; computes form quality (captcha / Cloudflare challenge / non-standard layout) |
 | `field-mapper.ts` | Maps company data to form fields: label-rule mapping first, LLM fallback for the rest; social/vanity guard |
+| `registration-discovery.ts` | Discovers registration/add-business entry points on a site |
+| `cookie-consent.ts` | Handles cookie-consent banners before form interaction |
 | `email-verifier.ts` | IMAP `ImapFlow`: waits for a verification link or 4–8 digit code |
 | `submission-runner.ts` | Legacy multi-step form runner used by the web app / workers |
+| `ai-client.ts` | Shared LLM client for field mapping |
 
 > The web worker agent (`src/workers/submission-agent.ts`) and the API submission flow are driven by `submission-runner.ts`. The **client order** uses the newer `scripts/human-submit.ts`, which reuses `stealth.ts`, `form-analyzer.ts`, `field-mapper.ts`, and `email-verifier.ts`.
 
@@ -71,8 +112,8 @@ Data
 ### `audit-notapplicable.ts` — NOT_APPLICABLE classification audit
 - Checks questionable NOT_APPLICABLE platforms to determine whether a public listing / claim / add-business path exists. Does not submit or change the queue. See `STATUS_MODEL.md`.
 
-### `compare-reports.ts`
-- Diffs two generated client reports (see `CLIENT_REPORTING.md`).
+### `generate-client-report.ts` / `generate-client-report-final.ts`
+- Render the queue into `client-report/` (CSV, XLSX, Markdown, priority TOP-10, changes diff). See `CLIENT_REPORTING.md`.
 
 ### Supporting lib (`scripts/lib/`)
 - `client-data.ts` — client-status mapping, overrides, NA categories/comments, result text for the report.
@@ -107,15 +148,16 @@ An array of directory entries. Each entry:
 `human-queue.json` is the **operational source of truth**. See `STATUS_MODEL.md` for status semantics.
 
 ### `src/lib/directories/MASTER_LIST.ts`
-The authoritative client list (76 entries = 75 client platforms + FindUsHere). Supplies `name`, `url`, `submissionUrl`, `type` (A–E), `clientCategory`, `method`, `notes`, `priority` used by the report generator.
+The authoritative platform list (77 entries — the real campaign scope). Supplies `name`, `url`, `submissionUrl`, `type` (A–E), `clientCategory`, `method`, `notes`, `priority` used by the pipeline and the report generator.
 
 ### Evidence store
-`human-submit-out/<slug>/` holds per-platform `human-submit.log`, `presubmit.png`, `postsubmit.png`, plus monitor/re-probe screenshots. The repos' `seoflowai-temp/agent-profiles/` holds persistent browser profiles.
+`human-submit-out/<slug>/` holds per-platform `human-submit.log`, `presubmit.png`, `postsubmit.png`, plus monitor/re-probe screenshots. `seoflowai-temp/agent-profiles/` holds persistent browser profiles.
 
 ---
 
 ## Security and operational notes
 
-- Secrets live only in `.env` (git-ignored). Legacy documentation previously contained an IMAP app-password; it has been scrubbed from tracked docs. Rotate that credential.
+- Secrets live only in `.env` (git-ignored).
 - Anti-bot protections (Cloudflare / CAPTCHA) are surfaced to a human; the harness does **not** solve CAPTCHA or bypass protections automatically, and re-probe explicitly avoids stealth/proxies.
+- No credentials, passwords or account tokens are committed to tracked documentation.
 - `AGENTS.md` defines operational rules (single-platform runs, block handling, zombie-process hygiene, company data). Read it before running the pipeline.

@@ -1,5 +1,9 @@
 # SEOFlow Directory Submission — Session Report (Updated)
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 **Date**: 2026-01-XX  
 **Duration**: ~45 minutes  
 **Goal**: Верификация успешных размещений + классификация площадок
@@ -12,7 +16,7 @@
 ✅ **Semfirms** — VERIFIED_SUCCESS  
 **Profile URL**: https://www.semfirms.com/profile/itllect-llc  
 **Category**: Business Directory  
-**Auth**: Email/Password (itllect.marketing@gmail.com / [REDACTED])
+**Auth**: Email/Password (itllect.marketing@gmail.com / password stored in .env)
 
 ### Unverified (False Positives)
 ⚠️ **Brownbook** — UNVERIFIED (профиль не найден)  
@@ -171,8 +175,8 @@
 - business_email_address (text) — itllect.marketing@gmail.com
 - confirm_business_email_address (text) — itllect.marketing@gmail.com
 - username (text) — itllect
-- password (password) — [REDACTED]
-- confirm_password (password) — [REDACTED]
+- password (password) — <PASSWORD_FROM_ENV>
+- confirm_password (password) — <PASSWORD_FROM_ENV>
 
 **CAPTCHA**: None detected  
 **Submit button**: `<input type="image">` (не обычный button)

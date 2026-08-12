@@ -1,6 +1,6 @@
 # SEOFlow — Directory Adapters
 
-> This document lists the **currently implemented** adapter material. It contains only real, existing adapters — no fabricated entries.
+> This document describes the **currently implemented** adapter material. It contains only real, existing adapters and logic — no fabricated entries.
 
 ## What an adapter is here
 
@@ -17,16 +17,17 @@ The adapter pattern reference (structure, field-mapping templates, common patter
 | **Semfirms** | Site-specific (Drupal AJAX) | `directory-adapters/semfirms.md`; account + verification done, profile filled via Playwright | Requires full legal name `Itllect LLC`; jQuery instability; silent validation | VERIFIED_SUCCESS (profile live) |
 | **Brownbook** | Site-specific (guest add-business) | `directory-adapters/brownbook.md`; guest submission flow | Activation email then moderation; profile not yet public | SUBMITTED |
 | **CityLocalPro** | Site-specific (add-your-business) | `directory-adapters/citylocalpro.md`; form filled, manual reCAPTCHA v2 | Moderation before publication | SUBMITTED |
-| **FindUsHere** | Site-specific (register → dashboard) | handled in engine + report (see `src/lib/directories/MASTER_LIST.ts`); no dedicated note file yet | No CAPTCHA, no email-verify | VERIFIED_SUCCESS (profile live) |
+| **FindUsHere** | Site-specific (register → dashboard) | handled in engine + report (see `src/lib/directories/MASTER_LIST.ts`); `directory-adapters/findushere.md` notes | No CAPTCHA, no email-verify | VERIFIED_SUCCESS (profile live) |
+| **ProvenExpert** | Site-specific (profile + verification) | `directory-adapters/provenexpert.md` notes | Login-based flow, verification before publication | VERIFIED_SUCCESS (via monitoring) |
 
-`directory-adapters/brownbook.md`, `citylocalpro.md`, `semfirms.md`, and `findushere.md` contain the detailed per-site field maps and learnings. `findushere.md` currently has richer notes than the others; see the notes for field specifics.
+`directory-adapters/brownbook.md`, `citylocalpro.md`, `semfirms.md`, `findushere.md`, and `provenexpert.md` contain the detailed per-site field maps and learnings; see the notes for field specifics.
 
 ## GENERIC / REUSABLE vs SITE-SPECIFIC
 
 - **Generic / reusable** — the common engine mechanics in `DIRECTORY_ENGINE.md`: headed persistent browser, challenge detection, form extraction, rule+AI field mapping, proof-based submit detection, evidence, history, status management.
 - **Site-specific** — adapter notes + inline special-casing for platforms that don't fit the standard flow (unusual registration, dynamic fields, special URLs/verification, custom post-submit).
 
-This split (generic workflows + site-specific overrides) is what scales better than a single one-size-fits-all adapter.
+This split (generic workflows + site-specific overrides) is what scales better than a single one-size-fits-all adapter. It does **not** mean every platform is handled by one universal adapter — many platforms still require a human step or are externally blocked.
 
 ## Adapter lifecycle / checklist
 
@@ -34,4 +35,4 @@ From `directory-adapters/README.md`, an adapter is considered usable when the fo
 
 ## Running order
 
-Follow `AGENTS.md`: launch one platform at a time with `--only Name`, kill zombie chrome/node processes before each session, and never re-submit protected/SUBMMITTED/REGISTERED/PENDING/VERIFIED platforms (duplicate guard).
+Follow `AGENTS.md`: launch one platform at a time with `--only Name`, kill zombie chrome/node processes before each session, and never re-submit protected statuses (`SUBMITTED`/`REGISTERED`/`PENDING_*`/`VERIFIED_SUCCESS`) — the duplicate guard in `human-submit.ts` enforces this.

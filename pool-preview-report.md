@@ -1,5 +1,9 @@
 # Pool PREVIEW Report — SUCCESS_CANDIDATE (5 площадок)
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 Дата: 2026-07-30
 Режим: PREVIEW (заполнение форм, БЕЗ отправки)
 Компания: ITllect

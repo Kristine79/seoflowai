@@ -11,8 +11,8 @@
 
 ## Account Status
 - **Email**: itllect.marketing@gmail.com
-- **Password**: [REDACTED]
-- **Email Verified**: YES (via link https://www.semfirms.com/verify?code=b96cbf4fa99583e47860643fd1607ed3)
+- **Password**: `[REDACTED — stored in .env / secret manager; do not commit]`
+- **Email Verified**: YES (verification link used during setup)
 - **Login Working**: YES (dashboard accessible)
 - **Persistent Profile**: `seoflowai-temp/agent-profiles/human-semfirms`
 

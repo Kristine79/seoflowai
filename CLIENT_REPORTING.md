@@ -7,7 +7,7 @@ The client report is a **presentation layer** over the operational data.
 
 ## Files produced
 
-`scripts/generate-client-report.ts` writes into `client-report/`:
+`scripts/generate-client-report.ts` / `scripts/generate-client-report-final.ts` write into `client-report/`:
 
 | File | Purpose |
 |---|---|
@@ -18,14 +18,17 @@ The client report is a **presentation layer** over the operational data.
 | `client-report-changes.md` | Diff between report snapshots (old vs new date) — status movement. |
 | `not-applicable-audit.md`, `not-applicable-final-audit.md` | NOT_APPLICABLE classification audit documentation (confirmed / reclassify / partner / paid / needs-check). |
 
+The published campaign report `public/SEOFlow-77-Platform-Campaign-Report.xlsx` is the client-facing Excel export for the 77-platform campaign.
+
 ## Generation
 
 ```bash
 npx tsx scripts/generate-client-report.ts
+npx tsx scripts/generate-client-report-final.ts
 ```
 
 ### Sources (does not re-run audits)
-- `src/lib/directories/MASTER_LIST.ts` — authoritative client list (76 entries = 75 client platforms + FindUsHere).
+- `src/lib/directories/MASTER_LIST.ts` — authoritative platform list (77 entries).
 - `human-queue.json` — final statuses after the runs.
 - `probe-results.json` — live form/availability probe results.
 - `scripts/lib/client-data.ts` — client-status mapping, per-platform overrides, result text, NA categories/comments, profile URLs.
@@ -47,12 +50,23 @@ Technical statuses are rendered to plain-language client statuses (Russian):
 
 Each client status maps to a reason and a next-step, so the report explains *why* and *what next* for every platform.
 
+## Reference numbers: the real 77-platform campaign
+
+The reference campaign (final report dated 2026-08-11) produced:
+
+| Client status | Count |
+|---|---:|
+| Всего площадок (Total) | **77** |
+| Размещено (подтверждено) — Placed | **5** |
+| Заявка отправлена / ожидает модерации — Submission sent | **7** |
+| Требуется действие клиента — Requires action | **23** |
+| Площадка недоступна — Platform unavailable / externally blocked | **14** |
+| Не подходит для текущей задачи — Not suitable | **28** |
+
+77 = 5 + 7 + 23 + 14 + 28. See `REAL_VALIDATION.md` for the full case study.
+
+> Historical reports (`final-report-75.md`, `client-directory-report.md` 2026-08-08 snapshot, etc.) contain older 75/76-platform snapshots from earlier stages of the campaign. They are retained as history; the current reference is the **77-platform** campaign report.
+
 ## Known limitation
 
-The report generator iterates `MASTER_LIST` and looks up each name in `human-queue.json`. As of 2026-08-08:
-- `Sitejabber` is present in `MASTER_LIST` but no longer in the queue (replaced), while
-- `SmartCustomer` is in the queue but not in `MASTER_LIST`.
-
-As a result the generated report currently emits **75 rows**, while the queue has **76 entries**. This is a known source/target id mismatch, not a data-loss bug; reconcile the two lists before the next report run if it matters for the client.
-
-> Current counts and the six SUBMITTED monitoring targets are maintained in `STATUS_MODEL.md`; always re-derive from `human-queue.json` before reporting.
+The report generator iterates `MASTER_LIST` and looks up each name in `human-queue.json`. Source/target mismatches between the two lists can cause row-count differences between the report and the queue. Before delivering a report, reconcile the lists and re-derive counts from `human-queue.json` (the operational source of truth).

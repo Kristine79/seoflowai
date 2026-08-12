@@ -20,7 +20,7 @@ COMMON ENGINE  +  DIRECTORY-SPECIFIC ADAPTERS / FLOWS
 ## Generic logic (common engine)
 
 ### Browser / session
-- Headed **persistent** browser context (Playwright) with a per-platform profile at `seoflowai-temp/agent-profiles/human-<slug>` — cookies/logins survive between runs.
+- **Playwright** automation with a **headed persistent browser context** per platform (`seoflowai-temp/agent-profiles/human-<slug>`) — cookies/logins survive between runs.
 - A lightweight anti-detection init script (`src/lib/automation/stealth.ts`) masks common headless markers, but does **not** solve CAPTCHA or bypass Cloudflare automatically — challenges are shown in headed mode for a human.
 
 ### Navigation
@@ -36,10 +36,13 @@ COMMON ENGINE  +  DIRECTORY-SPECIFIC ADAPTERS / FLOWS
 - An **email policy** override ensures registration/login/verification fields use the registration email, while business/company/contact fields use the public company email (see `HUMAN_ACTION.md`).
 
 ### Human action
-- When Cloudflare, CAPTCHA, OAuth, phone/email verification, or an unusual step appears, the engine stops in the headed browser and waits (query form submit waits up to **180s**). See `HUMAN_ACTION.md`.
+- When Cloudflare, CAPTCHA, OAuth, phone/email verification, or an unusual step appears, the engine stops in the headed browser and waits (form submit waits up to **180s**). See `HUMAN_ACTION.md`.
 
-### Submit detection (proof-based, not text-based)
-- **Baseline** is captured before any submit (URL + which "success" words are already present on the landing page).
+### PROOF-BASED VERIFICATION (submit detection)
+
+The engine does **not** treat the mere presence of "Thank you" / "we will review" text as proof of a successful submission. Instead:
+
+- A **baseline** is captured before any submit (URL + which "success" words are already present on the landing page).
 - A **submit listener** marks when a real form submit / submit-button click fires.
 - `checkSuccess` returns `SUBMITTED` only if:
   - (a) there was a post-submit navigation to a non-error URL different from baseline, **or**
@@ -47,6 +50,8 @@ COMMON ENGINE  +  DIRECTORY-SPECIFIC ADAPTERS / FLOWS
   - (c) a submit fired **and** a new "success" word appeared that was **not** present at baseline.
 - If Cloudflare reappears during the poll, the result is `BLOCKED`, not `SUBMITTED`.
 - A page that merely says "thank you" / "we will review" on the landing page is **not** proof of submission.
+
+**Verification is a separate step from submission.** `SUBMITTED` only records that a form was actually sent; `VERIFIED_SUCCESS` additionally requires a publicly accessible profile URL with company-specific content, backed by evidence (see `STATUS_MODEL.md` and `MONITORING.md`).
 
 ### Evidence
 - Pre-submit and post-submit screenshots plus the run log are saved per platform under `human-submit-out/<slug>/`. See `HUMAN_ACTION.md`.
@@ -83,10 +88,10 @@ The following real flow patterns have been observed across the queue:
 3. **Claim existing business** — claim/verify an already-existing listing (phone/domain/postcard verification; e.g., Trustpilot, Foursquare, Express Update, Nextdoor).
 4. **Login → Dashboard → Add Business** — log in to an existing account and add/submit a business.
 5. **OAuth** — LinkedIn/Google sign-in only (e.g., TopSEOs, Crunchbase, SlideShare); requires a human.
-6. **CAPTCHA / Cloudflare** — challenge must be solved by a human; if persistent → `BLOCKED` (e.g., YellowPages, Manta, Superpages, EZlocal).
-7. **Email verification** — confirmation link/code required (code exists in `email-verifier.ts`; currently IMAP creds invalid → manual).
+6. **CAPTCHA / Cloudflare** — challenge must be solved by a human; if persistent → `BLOCKED` (e.g., Yellow Pages, Manta, Superpages, EZlocal).
+7. **Email verification** — confirmation link/code required (code exists in `email-verifier.ts`; operational only when valid IMAP credentials are configured → otherwise manual).
 8. **Manual identity verification** — phone/postcard/domain proof (e.g., Nextdoor postcard PIN, Foursquare phone).
-9. **Moderation / pending publication** — submission accepted but not public yet (all 6 current SUBMITTED).
+9. **Moderation / pending publication** — submission accepted but not public yet (the `SUBMITTED` monitoring targets).
 10. **Paid membership** — listing only with paid membership (e.g., Ft Lauderdale Chamber) → separate client decision.
 11. **Partner program** — public agency directory behind a partner application (e.g., HubSpot, Semrush) → manual partner application.
 12. **No business listing / NOT_APPLICABLE** — no relevant public business profile available at all.

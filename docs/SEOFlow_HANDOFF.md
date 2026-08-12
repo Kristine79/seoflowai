@@ -1,9 +1,12 @@
 # SEOFlow AI — Directory Submission Handoff
 
+> HISTORICAL DOCUMENT
+>
+> This document describes an earlier development stage and is retained for project history. It is not the current source of truth.
+
 > **Дата:** 30 июля 2026  
 > **Проект:** SEOFlow AI — автоматизация размещения компании ITllect в каталогах  
 > **Клиент:** ITllect (https://itllect.com)  
-> **Компания ID:** `cms3o7jwj0000ssutcych75pi`  
 > **Кампания:** Q3 2026  
 
 ---

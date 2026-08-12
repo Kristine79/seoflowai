@@ -15,7 +15,7 @@
 
 ## Account Status
 - **Username**: itllect
-- **Password**: [REDACTED]
+- **Password**: `[REDACTED — stored in .env / secret manager; do not commit]`
 - **Business ID**: 34578398
 - **Profile URL**: https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/
 - **Persistent Profile**: `seoflowai-temp/agent-profiles/human-findushere`
@@ -35,8 +35,8 @@
   business_email_address: "itllect.marketing@gmail.com",
   confirm_business_email_address: "itllect.marketing@gmail.com",
   username: "itllect",
-  password: "[REDACTED]",
-  confirm_password: "[REDACTED]"
+  password: "<PASSWORD_FROM_ENV>",
+  confirm_password: "<PASSWORD_FROM_ENV>"
 }
 ```
 
@@ -61,7 +61,7 @@
 ```javascript
 {
   username: "itllect",
-  password: "[REDACTED]",
+  password: "<PASSWORD_FROM_ENV>",
   keep_me_logged_in: true,  // optional checkbox
 }
 ```
