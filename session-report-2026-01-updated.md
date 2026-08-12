@@ -170,8 +170,8 @@
 - city (select) — Plantation (dynamic)
 - business_name (text) — Itllect LLC
 - business_category_id (select) — Marketing
-- business_first_name (text) — [REDACTED]
-- business_last_name (text) — [REDACTED]
+- business_first_name (text) — <CLIENT_FIRST_NAME>
+- business_last_name (text) — <CLIENT_LAST_NAME>
 - business_email_address (text) — itllect.marketing@gmail.com
 - confirm_business_email_address (text) — itllect.marketing@gmail.com
 - username (text) — itllect

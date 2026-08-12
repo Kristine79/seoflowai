@@ -54,6 +54,21 @@ import path from "path";
 const REGISTRATION_EMAIL = "itllect.marketing@gmail.com";
 const COMPANY_EMAIL = "info@itllect-agency.com";
 
+const CLIENT_PERSONAL: Record<string, string> = {
+  phone: process.env.CLIENT_PHONE ?? "",
+  address: process.env.CLIENT_ADDRESS ?? "",
+  zip: process.env.CLIENT_ZIP ?? "",
+  firstName: process.env.CLIENT_FIRST_NAME ?? "",
+  lastName: process.env.CLIENT_LAST_NAME ?? "",
+  position: process.env.CLIENT_POSITION ?? "",
+};
+
+for (const [key, value] of Object.entries(CLIENT_PERSONAL)) {
+  if (!value) {
+    throw new Error(`Missing personal data env var CLIENT_${key.toUpperCase()}: set it in .env (see .env.example)`);
+  }
+}
+
 /**
  * Email policy:
  * - Registration/login/verification flows use REGISTRATION_EMAIL.
@@ -70,15 +85,15 @@ const COMPANY_DATA: Record<string, string> = {
   legalName: "ITllect LLC",
   website: "https://itllect-agency.com/",
   email: COMPANY_EMAIL,
-  phone: "[REDACTED]",
-  address: "[REDACTED]",
+  phone: CLIENT_PERSONAL.phone,
+  address: CLIENT_PERSONAL.address,
   city: "Plantation",
   state: "FL",
-  zip: "33324",
+  zip: CLIENT_PERSONAL.zip,
   country: "US",
-  firstName: "[REDACTED]",
-  lastName: "[REDACTED]",
-  position: "Founder & CEO",
+  firstName: CLIENT_PERSONAL.firstName,
+  lastName: CLIENT_PERSONAL.lastName,
+  position: CLIENT_PERSONAL.position,
   description: "ITllect is a Plantation, Florida-based digital marketing agency delivering data-driven SEO, PPC, and social media solutions that drive measurable growth for businesses of all sizes. Founded in 2015, ITllect combines creative expertise with data-driven strategies in SEO, paid advertising, social media management, web development, and content marketing, built on transparency and long-term client partnerships.",
   services: "SEO, PPC, Social Media Marketing, Web Development, Content Marketing, Brand Strategy",
   keywords: "digital marketing agency, SEO services, PPC management, social media marketing, web development, Fort Lauderdale marketing",

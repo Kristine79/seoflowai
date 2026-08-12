@@ -30,8 +30,8 @@
   business_city: "Plantation",  // Appears after region selection (940 FL cities)
   business_name: "Itllect LLC",
   business_category_id: "217",  // "Advertising - Direct Mail" (marketing match)
-  business_first_name: "[REDACTED]",
-  business_last_name: "[REDACTED]",
+  business_first_name: "<CLIENT_FIRST_NAME>",
+  business_last_name: "<CLIENT_LAST_NAME>",
   business_email_address: "itllect.marketing@gmail.com",
   confirm_business_email_address: "itllect.marketing@gmail.com",
   username: "itllect",
@@ -74,7 +74,7 @@ After login, 7 forms exist (all POST to `/update_business_details.php`):
 ### 1. Contact Info (form_id=contact) — REQUIRED
 ```javascript
 {
-  contact_phone: "[REDACTED]",
+  contact_phone: "<CLIENT_PHONE>",
   contact_fax: "",  // optional
   contact_email_address: "info@itllect-agency.com",
   contact_website: "https://itllect-agency.com"
@@ -86,8 +86,8 @@ After login, 7 forms exist (all POST to `/update_business_details.php`):
 ```javascript
 {
   business_name: "Itllect LLC",
-  business_first_name: "[REDACTED]",
-  business_last_name: "[REDACTED]",
+  business_first_name: "<CLIENT_FIRST_NAME>",
+  business_last_name: "<CLIENT_LAST_NAME>",
   business_email_address: "itllect.marketing@gmail.com"
 }
 ```
@@ -95,11 +95,11 @@ After login, 7 forms exist (all POST to `/update_business_details.php`):
 ### 3. Address (form_id=address) — REQUIRED
 ```javascript
 {
-  location_street_1: "[REDACTED]",
+  location_street_1: "<CLIENT_STREET>",
   location_street_2: "",
   location_city: "Plantation",
   location_state: "FL",  // select, state code
-  location_zip: "33324"
+  location_zip: "<CLIENT_ZIP>"
 }
 ```
 
@@ -134,8 +134,8 @@ await page.waitForTimeout(4000);  // city loads
 await page.selectOption('select[name="business_city"]', 'Plantation');
 await page.selectOption('#business_category_id', '217');
 await page.fill('#business_name', 'Itllect LLC');
-await page.fill('input[name="business_first_name"]', '[REDACTED]');
-await page.fill('input[name="business_last_name"]', '[REDACTED]');
+await page.fill('input[name="business_first_name"]', '<CLIENT_FIRST_NAME>');
+await page.fill('input[name="business_last_name"]', '<CLIENT_LAST_NAME>');
 await page.fill('input[name="business_email_address"]', 'itllect.marketing@gmail.com');
 await page.fill('input[name="confirm_business_email_address"]', 'itllect.marketing@gmail.com');
 await page.fill('input[name="username"]', 'itllect');
@@ -164,7 +164,7 @@ await page.waitForTimeout(10000);  // redirect to dashboard_free.php
 ```javascript
 const contactForm = await page.evaluateHandle(() =>
   document.querySelectorAll('form[action*="update_business_details"]')[0]);
-await page.fill('input[name="contact_phone"]', '[REDACTED]');
+await page.fill('input[name="contact_phone"]', '<CLIENT_PHONE>');
 await page.fill('input[name="contact_email_address"]', 'info@itllect-agency.com');
 await page.fill('input[name="contact_website"]', 'https://itllect-agency.com');
 await page.evaluate(() => {
@@ -181,9 +181,9 @@ await page.evaluate(() => {
     const el = f.querySelector('input[name="' + name + '"]');
     if (el) { el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); }
   };
-  set('location_street_1', '[REDACTED]');
+  set('location_street_1', '<CLIENT_STREET>');
   set('location_city', 'Plantation');
-  set('location_zip', '33324');
+  set('location_zip', '<CLIENT_ZIP>');
 });
 await page.evaluate(() => {
   document.querySelectorAll('form[action*="update_business_details"]')[2].submit();

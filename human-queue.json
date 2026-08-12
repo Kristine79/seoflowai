@@ -236,7 +236,7 @@
   "humanAction": "manual submit needed",
   "notes": "SUBMITTED 10.08. Flow 2026: /partners/solutions → Get Started → modal hsforms (firstname/lastname/email/phone/website/country_dropdown/employees__c) → POST 200 accepted. Старый URL partners.hubspot.com/agency-partner-application редиректит на ecosystem.hubspot.com/marketplace/solutions; /agency-directory = 404. Листинг в marketplace появляется только после ручного ревью HubSpot (реп-медиатированный онбординг). Эндпоинты: forms.hsforms.com/submissions/v3/public/submit/formsnext/multipart/53/e0bf70bb-7a74-4466-8dc4-8bbe1dfe7037.",
   "status": "SUBMITTED",
-  "result": "SUBMITTED 10.08 (server-verified): Solutions Partner application form submitted. hsforms POST 200, accepted=true, conversionId=ebfea33c-ea1d-4482-8cbb-6703963b564c, formGuid=e0bf70bb-7a74-4466-8dc4-8bbe1dfe7037 (portal 53). Data: [REDACTED] / itllect.marketing@gmail.com / [REDACTED] / https://itllect.com / United States / 2 to 5. Marketplace listing NOT visible yet — requires HubSpot manual review (rep will contact). No duplicate (marketplace search: no ITllect).",
+  "result": "SUBMITTED 10.08 (server-verified): Solutions Partner application form submitted. hsforms POST 200, accepted=true, conversionId=ebfea33c-ea1d-4482-8cbb-6703963b564c, formGuid=e0bf70bb-7a74-4466-8dc4-8bbe1dfe7037 (portal 53). Data: [client contact] / itllect.marketing@gmail.com / [client phone] / https://itllect.com / United States / 2 to 5. Marketplace listing NOT visible yet — requires HubSpot manual review (rep will contact). No duplicate (marketplace search: no ITllect).",
   "history": [
    {
     "date": "2026-08-08T19:58:35.332Z",
@@ -659,7 +659,7 @@
   "humanAction": "manual navigate + submit",
   "notes": "VERIFIED SUCCESS 10.08. Телефон OPTIONAL (не вводился). Сервер: 500/флаки переходы. Работать через human-bark2. Аккаунт создаётся серверно на шаге address Next (create-account SPA без финального submit); после создания /create/ редиректит на /sellers/dashboard/. Блокеры, обойдённые 10.08: force-click на Next не срабатывал (нужен actionable click), #cmpwrapper (ConsentManager) перехватывал pointer events (удалять перед кликом), address autocomplete — выбор стрелками+Enter с commit-verify (click по контейнеру саджестов коммитил чужой адрес), категория — exact-матч.",
   "status": "SUCCESS",
-  "result": "VERIFIED 10.08: account created 2026-08-10 13:39:13 by real-walk address-Next click. seller spf_id=4708659, user_id=40829222, email=itllect.marketing@gmail.com, company=ITllect, seller_name=[REDACTED], website=https://itllect-agency.com/, location=Plantation FL 33324. Dashboard live (15 matching leads, 3 services, 1 location). No duplicates. Preceding 08.09 SUBMITTED was nav-only (no account) — superseded by verified real registration.",
+  "result": "VERIFIED 10.08: account created 2026-08-10 13:39:13 by real-walk address-Next click. seller account IDs removed, email=itllect.marketing@gmail.com, company=ITllect, seller_name=[client contact], website=https://itllect-agency.com/, location=Plantation FL. Dashboard live (15 matching leads, 3 services, 1 location). No duplicates. Preceding 08.09 SUBMITTED was nav-only (no account) — superseded by verified real registration.",
   "history": [
    {
     "date": "2026-08-08T09:17:30.077Z",
@@ -720,7 +720,7 @@
      "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\adapter-v15-details.png",
      "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\net-diag.png"
     ],
-    "note": "Глубокая отладка флоу: URL /en/us/sellers/create-account/?cn=search-engine-optimization (SEO Specialists). Шаги: ZIP(33324) → details (name/companyName/email + website + опции: website=Yes, size=2-10, sales/social пропущены) → Your business address (google-autocomplete + suite/city/state/postcode). Телефон (ph=optional) НЕ вводился. Профиль human-bark-com сломан (SPA не рендерится — антибот-куки), работает только human-bark2 (свежий). Переходы Next занимают 17-75s+: API api.bark.com/bark/seller/email?email=...&captchaToken=... возвращает 500 Internal Server Error (нестабильность сервера). 10+ прогонов; аккаунт НЕ создан (до submit не дошли). Вывод: телефон не требуется, нужен повторный прогон при стабильном сервере или ручное завершение."
+    "note": "Глубокая отладка флоу: URL /en/us/sellers/create-account/?cn=search-engine-optimization (SEO Specialists). Шаги: ZIP(redacted) → details (name/companyName/email + website + опции: website=Yes, size=2-10, sales/social пропущены) → Your business address (google-autocomplete + suite/city/state/postcode). Телефон (ph=optional) НЕ вводился. Профиль human-bark-com сломан (SPA не рендерится — антибот-куки), работает только human-bark2 (свежий). Переходы Next занимают 17-75s+: API api.bark.com/bark/seller/email?email=...&captchaToken=... возвращает 500 Internal Server Error (нестабильность сервера). 10+ прогонов; аккаунт НЕ создан (до submit не дошли). Вывод: телефон не требуется, нужен повторный прогон при стабильном сервере или ручное завершение."
    },
    {
     "date": "2026-08-09 13:33:59Z",
@@ -766,7 +766,7 @@
      "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\dashboard-verify\\seller-self-0.json",
      "C:\\hp\\github\\seoflowai\\human-submit-out\\bark-com\\dashboard-verify\\dashboard.png"
     ],
-    "note": "seller/self: user_id=40829222, spf_id=4708659, account_email=itllect.marketing@gmail.com, company=ITllect, seller_name=[REDACTED], created_at=2026-08-10 13:39:13. Dashboard live: 15 leads, 3 services, 1 location. Предыдущий 08.09 SUBMITTED — только навигация, аккаунта не было."
+    "note": "seller/self: account IDs removed, account_email=itllect.marketing@gmail.com, company=ITllect, seller_name=[client contact], created_at=2026-08-10 13:39:13. Dashboard live: 15 leads, 3 services, 1 location. Предыдущий 08.09 SUBMITTED — только навигация, аккаунта не было."
    }
   ]
  },
@@ -1975,7 +1975,7 @@
   "previewFields": 1,
   "previewFilled": 0,
   "humanAction": "completed",
-  "notes": "VERIFIED_SUCCESS: Профиль создан и подтверждён. URL: https://www.semfirms.com/profile/itllect-llc. Аккаунт: itllect.marketing@gmail.com / [REDACTED]. Блокировало: поле title требовало 'Itllect LLC' (полное юридическое название). Drupal валидация отклоняла форму без полного названия компании.",
+  "notes": "VERIFIED_SUCCESS: Профиль создан и подтверждён. URL: https://www.semfirms.com/profile/itllect-llc. Аккаунт: itllect.marketing@gmail.com (credential removed — rotate before reuse). Блокировало: поле title требовало 'Itllect LLC' (полное юридическое название). Drupal валидация отклоняла форму без полного названия компании.",
   "status": "VERIFIED_SUCCESS",
   "result": "https://www.semfirms.com/profile/itllect-llc"
  },
@@ -2090,7 +2090,7 @@
   "previewFields": 12,
   "previewFilled": 0,
   "humanAction": "completed",
-  "notes": "VERIFIED_SUCCESS: Профиль создан и публично доступен. URL: https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/. Аккаунт: itllect / [REDACTED]. Заполнены: контакты, адрес, категория (Advertising - Direct Mail), описание. Email verification не требуется (аккаунт активирован сразу).",
+  "notes": "VERIFIED_SUCCESS: Профиль создан и публично доступен. URL: https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/. Аккаунт: itllect (credential removed — rotate before reuse). Заполнены: контакты, адрес, категория (Advertising - Direct Mail), описание. Email verification не требуется (аккаунт активирован сразу).",
   "status": "VERIFIED_SUCCESS",
   "result": "https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/"
  },

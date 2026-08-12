@@ -22,7 +22,7 @@ const COMPANY = {
   city: "Plantation",
   state: "Florida",
   country: "USA",
-  zip: "33324",
+  zip: "00000",
   description: "Full-service digital marketing agency specializing in SEO and growth strategies.",
   category: "Advertising Agencies",
 };

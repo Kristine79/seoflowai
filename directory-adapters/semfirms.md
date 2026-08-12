@@ -23,13 +23,13 @@
 {
   title: "ITllect",
   field_company_url: "https://itllect-agency.com/",
-  field_contact_person: "[REDACTED]",
+  field_contact_person: "<CLIENT_CONTACT>",
   field_position_title: "Founder & CEO",
-  field_phone: "[REDACTED]",
-  field_primary_address_1: "[REDACTED]",
+  field_phone: "<CLIENT_PHONE>",
+  field_primary_address_1: "<CLIENT_STREET>",
   field_other_city: "Plantation",  // hidden field, requires JS to show
   field_state_1: "FL",
-  field_zip_1: "33324",
+  field_zip_1: "<CLIENT_ZIP>",
   field_country_1: "375",  // US
   body: "[description]",
   field_year_founded: "2015",

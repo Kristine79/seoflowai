@@ -28,10 +28,10 @@ const COMPANY_DATA = {
   website: "https://itllect.com",
   phone: "(123) 636-4087",
   description: "SEO and digital marketing consulting.",
-  address: "[REDACTED]",
-  city: "Plantation",
-  state: "FL",
-  zip: "33324",
+  address: "123 Main St",
+  city: "Anytown",
+  state: "NY",
+  zip: "10001",
   country: "US",
 };
 
