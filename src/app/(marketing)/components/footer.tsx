@@ -27,13 +27,15 @@ export function Footer() {
   return (
     <footer className="border-t border-zinc-100 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 shadow-sm">
                 <Search className="h-4 w-4 text-white" />
               </div>
-              <span className="text-base font-semibold tracking-tight">SEOFlow AI</span>
+              <span className="text-[15px] font-semibold tracking-tight text-zinc-900">
+                SEOFlow <span className="text-zinc-400">AI</span>
+              </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">
               Система для SEO directory campaigns: анализ, подготовка, подача, проверка и отчётность.
@@ -42,7 +44,9 @@ export function Footer() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <p className="text-sm font-semibold text-zinc-900">{col.title}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-400">
+                {col.title}
+              </p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.label}>

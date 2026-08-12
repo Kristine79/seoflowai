@@ -1,5 +1,7 @@
 "use client";
-import { Search, Target, Sparkles, Rocket, CheckCircle2, FileText } from "lucide-react";
+import { Search, Target, Sparkles, Rocket, CheckCircle2, FileText, ArrowRight } from "lucide-react";
+import { Reveal } from "./reveal";
+import { SectionLabel } from "./section-label";
 
 const steps = [
   {
@@ -44,34 +46,82 @@ export function Workflow() {
   return (
     <section id="how-it-works" className="scroll-mt-20 border-t border-zinc-100 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-widest text-zinc-400">Решение</p>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
-            Одна кампания вместо десятков разрозненных действий.
-          </h2>
-          <p className="mt-4 text-lg leading-relaxed text-zinc-600">
-            Каждая directory-кампания проходит один и тот же управляемый путь — от анализа до отчёта.
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <SectionLabel>Решение</SectionLabel>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+              Одна кампания вместо десятков разрозненных действий.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-zinc-600 sm:text-lg">
+              Каждая directory-кампания проходит один и тот же управляемый путь — от анализа до
+              отчёта.
+            </p>
+          </div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
+            Campaign workflow · 6 этапов
           </p>
         </div>
 
-        <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {steps.map((step, i) => (
-            <li
-              key={step.title}
-              className="group relative rounded-2xl border border-zinc-200 bg-white p-6 transition-all hover:border-blue-200 hover:shadow-md"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                  <step.icon className="h-5 w-5" />
-                </div>
-                <span className="font-mono text-xs text-zinc-300">0{i + 1}</span>
-              </div>
-              <h3 className="mt-4 text-base font-semibold text-zinc-900">{step.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-zinc-600">{step.text}</p>
-              <p className="mt-3 font-mono text-xs text-zinc-400">{step.detail}</p>
-            </li>
-          ))}
-        </ol>
+        <Reveal className="mt-12">
+          <div className="rounded-2xl border border-zinc-200 bg-zinc-50/50 p-4 sm:p-6 lg:p-8">
+            {/* desktop: горизонтальный workflow */}
+            <div className="relative hidden lg:block">
+              <div
+                aria-hidden
+                className="absolute inset-x-6 top-8 h-px bg-gradient-to-r from-blue-600/0 via-blue-600/40 to-blue-600/0"
+              />
+              <ol className="relative grid grid-cols-6 gap-6">
+                {steps.map((step, i) => (
+                  <li key={step.title} className="group">
+                    <div className="flex h-4 w-4 -translate-y-2 items-center justify-center rounded-full border-2 border-white bg-blue-600 shadow-sm transition-transform group-hover:scale-110" />
+                    <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-200 bg-white text-blue-600 shadow-sm transition-colors group-hover:border-blue-300 group-hover:text-blue-700">
+                      <step.icon className="h-5 w-5" />
+                    </div>
+                    <div className="mt-4 flex items-baseline gap-2">
+                      <span className="font-mono text-xs font-semibold text-blue-600">
+                        0{i + 1}
+                      </span>
+                      <h3 className="text-sm font-semibold text-zinc-900">{step.title}</h3>
+                    </div>
+                    <p className="mt-1.5 text-xs leading-relaxed text-zinc-600">{step.text}</p>
+                    <p className="mt-2 font-mono text-[10px] leading-relaxed text-zinc-400">
+                      {step.detail}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            {/* mobile/tablet: вертикальный workflow */}
+            <ol className="relative space-y-0 lg:hidden">
+              {steps.map((step, i) => (
+                <li key={step.title} className="relative flex gap-4 pb-6 last:pb-0">
+                  {i < steps.length - 1 && (
+                    <span aria-hidden className="absolute left-[19px] top-10 h-[calc(100%-2.5rem)] w-px bg-zinc-200" />
+                  )}
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-zinc-200 bg-white text-blue-600 shadow-sm">
+                    <step.icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0 pt-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-mono text-xs font-semibold text-blue-600">0{i + 1}</span>
+                      <h3 className="text-sm font-semibold text-zinc-900">{step.title}</h3>
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-zinc-600">{step.text}</p>
+                    <p className="mt-1.5 font-mono text-[10px] text-zinc-400">{step.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-8 hidden items-center justify-center gap-2 border-t border-zinc-200/70 pt-6 lg:flex">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+                Каждый этап завершается статусом и следующей точкой контроля
+              </span>
+              <ArrowRight className="h-3.5 w-3.5 text-blue-600" />
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

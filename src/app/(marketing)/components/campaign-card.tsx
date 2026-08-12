@@ -31,12 +31,16 @@ export function CampaignCard({ compact = false }: { compact?: boolean }) {
   const currentStep = 5;
 
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <h3 className="text-sm font-medium">77 Platforms · ITllect</h3>
-            <span className="inline-flex items-center rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-[11px] font-bold text-white">
+              77
+            </div>
+            <h3 className="text-sm font-medium text-zinc-900">77 Platforms · ITllect</h3>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse-dot" />
               Активна
             </span>
           </div>
@@ -48,9 +52,9 @@ export function CampaignCard({ compact = false }: { compact?: boolean }) {
       </div>
 
       <div className="space-y-4 px-5 py-4">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 overflow-x-auto pb-1">
           {workflowSteps.map((step, i) => (
-            <div key={step.id} className="flex items-center gap-1">
+            <div key={step.id} className="flex shrink-0 items-center gap-1">
               <div
                 className={cn(
                   "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium",
@@ -69,9 +73,9 @@ export function CampaignCard({ compact = false }: { compact?: boolean }) {
 
         <div className={cn("grid gap-3", compact ? "grid-cols-3" : "grid-cols-5")}>
           {statusCounts.slice(0, compact ? 3 : 5).map((s) => (
-            <div key={s.label} className="text-center">
-              <div className={cn("text-sm font-semibold", s.className)}>{s.value}</div>
-              <div className={cn("text-[10px] text-zinc-400", compact && "truncate")}>{s.label}</div>
+            <div key={s.label} className="min-w-0 text-center">
+              <div className={cn("text-sm font-semibold tabular-nums", s.className)}>{s.value}</div>
+              <div className={cn("mt-0.5 truncate text-[10px] text-zinc-400", compact && "truncate")}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -79,16 +83,17 @@ export function CampaignCard({ compact = false }: { compact?: boolean }) {
         <div className="flex items-center gap-3">
           <div className="flex-1">
             <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
-              <div className="h-full rounded-full bg-blue-600" style={{ width: `${progressPct}%` }} />
+              <div className="h-full rounded-full bg-blue-600 animate-grow-x" style={{ width: `${progressPct}%` }} />
             </div>
           </div>
-          <span className="min-w-[3rem] text-right text-xs text-zinc-500">{progressPct}%</span>
+          <span className="min-w-[3rem] text-right text-xs tabular-nums text-zinc-500">{progressPct}%</span>
         </div>
 
         {!compact && (
-          <div className="flex items-center justify-between rounded-lg bg-zinc-50 px-3.5 py-2.5 text-xs">
+          <div className="flex items-center justify-between rounded-lg border border-blue-100 bg-blue-50/50 px-3.5 py-2.5 text-xs">
             <span className="text-zinc-600">
-              Следующее действие: <span className="font-medium text-zinc-900">проверка заявок на модерации</span>
+              Следующее действие:{" "}
+              <span className="font-medium text-zinc-900">проверка заявок на модерации</span>
             </span>
             <span className="font-medium text-blue-600">Открыть →</span>
           </div>

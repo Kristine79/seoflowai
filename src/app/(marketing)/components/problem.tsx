@@ -1,5 +1,7 @@
 "use client";
 import { X } from "lucide-react";
+import { Reveal } from "./reveal";
+import { SectionLabel } from "./section-label";
 
 const manualSteps = [
   "Поиск площадок",
@@ -26,52 +28,76 @@ export function Problem() {
   return (
     <section className="border-t border-zinc-100 bg-zinc-50/60">
       <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-zinc-400">Проблема</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+          {/* ---- Левая часть: проблема ---- */}
+          <Reveal>
+            <SectionLabel>Проблема</SectionLabel>
+            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
               SEO directory work ломается, когда площадок становится много.
             </h2>
-            <p className="mt-4 max-w-lg leading-relaxed text-zinc-600">
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-zinc-600">
               Пока каталогов пять — всё происходит в голове и вкладках. Когда их пятьдесят или
               семьдесят, процесс превращается в хаос: статусы теряются, формы дублируются,
               а результат невозможно собрать в отчёт.
             </p>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-9 divide-y divide-zinc-200/70 border-y border-zinc-200/70">
               {problems.map((p) => (
-                <div key={p.title} className="rounded-xl border border-zinc-200 bg-white p-4">
-                  <div className="flex items-center gap-2">
-                    <X className="h-4 w-4 shrink-0 text-rose-500" />
+                <li key={p.title} className="flex gap-4 py-4">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-rose-200 bg-rose-50">
+                    <X className="h-3.5 w-3.5 text-rose-500" />
+                  </span>
+                  <div>
                     <h3 className="text-sm font-semibold text-zinc-900">{p.title}</h3>
+                    <p className="mt-0.5 text-sm leading-relaxed text-zinc-500">{p.text}</p>
                   </div>
-                  <p className="mt-1.5 text-sm leading-relaxed text-zinc-500">{p.text}</p>
-                </div>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </Reveal>
 
-          <div>
-            <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
-              <p className="font-mono text-xs uppercase tracking-widest text-zinc-400">
-                Типичный ручной процесс
-              </p>
-              <ol className="mt-5 space-y-1">
+          {/* ---- Правая часть: ручной процесс ---- */}
+          <Reveal delay={120}>
+            <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
+              <div className="flex items-center justify-between border-b border-zinc-100 bg-white px-6 py-4">
+                <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-zinc-400">
+                  Типичный ручной процесс
+                </p>
+                <span className="rounded-md bg-zinc-100 px-2 py-1 font-mono text-[10px] font-medium text-zinc-500">
+                  × 77 повторений
+                </span>
+              </div>
+
+              <ol className="grid grid-cols-1 sm:grid-cols-2">
                 {manualSteps.map((step, i) => (
                   <li
                     key={step}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-zinc-600 odd:bg-zinc-50"
+                    className="flex items-center gap-3 border-b border-zinc-50 px-6 py-3 text-sm text-zinc-600 sm:odd:border-r"
                   >
-                    <span className="font-mono text-xs text-zinc-400">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-mono text-xs tabular-nums text-zinc-300">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {step}
                   </li>
                 ))}
               </ol>
-              <p className="mt-5 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-500">
-                × 77 площадок. И это только одна кампания.
-              </p>
+
+              <div className="flex items-center justify-between gap-4 bg-zinc-900 px-6 py-5">
+                <p className="text-sm font-medium text-white">
+                  77 площадок.
+                  <span className="text-zinc-400"> И это только одна кампания.</span>
+                </p>
+                <span aria-hidden className="font-mono text-lg font-semibold text-zinc-600">
+                  ×77
+                </span>
+              </div>
             </div>
-          </div>
+
+            <p className="mt-4 text-xs leading-relaxed text-zinc-400">
+              Десять шагов × 77 площадок. Большая часть из них — копирование одних и тех же данных
+              компании в разные формы.
+            </p>
+          </Reveal>
         </div>
       </div>
     </section>

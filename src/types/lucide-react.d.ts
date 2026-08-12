@@ -62,4 +62,16 @@ declare module "lucide-react" {
   export const Square: Icon;
   export const AlertCircle: Icon;
   export const FileText: Icon;
+  export const ArrowRight: Icon;
+  export const ArrowDown: Icon;
+  export const CircleDot: Icon;
+  export const ListTodo: Icon;
+  export const FileStack: Icon;
+  export const ShieldCheck: Icon;
+  export const ClipboardList: Icon;
+  export const Wand2: Icon;
+  export const UserCheck: Icon;
+  export const Send: Icon;
+  export const FileBarChart2: Icon;
+  export const Quote: Icon;
 }
