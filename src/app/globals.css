@@ -3,6 +3,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -10,6 +16,16 @@
 :root {
   --background: #ffffff;
   --foreground: #18181b;
+  --surface: #fafafa;
+  --surface-muted: #f4f4f5;
+  --line: #e4e4e7;
+  --line-strong: #d4d4d8;
+  --primary: #2563eb;
+  --primary-strong: #1d4ed8;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 3px 0 rgb(0 0 0 / 0.04);
 }
 
 * {
@@ -89,8 +105,8 @@ body {
   }
 }
 
-/* Scroll-reveal: element starts hidden, .is-visible shows it */
-.reveal {
+/* Scroll-reveal: hidden only when JS is available (no-JS: content always visible) */
+html.js .reveal {
   min-width: 0;
   opacity: 0;
   transform: translateY(14px);
@@ -99,7 +115,7 @@ body {
     transform 0.5s ease;
 }
 
-.reveal.is-visible {
+html.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -108,7 +124,7 @@ body {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  html.js .reveal {
     opacity: 1;
     transform: none;
     transition: none;

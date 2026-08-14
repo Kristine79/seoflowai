@@ -1,14 +1,13 @@
 import { Navbar } from "./components/navbar";
 import { Hero } from "./components/hero";
+import { ProofStrip } from "./components/proof-strip";
+import { CaseStudy } from "./components/case-study";
 import { Problem } from "./components/problem";
 import { Workflow } from "./components/workflow";
 import { AiFeatures } from "./components/ai-features";
 import { HumanInTheLoop } from "./components/human-in-the-loop";
 import { ProductSection } from "./components/product-section";
-import { CampaignShowcase } from "./components/campaign-showcase";
-import { AuditShowcase } from "./components/audit-showcase";
-import { ContentShowcase } from "./components/content-showcase";
-import { CaseStudy } from "./components/case-study";
+import { CampaignContext } from "./components/campaign-context";
 import { Evidence } from "./components/evidence";
 import { Audience } from "./components/audience";
 import { WhySection } from "./components/why-section";
@@ -21,15 +20,14 @@ export default function MarketingPage() {
       <Navbar />
       <main>
         <Hero />
+        <ProofStrip />
+        <CaseStudy />
         <Problem />
         <Workflow />
         <AiFeatures />
         <HumanInTheLoop />
         <ProductSection />
-        <CampaignShowcase />
-        <AuditShowcase />
-        <ContentShowcase />
-        <CaseStudy />
+        <CampaignContext />
         <Evidence />
         <Audience />
         <WhySection />

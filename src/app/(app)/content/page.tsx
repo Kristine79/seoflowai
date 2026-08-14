@@ -36,7 +36,7 @@ type Directory = {
     keywords: string | null;
     primaryKeywords: string | null;
     secondaryKeywords: string | null;
-    suggestedCategories: string | null;
+    suggestedКатегории: string | null;
   } | null;
   seoAudit: {
     seoScore: number | null;
@@ -44,7 +44,7 @@ type Directory = {
   } | null;
 };
 
-function parseSuggestedCategories(json: string | null): { primary: string; secondary: string[] } | null {
+function parseSuggestedКатегории(json: string | null): { primary: string; secondary: string[] } | null {
   if (!json) return null;
   try {
     const parsed = JSON.parse(json);
@@ -97,7 +97,7 @@ export default function ContentPage() {
   };
 
   const gc = dir?.generatedContent;
-  const categories = parseSuggestedCategories(gc?.suggestedCategories || null);
+  const categories = parseSuggestedКатегории(gc?.suggestedКатегории || null);
   const serviceItems = splitLines(gc?.serviceList);
   const primaryKeywords = splitLines(gc?.primaryKeywords);
   const secondaryKeywords = splitLines(gc?.secondaryKeywords);
@@ -189,28 +189,28 @@ export default function ContentPage() {
                   <Sparkles className="h-8 w-8 text-blue-400" />
                 </div>
                 <div>
-                  <p className="font-medium">Generate platform-specific company descriptions</p>
+                  <p className="font-medium">Генерация описаний под платформу</p>
                   <p className="mt-1 text-sm text-zinc-500 max-w-md">
-                    Select a platform above to generate AI-optimized content tailored for directory submissions.
+                    Выберите платформу, чтобы создать контент, оптимизированный под требования конкретного каталога.
                   </p>
                 </div>
                 <div className="mt-4 grid grid-cols-3 gap-3 w-full max-w-md">
                   <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
-                    <p className="text-xs font-medium text-zinc-700">Company description</p>
-                    <p className="mt-1 text-[10px] text-zinc-400">~50-300 words</p>
+                    <p className="text-xs font-medium text-zinc-700">Описание компании</p>
+                    <p className="mt-1 text-xs text-zinc-400">~50–300 слов</p>
                   </div>
                   <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
-                    <p className="text-xs font-medium text-zinc-700">SEO keywords</p>
-                    <p className="mt-1 text-[10px] text-zinc-400">Primary + secondary</p>
+                    <p className="text-xs font-medium text-zinc-700">SEO-ключи</p>
+                    <p className="mt-1 text-xs text-zinc-400">Основные + вторичные</p>
                   </div>
                   <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-center">
-                    <p className="text-xs font-medium text-zinc-700">Categories</p>
-                    <p className="mt-1 text-[10px] text-zinc-400">Platform-specific</p>
+                    <p className="text-xs font-medium text-zinc-700">Категории</p>
+                    <p className="mt-1 text-xs text-zinc-400">Под платформу</p>
                   </div>
                 </div>
                 {(directories?.length || 0) > 0 && (
                   <p className="text-xs text-zinc-400 mt-2">
-                    {directories?.filter(d => d.generatedContent).length || 0} of {directories?.length || 0} platforms already have AI content
+                    {directories?.filter(d => d.generatedContent).length || 0} из {directories?.length || 0} платформ уже имеют AI-контент
                   </p>
                 )}
               </div>

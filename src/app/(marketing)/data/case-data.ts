@@ -1,5 +1,5 @@
 /**
- * Реальные данные кампании "77 Platforms" (ITllect).
+ * Реальные данные кампании "77 Platforms" (компания анонимизирована).
  * Источник: client-report/client-directory-report-final.md (финальный отчёт от 2026-08-11)
  * и public/SEOFlow-77-Platform-Campaign-Report.xlsx.
  * Статусы и площадки соответствуют отчёту — не выдуманы.
@@ -23,11 +23,11 @@ export const CASE_STATUSES = [
 ] as const;
 
 export const VERIFIED_PLATFORMS = [
-  { platform: "Wellfound", url: "https://wellfound.com/company/itllect", note: "Профиль компании публично доступен" },
-  { platform: "FindUsHere", url: "https://www.find-us-here.com/businesses/Itllect-LLC-Plantation-Florida-USA/34578398/", note: "Профиль создан и подтверждён" },
-  { platform: "Bark.com", url: "https://www.bark.com", note: "Аккаунт продавца создан, dashboard live" },
-  { platform: "Semfirms", url: "https://www.semfirms.com/profile/itllect-llc", note: "Профиль создан и подтверждён" },
-  { platform: "ProvenExpert", url: "https://www.provenexpert.com", note: "Найден публичный профиль" },
+  { platform: "Wellfound", note: "Профиль компании публично доступен" },
+  { platform: "FindUsHere", note: "Профиль создан и подтверждён" },
+  { platform: "Bark.com", note: "Аккаунт продавца создан, dashboard live" },
+  { platform: "Semfirms", note: "Профиль создан и подтверждён" },
+  { platform: "ProvenExpert", note: "Найден публичный профиль" },
 ] as const;
 
 export const SUBMITTED_PLATFORMS = [
@@ -108,14 +108,14 @@ export const CASE_CATEGORIES = [
   { label: "Gov / Partner / Aggregator", count: 15, color: "#a1a1aa" },
 ] as const;
 
-/** Публичные данные компании из кейса (полный профиль — в приложении, /company). */
+/** Публичные данные компании из кейса (анонимизированы; полный профиль — в приложении, /company). */
 export const COMPANY_PROFILE = {
-  name: "ITllect",
-  legalName: "ITllect Consulting Inc.",
-  website: "https://itllect.com",
-  email: "info@itllect.com",
-  phone: "(123) 636-4087",
-  address: "100 N University Dr, Coral Springs FL 33071, US",
+  name: "Digital Marketing Agency",
+  legalName: "Digital Marketing Agency LLC",
+  website: "https://example.com",
+  email: "info@example.com",
+  phone: "+1 (555) 000-0000",
+  address: "United States",
   category: "Digital Marketing Agency",
   services: "SEO · PPC · Web Development",
 } as const;

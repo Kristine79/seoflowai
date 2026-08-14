@@ -48,10 +48,10 @@ export function Navbar() {
             Войти
           </Link>
           <Link
-            href="/campaigns"
+            href="/case-studies/seo-agency-directory-campaign"
             className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 hover:shadow"
           >
-            Начать кампанию
+            Смотреть кейс
             <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         </div>
@@ -88,11 +88,11 @@ export function Navbar() {
               Войти
             </Link>
             <Link
-              href="/campaigns"
+              href="/case-studies/seo-agency-directory-campaign"
               onClick={() => setOpen(false)}
               className="flex-1 rounded-lg bg-blue-600 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-blue-700"
             >
-              Начать кампанию
+              Смотреть кейс
             </Link>
           </div>
         </nav>

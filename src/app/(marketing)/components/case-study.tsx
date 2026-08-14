@@ -2,32 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Download, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Download } from "lucide-react";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { StatusDot } from "@/components/ui/status-dot";
 import { cn } from "@/lib/utils";
 import {
   CASE_SUMMARY,
   CASE_STATUSES,
   CASE_PLATFORMS,
-  VERIFIED_PLATFORMS,
   COMPANY_PROFILE,
 } from "../data/case-data";
 import { Reveal } from "./reveal";
 import { SectionLabel } from "./section-label";
 
-const STATUS_STYLE: Record<string, string> = {
-  verified: "border-emerald-200 bg-emerald-50 text-emerald-700",
-  submitted: "border-blue-200 bg-blue-50 text-blue-700",
-  needsHuman: "border-amber-200 bg-amber-50 text-amber-700",
-  blocked: "border-rose-200 bg-rose-50 text-rose-700",
-  notApplicable: "border-zinc-200 bg-zinc-50 text-zinc-500",
-};
-
-const STATUS_DOT: Record<string, string> = {
-  verified: "bg-emerald-500",
-  submitted: "bg-blue-500",
-  needsHuman: "bg-amber-500",
-  blocked: "bg-rose-500",
-  notApplicable: "bg-zinc-300",
+const STATUS_TONE: Record<string, "emerald" | "blue" | "amber" | "rose" | "zinc"> = {
+  verified: "emerald",
+  submitted: "blue",
+  needsHuman: "amber",
+  blocked: "rose",
+  notApplicable: "zinc",
 };
 
 const STATUS_LABEL: Record<string, string> = {
@@ -37,8 +30,6 @@ const STATUS_LABEL: Record<string, string> = {
   blocked: "Площадка недоступна",
   notApplicable: "Не подходит",
 };
-
-const verifiedUrls: Map<string, string> = new Map(VERIFIED_PLATFORMS.map((p) => [p.platform, p.url]));
 
 export function CaseStudy() {
   const [filter, setFilter] = useState<string>("all");
@@ -55,7 +46,7 @@ export function CaseStudy() {
             77 площадок. Одна реальная кампания.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-zinc-600 sm:text-lg">
-            Кампания по размещению ITllect в business и agency каталогах. Каждая площадка прошла
+            Кампания по размещению digital-агентства в business и agency каталогах. Каждая площадка прошла
             путь: анализ → подготовка → подача → проверка. Без выдуманных цифр — только реальные
             статусы кампании.
           </p>
@@ -74,11 +65,11 @@ export function CaseStudy() {
                     Кампания «{CASE_SUMMARY.total} Platforms» · {COMPANY_PROFILE.name}
                   </p>
                   <p className="text-xs text-zinc-500">
-                    {COMPANY_PROFILE.category} · Business и agency каталоги
+                    Каталоги и отраслевые площадки
                   </p>
                 </div>
               </div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
+              <p className="text-xs text-zinc-400">
                 статусы — из финального отчёта
               </p>
             </div>
@@ -90,8 +81,8 @@ export function CaseStudy() {
                   className="flex flex-col justify-between gap-3 p-5 lg:[&:not(:first-child)]:border-l lg:border-zinc-100"
                 >
                   <div className="flex items-center gap-2">
-                    <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_DOT[s.key])} />
-                    <span className="text-[11px] font-medium uppercase tracking-wide text-zinc-400">
+                    <StatusDot tone={STATUS_TONE[s.key]} />
+                    <span className="text-xs font-medium text-zinc-400">
                       {s.label}
                     </span>
                   </div>
@@ -149,8 +140,8 @@ export function CaseStudy() {
             {/* desktop: таблица */}
             <div className="hidden sm:block">
               <div className="grid grid-cols-[1fr_auto] items-center gap-3 border-b border-zinc-100 bg-zinc-50/60 px-5 py-2.5">
-                <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Площадка</span>
-                <span className="w-44 text-right text-[10px] font-semibold uppercase tracking-wide text-zinc-400">
+                <span className="text-xs font-medium text-zinc-400">Площадка</span>
+                <span className="w-44 text-right text-xs font-medium text-zinc-400">
                   Статус
                 </span>
               </div>
@@ -162,27 +153,12 @@ export function CaseStudy() {
                   >
                     <div className="flex min-w-0 items-center gap-2">
                       <span className="truncate text-sm font-medium text-zinc-800">{p.name}</span>
-                      {verifiedUrls.has(p.name) && (
-                        <a
-                          href={verifiedUrls.get(p.name)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex shrink-0 items-center gap-1 rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700 transition-colors hover:bg-emerald-100"
-                        >
-                          профиль
-                          <ExternalLink className="h-2.5 w-2.5" />
-                        </a>
-                      )}
                     </div>
-                    <span
-                      className={cn(
-                        "inline-flex w-44 items-center justify-end gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-0.5 text-[11px] font-semibold",
-                        STATUS_STYLE[p.status]
-                      )}
-                    >
-                      <span className={cn("h-1 w-1 rounded-full", STATUS_DOT[p.status])} />
-                      {STATUS_LABEL[p.status]}
-                    </span>
+                    <StatusBadge
+                      tone={STATUS_TONE[p.status]}
+                      label={STATUS_LABEL[p.status]}
+                      className="w-44 justify-end"
+                    />
                   </div>
                 ))}
               </div>
@@ -194,11 +170,12 @@ export function CaseStudy() {
                 <div key={p.name} className="flex items-center justify-between gap-3 px-5 py-3">
                   <div className="flex min-w-0 items-center gap-2">
                     <span className="truncate text-sm font-medium text-zinc-800">{p.name}</span>
-                    {verifiedUrls.has(p.name) && <ExternalLink className="h-3 w-3 shrink-0 text-emerald-600" />}
                   </div>
-                  <span className={cn("shrink-0 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold", STATUS_STYLE[p.status])}>
-                    {STATUS_LABEL[p.status]}
-                  </span>
+                  <StatusBadge
+                    tone={STATUS_TONE[p.status]}
+                    label={STATUS_LABEL[p.status]}
+                    className="shrink-0"
+                  />
                 </div>
               ))}
             </div>

@@ -135,7 +135,7 @@ export function AiFeatures() {
                 </p>
                 <div className="mt-3 space-y-2">
                   <div className="rounded-lg border border-zinc-200 bg-white px-3 py-2">
-                    <p className="text-[11px] font-medium text-zinc-800">{COMPANY_PROFILE.name} — {COMPANY_PROFILE.category}</p>
+                    <p className="text-[11px] font-medium text-zinc-800">{COMPANY_PROFILE.name}</p>
                     <p className="truncate text-[10px] text-zinc-400">{COMPANY_PROFILE.services}</p>
                   </div>
                   <ArrowRight className="mx-auto h-3.5 w-3.5 rotate-90 text-blue-500" />

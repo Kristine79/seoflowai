@@ -17,7 +17,6 @@ import {
   Loader2,
   Sparkles,
   ArrowLeft,
-  CheckSquare,
   List,
   Hash,
   FolderTree,
@@ -32,6 +31,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState, useCallback } from "react";
 import { cn, getStatusColor, getAutomationColor, translateStatus, translatePriority, formatDate } from "@/lib/utils";
+import { StatusDot } from "@/components/ui/status-dot";
 
 type ChecklistItem = {
   task: string;
@@ -114,15 +114,15 @@ const STATUSES = ["PENDING", "AI_PREPARED", "READY", "IN_PROGRESS", "WAITING_VER
 const VERIFICATION_STATUSES = ["PENDING", "VERIFIED", "FAILED"];
 
 const DEFAULT_CHECKLIST: ChecklistItem[] = [
-  { task: "Create account", completed: false },
-  { task: "Add business name", completed: false },
-  { task: "Select category", completed: false },
-  { task: "Upload logo", completed: false },
-  { task: "Add description", completed: false },
-  { task: "Add services", completed: false },
-  { task: "Add website", completed: false },
-  { task: "Verify email", completed: false },
-  { task: "Save listing URL", completed: false },
+  { task: "Создать аккаунт", completed: false },
+  { task: "Указать название компании", completed: false },
+  { task: "Выбрать категорию", completed: false },
+  { task: "Загрузить логотип", completed: false },
+  { task: "Добавить описание", completed: false },
+  { task: "Добавить услуги", completed: false },
+  { task: "Указать сайт", completed: false },
+  { task: "Подтвердить email", completed: false },
+  { task: "Сохранить URL листинга", completed: false },
 ];
 
 const AUTOMATION_LABELS: Record<string, string> = {
@@ -324,7 +324,7 @@ export default function DirectoryDetailPage() {
           {isReady && (
             <Button size="sm" className="gap-2" onClick={handleStartSubmission}>
               <Play className="h-4 w-4" />
-              Start Submission
+              Начать подачу
             </Button>
           )}
           {isInProgress && dir.automationMode === "AI_ASSISTED" && (
@@ -334,13 +334,13 @@ export default function DirectoryDetailPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="PREVIEW">○ Preview</SelectItem>
-                  <SelectItem value="SUBMIT">● Submit</SelectItem>
+                  <SelectItem value="PREVIEW">Предпросмотр</SelectItem>
+                  <SelectItem value="SUBMIT">Отправить</SelectItem>
                 </SelectContent>
               </Select>
               <Button variant="secondary" size="sm" className="gap-2" onClick={() => handleStartAiSubmission()} disabled={submitting}>
                 {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
-                {submitting ? "Запуск..." : "Run AI Submission"}
+                {submitting ? "Запуск..." : "Запустить AI подачу"}
               </Button>
             </div>
           )}
@@ -652,6 +652,34 @@ export default function DirectoryDetailPage() {
         </div>
 
         <div className="space-y-6">
+          {dir.automationJobs?.some((j) => j.status === "NEEDS_MANUAL") && (
+            <Card className="border-amber-200 bg-amber-50/40">
+              <CardContent className="flex flex-col gap-3 py-5">
+                <div className="flex items-center gap-2">
+                  <StatusDot tone="amber" />
+                  <p className="text-sm font-semibold text-amber-800">Требуется ваше действие</p>
+                </div>
+                <p className="text-sm text-amber-800/80">
+                  AI остановил автоматическую подачу и не завершил её самостоятельно.
+                  Продолжите в обычном браузере — форма или авторизация ждут человека.
+                </p>
+                {dir.url && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="gap-2 self-start border-amber-300 bg-white text-amber-800 hover:bg-amber-50"
+                    asChild
+                  >
+                    <a href={dir.url} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-4 w-4" />
+                      Открыть платформу
+                    </a>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
           {isReady && (
             <Card>
               <CardContent className="flex flex-col items-center gap-4 py-8">
@@ -667,7 +695,7 @@ export default function DirectoryDetailPage() {
                 <div className="flex flex-col gap-2 w-full">
                   <Button size="lg" className="gap-3 w-full" onClick={handleStartSubmission}>
                     <Play className="h-5 w-5" />
-                    Start Submission
+                    Начать подачу
                   </Button>
                   {dir.automationMode === "AI_ASSISTED" && (
                     <div className="flex flex-col gap-2">
@@ -677,13 +705,13 @@ export default function DirectoryDetailPage() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="PREVIEW">○ Preview</SelectItem>
-                            <SelectItem value="SUBMIT">● Submit</SelectItem>
+                            <SelectItem value="PREVIEW">Предпросмотр</SelectItem>
+                            <SelectItem value="SUBMIT">Отправить</SelectItem>
                           </SelectContent>
                         </Select>
                         <Button variant="secondary" size="sm" className="gap-2 flex-1" onClick={() => handleStartAiSubmission()} disabled={submitting}>
                           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
-                          {submitting ? "Запуск..." : "Run AI Submission"}
+                          {submitting ? "Запуск..." : "Запустить AI подачу"}
                         </Button>
                       </div>
                     </div>
@@ -703,7 +731,7 @@ export default function DirectoryDetailPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <ListChecks className="h-4 w-4" />
-                  Submission Progress
+                  Прогресс подачи
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -756,7 +784,7 @@ export default function DirectoryDetailPage() {
                     onClick={handleCompleteSubmission}
                   >
                     <CheckCircle2 className="h-5 w-5" />
-                    Complete Submission
+                    Завершить подачу
                   </Button>
                 )}
               </CardContent>
@@ -811,7 +839,7 @@ export default function DirectoryDetailPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="login">Account Login</Label>
+                <Label htmlFor="login">Логин аккаунта</Label>
                 <Input
                   id="login"
                   value={dir.submission?.login || ""}
@@ -825,7 +853,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Пароль</Label>
                 <Input
                   id="password"
                   type="password"
@@ -839,7 +867,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="listingUrl">Listing URL</Label>
+                <Label htmlFor="listingUrl">URL листинга</Label>
                 <Input
                   id="listingUrl"
                   value={dir.submission?.listingUrl || ""}
@@ -853,7 +881,7 @@ export default function DirectoryDetailPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="verificationStatus">Verification Status</Label>
+                <Label htmlFor="verificationStatus">Статус верификации</Label>
                 <Select
                   value={dir.submission?.verificationStatus || "PENDING"}
                   onValueChange={(value) =>
@@ -869,7 +897,7 @@ export default function DirectoryDetailPage() {
                   <SelectContent>
                     {VERIFICATION_STATUSES.map((vs) => (
                       <SelectItem key={vs} value={vs}>
-                        {vs === "PENDING" ? "Pending" : vs === "VERIFIED" ? "Verified" : "Failed"}
+                        {vs === "PENDING" ? "Ожидает" : vs === "VERIFIED" ? "Подтверждено" : "Ошибка"}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -896,7 +924,7 @@ export default function DirectoryDetailPage() {
             <CardHeader>
               <CardTitle className="text-base flex items-center gap-2">
                 <Copy className="h-4 w-4" />
-                Submission Template
+                Шаблон подачи
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -904,14 +932,14 @@ export default function DirectoryDetailPage() {
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-emerald-500 inline-block" />
-                    <span className="text-sm font-medium text-emerald-700">Template exists</span>
-                    <span className="text-[10px] uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100 ml-auto">
+                    <span className="text-sm font-medium text-emerald-700">Шаблон сохранён</span>
+                    <span className="text-xs uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100 ml-auto">
                       v{dir.submissionTemplate.version}
                     </span>
                   </div>
                   <div className="text-xs text-zinc-500 space-y-1">
                     <p>Поля: {Object.keys(dir.submissionTemplate.fieldMapping as Record<string, string> || {}).filter(k => (dir.submissionTemplate.fieldMapping as Record<string, string>)[k]).length} заполнено</p>
-                    <p>Submit: {dir.submissionTemplate.submitSelector || "не указан"}</p>
+                    <p>Кнопка подачи: {dir.submissionTemplate.submitSelector || "не указана"}</p>
                     <p>Создан: {formatDate(dir.submissionTemplate.createdAt)}</p>
                   </div>
                 </div>
@@ -920,9 +948,9 @@ export default function DirectoryDetailPage() {
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100">
                     <Copy className="h-5 w-5 text-zinc-400" />
                   </div>
-                  <p className="text-sm text-zinc-500">No template</p>
+                  <p className="text-sm text-zinc-500">Шаблона нет</p>
                   <p className="text-xs text-zinc-400 text-center">
-                    Шаблон будет сохранён после первого Preview.
+                    Шаблон будет сохранён после первого предпросмотра.
                   </p>
                 </div>
               )}
@@ -934,7 +962,7 @@ export default function DirectoryDetailPage() {
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
                   <Bot className="h-4 w-4" />
-                  AI Submission
+                  AI подача
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -943,13 +971,13 @@ export default function DirectoryDetailPage() {
                 </p>
                 {dir.generatedContent?.shortDescription && (
                   <div>
-                    <p className="text-xs font-medium text-zinc-500">Description</p>
+                    <p className="text-xs font-medium text-zinc-500">Описание</p>
                     <p className="text-sm">{dir.generatedContent.shortDescription}</p>
                   </div>
                 )}
                 {serviceItems.length > 0 && (
                   <div>
-                    <p className="text-xs font-medium text-zinc-500">Services</p>
+                    <p className="text-xs font-medium text-zinc-500">Услуги</p>
                     <ul className="list-disc list-inside text-sm">
                       {serviceItems.map((s, i) => <li key={i}>{s}</li>)}
                     </ul>
@@ -961,13 +989,13 @@ export default function DirectoryDetailPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="PREVIEW">○ Preview</SelectItem>
-                      <SelectItem value="SUBMIT">● Submit</SelectItem>
+                      <SelectItem value="PREVIEW">Предпросмотр</SelectItem>
+                      <SelectItem value="SUBMIT">Отправить</SelectItem>
                     </SelectContent>
                   </Select>
                   <Button variant="secondary" size="sm" className="gap-2 flex-1" onClick={() => handleStartAiSubmission()} disabled={submitting}>
                     {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Bot className="h-4 w-4" />}
-                    {submitting ? "Запуск..." : "Run AI Submission"}
+                    {submitting ? "Запуск..." : "Запустить AI подачу"}
                   </Button>
                 </div>
               </CardContent>
@@ -994,8 +1022,8 @@ export default function DirectoryDetailPage() {
                         ) : (
                           <span className={
                             job.status === "SUCCESS" ? "h-2 w-2 rounded-full bg-emerald-500 inline-block" :
-                            job.status === "FAILED" ? "h-2 w-2 rounded-full bg-red-500 inline-block" :
-                            job.status === "RUNNING" ? "h-2 w-2 rounded-full bg-amber-500 inline-block" :
+                            job.status === "FAILED" ? "h-2 w-2 rounded-full bg-rose-500 inline-block" :
+                            job.status === "RUNNING" ? "h-2 w-2 rounded-full bg-blue-500 inline-block" :
                             "h-2 w-2 rounded-full bg-zinc-300 inline-block"
                           } />
                         )}
@@ -1007,7 +1035,7 @@ export default function DirectoryDetailPage() {
                            job.status === "FAILED" ? "Ошибка" :
                            "Требуется вручную"}
                         </span>
-                        <span className="text-[10px] uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100">
+                        <span className="text-xs uppercase text-zinc-400 font-mono px-1.5 py-0.5 rounded bg-zinc-100">
                           {job.mode || "PREVIEW"}
                         </span>
                       </div>
@@ -1040,7 +1068,7 @@ export default function DirectoryDetailPage() {
                         <summary className="cursor-pointer hover:text-zinc-700">Скриншот</summary>
                         <img
                           src={`data:image/png;base64,${job.screenshot}`}
-                          alt="Submission screenshot"
+                          alt="Скриншот подачи"
                           className="mt-1 rounded border max-w-full"
                         />
                       </details>
@@ -1054,7 +1082,7 @@ export default function DirectoryDetailPage() {
                         disabled={submitting}
                       >
                         {submitting ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
-                        Retry Submission
+                        Повторить подачу
                       </Button>
                     )}
                   </div>

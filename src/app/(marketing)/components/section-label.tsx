@@ -16,7 +16,7 @@ export function SectionLabel({
   return (
     <p
       className={cn(
-        "flex items-center gap-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.18em]",
+        "flex items-center gap-2.5 text-xs font-semibold",
         onDark ? "text-blue-400" : "text-blue-600",
         className
       )}

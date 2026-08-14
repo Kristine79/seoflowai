@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { CASE_SUMMARY } from "../data/case-data";
 
 const heroSteps = [
-  { label: "Аудит", icon: Search, state: "done" },
-  { label: "Выбор", icon: Target, state: "done" },
+  { label: "Анализ", icon: Search, state: "done" },
+  { label: "Приоритизация", icon: Target, state: "done" },
   { label: "Подготовка", icon: Sparkles, state: "active" },
   { label: "Подача", icon: Layers, state: "pending" },
   { label: "Проверка", icon: CheckCircle2, state: "pending" },
@@ -27,7 +27,7 @@ export function Hero() {
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-16">
           {/* ---- Левая часть: заявление ---- */}
           <div className="min-w-0 animate-fade-up">
-            <p className="font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-blue-600">
+            <p className="text-xs font-semibold text-blue-600">
               SEO Automation Platform
             </p>
             <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-tight text-zinc-950 sm:text-5xl lg:text-[3.4rem]">
@@ -54,7 +54,7 @@ export function Hero() {
               </a>
             </div>
 
-            <p className="mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+            <p className="mt-8 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500">
               AI-подготовка <span className="text-zinc-300">·</span> Автоматизация
               <span className="text-zinc-300">·</span> Human-in-the-loop
               <span className="text-zinc-300">·</span> Отчётность
@@ -84,7 +84,7 @@ export function Hero() {
                       77
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-zinc-900">77 Platforms · ITllect</p>
+                      <p className="text-sm font-semibold text-zinc-900">77 Platforms · Digital Marketing Agency</p>
                       <p className="text-xs text-zinc-500">Business и agency каталоги</p>
                     </div>
                   </div>
@@ -133,7 +133,7 @@ export function Hero() {
                     ].map((s) => (
                       <div key={s.label} className="min-w-0 text-center">
                         <div className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</div>
-                        <div className="mt-0.5 truncate text-[9.5px] leading-tight text-zinc-400">{s.label}</div>
+                        <div className="mt-0.5 truncate text-[11px] leading-tight text-zinc-400">{s.label}</div>
                       </div>
                     ))}
                   </div>

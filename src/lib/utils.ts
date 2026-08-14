@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { getStatusMeta, getToneClassesForStatus, type StatusTone } from "@/lib/status";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -14,33 +15,11 @@ export function formatDate(date: Date | string) {
 }
 
 export function translateStatus(status: string): string {
-  const map: Record<string, string> = {
-    PENDING: "Ожидает",
-    AI_PREPARED: "AI подготовлен",
-    READY: "Готов к подаче",
-    IN_PROGRESS: "В процессе",
-    WAITING_VERIFICATION: "Ожидает модерации",
-    VERIFICATION_REQUIRED: "Требуется действие",
-    COMPLETED: "Завершено",
-    REJECTED: "Отклонено",
-    PAYMENT_REQUIRED: "Требуется оплата",
-  };
-  return map[status] || status;
+  return getStatusMeta(status).label;
 }
 
 export function deriveNextAction(status: string): string {
-  const map: Record<string, string> = {
-    PENDING: "Запустить аудит",
-    AI_PREPARED: "Проверить контент",
-    READY: "Отправить заявку",
-    IN_PROGRESS: "Продолжить подачу",
-    WAITING_VERIFICATION: "Проверить статус",
-    VERIFICATION_REQUIRED: "Проверить размещение",
-    COMPLETED: "Завершено",
-    REJECTED: "Подать повторно",
-    PAYMENT_REQUIRED: "Оплатить",
-  };
-  return map[status] || status;
+  return getStatusMeta(status).nextAction ?? status;
 }
 
 export function translatePriority(priority: string): string {
@@ -52,61 +31,51 @@ export function translatePriority(priority: string): string {
   return map[priority] || priority;
 }
 
+const PRIORITY_TONES: Record<string, StatusTone> = {
+  HIGH: "amber",
+  MEDIUM: "blue",
+  LOW: "zinc",
+};
+
 export function getPriorityColor(priority: string) {
-  switch (priority) {
-    case "HIGH":
-      return "text-emerald-500";
-    case "MEDIUM":
-      return "text-amber-500";
-    case "LOW":
-      return "text-slate-400";
-    default:
-      return "text-slate-400";
-  }
+  const tone = PRIORITY_TONES[priority] ?? "zinc";
+  return TONE_TEXT[tone];
 }
+
+const TONE_TEXT: Record<StatusTone, string> = {
+  blue: "text-blue-600",
+  amber: "text-amber-600",
+  emerald: "text-emerald-600",
+  rose: "text-rose-600",
+  zinc: "text-zinc-400",
+};
 
 export function getStatusColor(status: string) {
-  switch (status) {
-    case "PENDING":
-      return "bg-slate-100 text-slate-700 border-slate-200";
-    case "AI_PREPARED":
-      return "bg-blue-50 text-blue-700 border-blue-200";
-    case "READY":
-      return "bg-emerald-50 text-emerald-700 border-emerald-200";
-    case "IN_PROGRESS":
-      return "bg-amber-50 text-amber-700 border-amber-200";
-    case "WAITING_VERIFICATION":
-      return "bg-orange-50 text-orange-700 border-orange-200";
-    case "VERIFICATION_REQUIRED":
-      return "bg-orange-50 text-orange-700 border-orange-200";
-    case "COMPLETED":
-      return "bg-green-50 text-green-700 border-green-200";
-    case "REJECTED":
-      return "bg-red-50 text-red-700 border-red-200";
-    case "PAYMENT_REQUIRED":
-      return "bg-purple-50 text-purple-700 border-purple-200";
-    default:
-      return "bg-slate-50 text-slate-700 border-slate-200";
-  }
+  return getToneClassesForStatus(status).badge;
 }
+
+const AUTOMATION_TONES: Record<string, StatusTone> = {
+  EASY: "blue",
+  MEDIUM: "blue",
+  HARD: "amber",
+  MANUAL: "amber",
+};
 
 export function getAutomationColor(level: string) {
-  switch (level) {
-    case "EASY":
-      return "bg-green-100 text-green-800";
-    case "MEDIUM":
-      return "bg-yellow-100 text-yellow-800";
-    case "HARD":
-      return "bg-orange-100 text-orange-800";
-    case "MANUAL":
-      return "bg-red-100 text-red-800";
-    default:
-      return "bg-gray-100 text-gray-800";
-  }
+  const tone = AUTOMATION_TONES[level] ?? "zinc";
+  return `${TONE_BG[tone]} ${TONE_TEXT[tone]}`;
 }
 
+const TONE_BG: Record<StatusTone, string> = {
+  blue: "bg-blue-50",
+  amber: "bg-amber-50",
+  emerald: "bg-emerald-50",
+  rose: "bg-rose-50",
+  zinc: "bg-zinc-100",
+};
+
 export function getSeoScoreColor(score: number) {
-  if (score >= 80) return "text-emerald-500";
-  if (score >= 60) return "text-amber-500";
-  return "text-slate-400";
+  if (score >= 80) return "text-emerald-600";
+  if (score >= 60) return "text-blue-600";
+  return "text-zinc-400";
 }

@@ -1,23 +1,19 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   ListTree,
   Search,
   ArrowUpRight,
-  Filter,
-  Sparkles,
-  ChevronDown,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { cn, getStatusColor, formatDate, translateStatus, translatePriority, deriveNextAction } from "@/lib/utils";
+import { cn, getStatusColor, translateStatus, translatePriority, deriveNextAction } from "@/lib/utils";
 
 type Directory = {
   id: string;
@@ -183,7 +179,7 @@ export default function DirectoriesPage() {
             </div>
           ) : (
             <div className="divide-y divide-zinc-100">
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] gap-4 px-6 py-3 text-xs font-medium text-zinc-500">
+              <div className="hidden grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] gap-4 px-6 py-3 text-xs font-medium text-zinc-500 lg:grid">
                 <span>Платформа</span>
                 <span>Приоритет</span>
                 <span>SEO</span>
@@ -195,15 +191,54 @@ export default function DirectoriesPage() {
               {filtered.map((dir) => (
                 <div
                   key={dir.id}
-                  className="grid grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] gap-4 px-6 py-4 text-sm hover:bg-zinc-50 transition-colors items-center"
+                  className="grid grid-cols-[1fr_auto] items-center gap-3 px-4 py-4 text-sm hover:bg-zinc-50 transition-colors lg:grid-cols-[2fr_1fr_1fr_1fr_1.2fr_1.2fr_0.5fr] lg:gap-4 lg:px-6"
                 >
                   <Link href={`/directories/${dir.id}`} className="col-span-1">
                     <span className="font-medium">{dir.platform}</span>
                     {dir.category && (
                       <p className="text-xs text-zinc-400">{dir.category}</p>
                     )}
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5 md:hidden">
+                      {dir.priority && (
+                        <Badge
+                          variant={
+                            dir.priority === "HIGH"
+                              ? "success"
+                              : dir.priority === "MEDIUM"
+                              ? "warning"
+                              : "secondary"
+                          }
+                          className="text-[11px]"
+                        >
+                          {translatePriority(dir.priority)}
+                        </Badge>
+                      )}
+                      {dir.seoAudit?.seoScore ? (
+                        <span
+                          className={cn(
+                            "rounded-md bg-zinc-100 px-1.5 py-0.5 text-[11px] font-semibold",
+                            dir.seoAudit.seoScore >= 80
+                              ? "text-emerald-700"
+                              : dir.seoAudit.seoScore >= 60
+                              ? "text-amber-700"
+                              : "text-zinc-500"
+                          )}
+                        >
+                          SEO {dir.seoAudit.seoScore}
+                        </span>
+                      ) : null}
+                      {dir.seoAudit?.automationLevel && (
+                        <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[11px] text-zinc-500">
+                          {dir.seoAudit.automationLevel === "EASY" ? "Легко" :
+                           dir.seoAudit.automationLevel === "MEDIUM" ? "Средне" :
+                           dir.seoAudit.automationLevel === "HARD" ? "Сложно" :
+                           dir.seoAudit.automationLevel === "MANUAL" ? "Вручную" :
+                           dir.seoAudit.automationLevel}
+                        </span>
+                      )}
+                    </div>
                   </Link>
-                  <div>
+                  <div className="hidden lg:block">
                     <Badge
                       variant={
                         dir.priority === "HIGH"
@@ -217,7 +252,7 @@ export default function DirectoriesPage() {
                       {translatePriority(dir.priority)}
                     </Badge>
                   </div>
-                  <div>
+                  <div className="hidden lg:block">
                     {dir.seoAudit?.seoScore ? (
                       <span
                         className={cn(
@@ -235,7 +270,7 @@ export default function DirectoriesPage() {
                       <span className="text-zinc-300">—</span>
                     )}
                   </div>
-                  <div>
+                  <div className="hidden lg:block">
                     {dir.seoAudit?.automationLevel ? (
                       <span className="text-xs text-zinc-500">
                         {dir.seoAudit.automationLevel === "EASY" ? "Легко" :
@@ -255,7 +290,7 @@ export default function DirectoriesPage() {
                         statusMutation.mutate({ id: dir.id, status: value })
                       }
                     >
-                      <SelectTrigger className={cn("h-7 text-xs border-0 shadow-none p-0", getStatusColor(dir.status))}>
+                      <SelectTrigger className={cn("h-9 md:h-7 text-xs border-0 shadow-none p-0", getStatusColor(dir.status))}>
                         <SelectValue>{translateStatus(dir.status)}</SelectValue>
                       </SelectTrigger>
                       <SelectContent>
@@ -265,10 +300,10 @@ export default function DirectoriesPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div>
-                    <span className="text-xs text-zinc-500">{deriveNextAction(dir.status)}</span>
+                  <div className="hidden text-xs text-zinc-500 lg:block">
+                    <span>{deriveNextAction(dir.status)}</span>
                   </div>
-                  <div className="flex justify-end">
+                  <div className="hidden lg:flex justify-end">
                     <ArrowUpRight className="h-4 w-4 text-zinc-300" />
                   </div>
                 </div>

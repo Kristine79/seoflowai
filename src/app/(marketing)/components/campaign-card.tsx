@@ -38,7 +38,7 @@ export function CampaignCard({ compact = false }: { compact?: boolean }) {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-[11px] font-bold text-white">
               77
             </div>
-            <h3 className="text-sm font-medium text-zinc-900">77 Platforms · ITllect</h3>
+            <h3 className="text-sm font-medium text-zinc-900">77 Platforms · Digital Marketing Agency</h3>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse-dot" />
               Активна

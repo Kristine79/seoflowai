@@ -17,14 +17,13 @@ import {
   CheckCircle2,
   AlertCircle,
   FileText,
-  BarChart3,
-  Search,
-  Sparkles,
-  CheckSquare,
+  ChevronRight,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { formatDate, translateStatus, cn } from "@/lib/utils";
+import { formatDate, cn } from "@/lib/utils";
+import { WorkflowStepper } from "@/components/workflow-stepper";
+import { EmptyStateChecklist } from "@/components/empty-state-checklist";
 
 type Campaign = {
   id: string;
@@ -215,40 +214,46 @@ export default function CampaignsPage() {
                     <AlertCircle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
                   )}
                   <div>
-                    <p className="font-medium text-emerald-800">
-                      {uploadResult.imported} каталогов импортировано
+                    <p className="font-medium text-zinc-900">
+                      Импортировано {uploadResult.imported} площадок
+                      {uploadResult.failed > 0 ? (
+                        <>, {uploadResult.failed} требуют проверки</>
+                      ) : (
+                        <> — все готовы к работе</>
+                      )}
                     </p>
                     {uploadResult.filename && (
-                      <p className="text-sm text-zinc-600">Файл: {uploadResult.filename}</p>
+                      <p className="text-sm text-zinc-500">Файл: {uploadResult.filename}</p>
                     )}
-                    {uploadResult.rowsDetected && (
-                      <p className="text-sm text-zinc-600">Строк обнаружено: {uploadResult.rowsDetected}</p>
-                    )}
-                  {uploadResult.headerFound && uploadResult.headerFound.length > 0 && (
-                    <p className="text-sm text-zinc-600">
-                      Заголовки: {uploadResult.headerFound.join(" | ")}
-                    </p>
-                  )}
-                  {uploadResult.sample && (
-                    <div className="mt-1 text-sm text-zinc-600">
-                      <p>Первые: {uploadResult.sample.first5.join(", ")}</p>
-                      <p>Последние: {uploadResult.sample.last5.join(", ")}</p>
-                    </div>
-                  )}
-                    {uploadResult.failed > 0 && (
-                      <p className="mt-1 text-sm font-medium text-amber-700">
-                        Ошибок: {uploadResult.failed}
-                      </p>
+                    {uploadResult.failed > 0 && uploadResult.errors && uploadResult.errors.length > 0 && (
+                      <div className="mt-2 max-h-32 overflow-auto rounded bg-white/50 p-2 text-xs text-zinc-600">
+                        {uploadResult.errors.map((err, i) => (
+                          <p key={i}>{err}</p>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </div>
-                {uploadResult.errors && uploadResult.errors.length > 0 && (
-                  <div className="mt-2 max-h-32 overflow-auto rounded bg-white/50 p-2 text-xs text-zinc-600">
-                    {uploadResult.errors.map((err, i) => (
-                      <p key={i}>{err}</p>
-                    ))}
+                <details className="group">
+                  <summary className="cursor-pointer text-sm font-medium text-zinc-500 hover:text-zinc-900 list-none flex items-center gap-1.5">
+                    <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" />
+                    Подробности импорта
+                  </summary>
+                  <div className="mt-2 space-y-1 rounded-lg bg-zinc-50 p-3 text-sm text-zinc-600">
+                    {uploadResult.rowsDetected && (
+                      <p>Строк обнаружено: {uploadResult.rowsDetected}</p>
+                    )}
+                    {uploadResult.headerFound && uploadResult.headerFound.length > 0 && (
+                      <p>Заголовки: {uploadResult.headerFound.join(" | ")}</p>
+                    )}
+                    {uploadResult.sample && (
+                      <div className="space-y-1">
+                        <p>Первые: {uploadResult.sample.first5.join(", ")}</p>
+                        <p>Последние: {uploadResult.sample.last5.join(", ")}</p>
+                      </div>
+                    )}
                   </div>
-                )}
+                </details>
               </div>
             )}
           </CardContent>
@@ -284,25 +289,6 @@ export default function CampaignsPage() {
             const total = campaign._count.directories;
             const processed = completed + inProgress;
             const progressPct = total > 0 ? Math.round((processed / total) * 100) : 0;
-
-            const workflowSteps = [
-              { id: 1, label: "Audit", icon: Search, key: "audit" },
-              { id: 2, label: "Select", icon: BarChart3, key: "select" },
-              { id: 3, label: "Prepare", icon: Sparkles, key: "prepare" },
-              { id: 4, label: "Submit", icon: ArrowUpRight, key: "submit" },
-              { id: 5, label: "Verify", icon: CheckSquare, key: "verify" },
-              { id: 6, label: "Report", icon: Sparkles, key: "report" },
-            ];
-
-            let currentStep = 0;
-            if (total === 0) currentStep = 0;
-            else if (completed > 0 && completed >= total) currentStep = 6;
-            else if (waitingVerification > 0 || needsAction > 0) currentStep = 5;
-            else if (inProgress > 0) currentStep = 4;
-            else if (readyToSubmit > 0) currentStep = 4;
-            else if (sc["AI_PREPARED"] > 0) currentStep = 3;
-            else if (sc["PENDING"] === total) currentStep = 2;
-            else if (total > 0) currentStep = 3;
 
             return (
             <Card key={campaign.id}>
@@ -353,33 +339,32 @@ export default function CampaignsPage() {
                   </div>
                 </div>
 
-                {total > 0 && (
+                {total === 0 ? (
+                  <EmptyStateChecklist
+                    steps={[
+                      { id: "import", label: "Загрузить список платформ", note: "Excel или CSV со списком каталогов", href: "/campaigns", cta: "Загрузить", current: true },
+                      { id: "audit", label: "SEO Аудит", note: "Оценка ценности и автоматизируемости каждой площадки", href: "/audit", cta: "Запустить" },
+                      { id: "prioritize", label: "Приоритизировать", note: "Выбор первых площадок для подачи", href: "/directories", cta: "Смотреть" },
+                      { id: "content", label: "AI-контент", note: "Описания и ключевые слова под каждую платформу", href: "/content", cta: "Создать" },
+                      { id: "submit", label: "Подать", note: "Автоматическая подача с проверкой результата", href: "/directories?status=READY", cta: "Открыть" },
+                      { id: "verify", label: "Проверить", note: "Верификация публичных профилей и доказательства", href: "/directories?status=WAITING_VERIFICATION", cta: "Открыть" },
+                    ]}
+                    title="Кампания без площадок"
+                    description="Загрузите список платформ, чтобы запустить пайплайн подачи."
+                  />
+                ) : (
                   <>
-                    <div className="flex items-center gap-1 mb-4">
-                      {workflowSteps.map((step, i) => (
-                        <div key={step.id} className="flex items-center gap-1">
-                          <div
-                            className={cn(
-                              "flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
-                              currentStep >= step.id
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-zinc-400"
-                            )}
-                          >
-                            <step.icon className="h-3 w-3" />
-                            <span className="hidden sm:inline">{step.label}</span>
-                          </div>
-                          {i < workflowSteps.length - 1 && (
-                            <div
-                              className={cn(
-                                "h-px w-3",
-                                currentStep > step.id ? "bg-blue-300" : "bg-zinc-200"
-                              )}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    <WorkflowStepper
+                      className="mb-4"
+                      steps={[
+                        { id: "analysis", label: "Анализ", count: pending, href: `/directories?status=PENDING&campaignId=${campaign.id}` },
+                        { id: "prioritization", label: "Приоритизация", href: `/directories?campaignId=${campaign.id}` },
+                        { id: "preparation", label: "Подготовка", count: sc["AI_PREPARED"] || 0, href: `/directories?status=AI_PREPARED&campaignId=${campaign.id}` },
+                        { id: "submission", label: "Подача", count: readyToSubmit, href: `/directories?status=READY&campaignId=${campaign.id}` },
+                        { id: "verification", label: "Проверка", count: waitingVerification, href: `/directories?status=WAITING_VERIFICATION&campaignId=${campaign.id}` },
+                        { id: "report", label: "Отчёт", count: completed, href: `/directories?status=COMPLETED&campaignId=${campaign.id}`, done: completed > 0 },
+                      ]}
+                    />
 
                     <div className="grid grid-cols-5 gap-3 mb-4">
                       <div className="text-center">
@@ -395,11 +380,11 @@ export default function CampaignsPage() {
                         <div className="text-[10px] text-zinc-400">К подаче</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-sm font-semibold text-orange-600">{waitingVerification}</div>
+                        <div className="text-sm font-semibold text-amber-600">{waitingVerification}</div>
                         <div className="text-[10px] text-zinc-400">На проверке</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-sm font-semibold text-red-600">{needsAction}</div>
+                        <div className="text-sm font-semibold text-rose-600">{needsAction}</div>
                         <div className="text-[10px] text-zinc-400">Требуют действия</div>
                       </div>
                     </div>

@@ -4,25 +4,27 @@ import { Reveal } from "./reveal";
 import { SectionLabel } from "./section-label";
 import { CASE_SUMMARY, CASE_CATEGORIES, VERIFIED_PLATFORMS } from "../data/case-data";
 
-export function AuditShowcase() {
+export function AuditShowcase({ embedded = false }: { embedded?: boolean }) {
   const max = Math.max(...CASE_CATEGORIES.map((c) => c.count));
   const relevant = CASE_SUMMARY.total - CASE_SUMMARY.notApplicable;
 
-  return (
-    <section className="border-t border-zinc-100 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <SectionLabel>SEO Audit</SectionLabel>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
-              Сначала понять, куда идти. Потом автоматизировать.
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
-              SEOFlow оценивает платформы, помогает определить приоритеты и выделяет быстрые
-              возможности — до того, как вы потратите время на подачу.
-            </p>
+  const content = (
+    <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-16">
+      <div>
+        {!embedded && <SectionLabel>SEO Audit</SectionLabel>}
+        {!embedded && (
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+            Сначала понять, куда идти. Потом автоматизировать.
+          </h2>
+        )}
+        {!embedded && (
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
+            SEOFlow оценивает платформы, помогает определить приоритеты и выделяет быстрые
+            возможности — до того, как вы потратите время на подачу.
+          </p>
+        )}
 
-            <ol className="mt-8 space-y-5">
+        <ol className="mt-8 space-y-5">
               {[
                 {
                   icon: Gauge,
@@ -120,8 +122,14 @@ export function AuditShowcase() {
               </div>
             </div>
           </Reveal>
-        </div>
       </div>
+  );
+
+  if (embedded) return content;
+
+  return (
+    <section className="border-t border-zinc-100 bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">{content}</div>
     </section>
   );
 }

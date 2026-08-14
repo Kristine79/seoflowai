@@ -690,7 +690,7 @@ export function CaseStudyClient() {
               className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow hover:bg-blue-500 transition-colors"
             >
               <Download className="h-4 w-4" />
-              Download full campaign report
+              Скачать полный отчёт
             </a>
           </div>
         </div>

@@ -33,7 +33,7 @@ export function ProductSection() {
 
         <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2">
           {captions.map((c) => (
-            <span key={c} className="flex items-center gap-2 font-mono text-[11px] text-zinc-400">
+            <span key={c} className="flex items-center gap-2 text-xs text-zinc-500">
               <span className="h-1 w-1 rounded-full bg-blue-500" />
               {c}
             </span>

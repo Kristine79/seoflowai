@@ -18,7 +18,7 @@ const steps = [
   },
   {
     icon: Sparkles,
-    title: "AI-подготовка",
+    title: "Подготовка",
     text: "Контент и данные адаптируются под конкретную площадку.",
     detail: "Из единого профиля компании",
   },
@@ -57,8 +57,8 @@ export function Workflow() {
               отчёта.
             </p>
           </div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
-            Campaign workflow · 6 этапов
+          <p className="text-xs text-zinc-400">
+            Единый пайплайн · 6 этапов
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export function Workflow() {
                       <h3 className="text-sm font-semibold text-zinc-900">{step.title}</h3>
                     </div>
                     <p className="mt-1.5 text-xs leading-relaxed text-zinc-600">{step.text}</p>
-                    <p className="mt-2 font-mono text-[10px] leading-relaxed text-zinc-400">
+                    <p className="mt-2 text-xs leading-relaxed text-zinc-400">
                       {step.detail}
                     </p>
                   </li>
@@ -108,14 +108,14 @@ export function Workflow() {
                       <h3 className="text-sm font-semibold text-zinc-900">{step.title}</h3>
                     </div>
                     <p className="mt-1 text-sm leading-relaxed text-zinc-600">{step.text}</p>
-                    <p className="mt-1.5 font-mono text-[10px] text-zinc-400">{step.detail}</p>
+                    <p className="mt-1.5 text-xs text-zinc-400">{step.detail}</p>
                   </div>
                 </li>
               ))}
             </ol>
 
             <div className="mt-8 hidden items-center justify-center gap-2 border-t border-zinc-200/70 pt-6 lg:flex">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+              <span className="text-xs text-zinc-400">
                 Каждый этап завершается статусом и следующей точкой контроля
               </span>
               <ArrowRight className="h-3.5 w-3.5 text-blue-600" />

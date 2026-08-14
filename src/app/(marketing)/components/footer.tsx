@@ -44,7 +44,7 @@ export function Footer() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-400">
+              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
                 {col.title}
               </p>
               <ul className="mt-4 space-y-2.5">
@@ -68,8 +68,12 @@ export function Footer() {
             © {new Date().getFullYear()} SEOFlow AI. Все права защищены.
           </p>
           <div className="flex gap-6 text-xs text-zinc-400">
-            <span className="cursor-default">Privacy</span>
-            <span className="cursor-default">Terms</span>
+            <Link href="/privacy" className="transition-colors hover:text-zinc-900">
+              Конфиденциальность
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-zinc-900">
+              Условия
+            </Link>
             <a
               href="https://github.com/Kristine79/seoflowai"
               target="_blank"

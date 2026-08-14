@@ -23,12 +23,10 @@ const flow = [
   { icon: Send, label: "Submission", text: "Подача" },
 ];
 
-export function ContentShowcase() {
-  return (
-    <section className="border-t border-zinc-100 bg-zinc-50/60">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-16">
-          {/* Левая часть: профиль + продуктовый flow */}
+export function ContentShowcase({ embedded = false }: { embedded?: boolean }) {
+  const content = (
+    <div className="grid items-start gap-14 lg:grid-cols-2 lg:gap-16">
+      {/* Левая часть: профиль + продуктовый flow */}
           <div className="order-2 lg:order-1">
             <Reveal>
               <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
@@ -117,15 +115,19 @@ export function ContentShowcase() {
 
           {/* Правая часть: описание */}
           <div className="order-1 lg:order-2">
-            <SectionLabel>AI Content</SectionLabel>
-            <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
-              Один профиль компании. Контент под разные площадки.
-            </h2>
-            <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
-              Компания хранится как единый источник данных. Из него SEOFlow готовит
-              platform-specific контент: описания, услуги и ключевые слова под требования
-              конкретной площадки.
-            </p>
+            {!embedded && <SectionLabel>AI Content</SectionLabel>}
+            {!embedded && (
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+                Один профиль компании. Контент под разные площадки.
+              </h2>
+            )}
+            {!embedded && (
+              <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
+                Компания хранится как единый источник данных. Из него SEOFlow готовит
+                platform-specific контент: описания, услуги и ключевые слова под требования
+                конкретной площадки.
+              </p>
+            )}
             <ul className="mt-8 space-y-5">
               {[
                 { icon: FileText, title: "Описания любой длины", text: "Короткие, средние и развёрнутые версии — под формат площадки." },
@@ -145,8 +147,14 @@ export function ContentShowcase() {
               ))}
             </ul>
           </div>
-        </div>
       </div>
+  );
+
+  if (embedded) return content;
+
+  return (
+    <section className="border-t border-zinc-100 bg-zinc-50/60">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">{content}</div>
     </section>
   );
 }
