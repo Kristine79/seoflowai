@@ -13,6 +13,7 @@ import type { PositioningKey } from "@/lib/ai-search/types";
 type Props = {
   audit: AuditDetail;
   refresh: () => void;
+  runId: string | null;
 };
 
 type PhraseStat = {
@@ -52,12 +53,12 @@ type PositioningData = {
   backfillMissing: number;
 };
 
-export function PositioningView({ audit, refresh }: Props) {
+export function PositioningView({ audit, refresh, runId }: Props) {
   const [backfilling, setBackfilling] = useState(false);
   const { data, isLoading, isError, refetch } = useQuery<PositioningData>({
-    queryKey: ["ai-search-positioning", audit.id],
+    queryKey: ["ai-search-positioning", audit.id, runId ?? "all"],
     queryFn: async () => {
-      const res = await fetch(`/api/ai-search/${audit.id}/positioning`);
+      const res = await fetch(`/api/ai-search/${audit.id}/positioning${runId ? `?runId=${runId}` : ""}`);
       if (!res.ok) throw new Error("Failed to load positioning");
       return res.json();
     },
@@ -66,7 +67,7 @@ export function PositioningView({ audit, refresh }: Props) {
 
   const backfill = async () => {
     setBackfilling(true);
-    await fetch(`/api/ai-search/${audit.id}/positioning`, { method: "POST" });
+    await fetch(`/api/ai-search/${audit.id}/positioning${runId ? `?runId=${runId}` : ""}`, { method: "POST" });
     setBackfilling(false);
     refresh();
   };

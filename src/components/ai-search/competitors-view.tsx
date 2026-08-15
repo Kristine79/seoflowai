@@ -5,17 +5,18 @@ import { Badge } from "@/components/ui/badge";
 import type { AuditDetail } from "./shared";
 import { analyzeOf, listValues } from "./shared";
 
-type Props = { audit: AuditDetail };
+type Props = { audit: AuditDetail; runId: string | null };
 
-export function CompetitorsView({ audit }: Props) {
+export function CompetitorsView({ audit, runId }: Props) {
   const competitors = listValues(audit.competitors);
+  const scoped = runId ? audit.responses.filter((r) => r.runId === runId) : audit.responses;
 
-  const brandMentioned = audit.responses.filter((r) => analyzeOf(r)?.brandMentioned).length;
-  const brandRecommended = audit.responses.filter((r) => analyzeOf(r)?.recommended).length;
-  const total = audit.responses.filter((r) => r.status === "SUCCESS").length;
+  const brandMentioned = scoped.filter((r) => analyzeOf(r)?.brandMentioned).length;
+  const brandRecommended = scoped.filter((r) => analyzeOf(r)?.recommended).length;
+  const total = scoped.filter((r) => r.status === "SUCCESS").length;
 
   const agg = new Map<string, { mentioned: number; recommended: number; withBrand: number; positions: number[] }>();
-  for (const r of audit.responses) {
+  for (const r of scoped) {
     const a = analyzeOf(r);
     if (!a) continue;
     for (const c of a.competitors) {
@@ -43,11 +44,17 @@ export function CompetitorsView({ audit }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Бренд vs конкуренты</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-base">
+          Бренд vs конкуренты
+          <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500">
+            {runId ? "run scope" : "all runs"}
+          </span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-4 text-sm text-zinc-500">
-          Сравнение основано на ответах AI в этом аудите ({total} успешных ответов).
+          Сравнение основано на ответах AI в этом аудите ({total} успешных
+          {runId ? " ответов выбранного run" : " ответов по всем runs"}).
           Учитываются только конкуренты из конфигурации аудита.
         </p>
         <div className="overflow-x-auto">

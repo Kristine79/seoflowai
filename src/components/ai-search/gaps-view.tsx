@@ -24,6 +24,7 @@ type Props = {
   audit: AuditDetail;
   analysis: { metrics: AiSearchMetrics; gaps: Gap[] } | undefined;
   refresh: () => void;
+  runId: string | null;
 };
 
 const SEVERITY_BADGE: Record<string, { variant: "destructive" | "warning" | "secondary"; label: string }> = {
@@ -38,7 +39,7 @@ const ISSUE_STATUS_BADGE: Record<string, { variant: "warning" | "success" | "sec
   FALSE_POSITIVE: { variant: "secondary", label: "Ложное срабатывание" },
 };
 
-export function GapsView({ audit, analysis, refresh }: Props) {
+export function GapsView({ audit, analysis, refresh, runId }: Props) {
   const [recomputing, setRecomputing] = useState(false);
   const [noteDraft, setNoteDraft] = useState<Record<string, string>>({});
   const gaps = analysis?.gaps ?? audit.gaps ?? [];
@@ -46,7 +47,7 @@ export function GapsView({ audit, analysis, refresh }: Props) {
 
   const recompute = async () => {
     setRecomputing(true);
-    await fetch(`/api/ai-search/${audit.id}/analysis`, { method: "POST" });
+    await fetch(`/api/ai-search/${audit.id}/analysis${runId ? `?runId=${runId}` : ""}`, { method: "POST" });
     setRecomputing(false);
     refresh();
   };
@@ -66,6 +67,9 @@ export function GapsView({ audit, analysis, refresh }: Props) {
         <p className="text-sm text-zinc-500">
           Гэпы — наблюдаемые паттерны, каждый со ссылкой на evidence. Гипотезы явно отделены от
           фактов. Рекомендации без данных не генерируются.
+          <span className="ml-2 rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500 align-middle">
+            {runId ? "run scope" : "all runs"}
+          </span>
         </p>
         <Button variant="outline" size="sm" onClick={recompute} disabled={recomputing} className="gap-1.5">
           {recomputing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}

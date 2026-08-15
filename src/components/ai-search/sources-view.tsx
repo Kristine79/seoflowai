@@ -9,6 +9,7 @@ import { analyzeOf } from "./shared";
 type Props = {
   audit: AuditDetail;
   analysis: { metrics: AiSearchMetrics } | undefined;
+  runId: string | null;
 };
 
 const TYPE_LABELS: Record<string, string> = {
@@ -22,14 +23,15 @@ const TYPE_LABELS: Record<string, string> = {
   other: "Прочее",
 };
 
-export function SourcesView({ audit, analysis }: Props) {
+export function SourcesView({ audit, analysis, runId }: Props) {
   const metrics = analysis?.metrics;
   const coverage = metrics?.sourceCoverage ?? [];
   const typeCounts = metrics?.sourceTypeCounts;
+  const scoped = runId ? audit.responses.filter((r) => r.runId === runId) : audit.responses;
 
   // per-domain: type + prompts + related
   const perDomain = new Map<string, { type: string; appearances: number; prompts: { promptId: string; promptText: string; responseId: string }[]; urls: string[]; official: boolean; competitor: boolean }>();
-  for (const r of audit.responses) {
+  for (const r of scoped) {
     const a = analyzeOf(r);
     const doms: { domain: string; type: string; url: string | null }[] = [];
     for (const c of (r.citations ?? []) as { url?: string; domain?: string | null; title?: string | null; sourceType?: string | null }[]) {
@@ -66,7 +68,7 @@ export function SourcesView({ audit, analysis }: Props) {
   const officialMentions = coverage.filter((s) => s.official).reduce((a, s) => a + s.count, 0);
   const sourceDataAvailable = metrics?.sourceDataAvailable ?? false;
   const totalMentions = coverage.reduce((a, s) => a + s.count, 0);
-  const responsesWithSources = audit.responses.filter((r) => {
+  const responsesWithSources = scoped.filter((r) => {
     const a = analyzeOf(r);
     const hasCitation = Array.isArray(r.citations) && (r.citations as unknown[]).length > 0;
     return r.status === "SUCCESS" && (hasCitation || (a?.sources?.length ?? 0) > 0);
@@ -150,7 +152,12 @@ export function SourcesView({ audit, analysis }: Props) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Источники по доменам</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base">
+            Источники по доменам
+            <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500">
+              {runId ? "run scope" : `all runs · ${audit.responses.length} ответов`}
+            </span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {perDomain.size === 0 ? (

@@ -16,6 +16,9 @@ type OverviewProps = {
   analysis: { metrics: AiSearchMetrics; gaps: { id: string; type: string; severity: string; title: string }[]; actions: unknown[]; insights?: { type: string; severity: string; title: string; description: string }[] } | undefined;
   onTab: (tab: "prompts" | "responses" | "sources" | "competitors" | "gaps" | "actions") => void;
   refresh: () => void;
+  runId: string | null;
+  runs: RunLike[];
+  latestRun: RunLike | null;
 };
 
 function MetricTile({ label, value, definition }: { label: string; value: string; definition: string }) {
@@ -30,10 +33,14 @@ function MetricTile({ label, value, definition }: { label: string; value: string
   );
 }
 
-export function OverviewView({ audit, analysis, onTab, refresh }: OverviewProps) {
+export function OverviewView({ audit, analysis, onTab, refresh, runId, runs, latestRun }: OverviewProps) {
   const [reportState, setReportState] = useState<"idle" | "loading" | "done">("idle");
   const metrics: AiSearchMetrics | null = analysis?.metrics ?? null;
   const gaps = analysis?.gaps ?? [];
+  const selectedRun = runs.find((r) => r.id === runId) ?? null;
+  const scopeLabel = selectedRun
+    ? `${selectedRun.id === latestRun?.id ? "Latest Run" : `Run #${selectedRun.runNumber}`} · #${selectedRun.runNumber} · ${selectedRun.mode === "web_search" ? "web_search" : "chat"} · ${selectedRun.total} ответов`
+    : `All Runs · ${runs.length} ${runs.length === 1 ? "run" : "runs"} · ${audit.responses.length} ответов`;
 
   const successCount = metrics?.success ?? 0;
   const notEnough = successCount === 0;
@@ -157,6 +164,12 @@ export function OverviewView({ audit, analysis, onTab, refresh }: OverviewProps)
           <AttentionBlock items={attention} />
 
           <div className="rounded-xl border border-zinc-200 bg-white shadow-sm">
+            <div className="flex items-center justify-between gap-3 border-b border-zinc-100 px-5 py-2.5">
+              <p className="text-xs font-medium text-zinc-500">Метрики: {scopeLabel}</p>
+              {!selectedRun && (
+                <p className="text-[11px] text-zinc-400">агрегация по всем ответам всех runs</p>
+              )}
+            </div>
             <div className="grid grid-cols-2 divide-y divide-zinc-100 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
               <MetricTile
                 label="Mentioned"
@@ -183,12 +196,17 @@ export function OverviewView({ audit, analysis, onTab, refresh }: OverviewProps)
 
           <RunHistory audit={audit} />
 
-          <InsightsBlock insights={analysis?.insights} audit={audit} />
+          <InsightsBlock insights={analysis?.insights} />
 
           <div className="grid gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-base">Конкуренты</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  Конкуренты
+                  <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500">
+                    {runId ? "run scope" : "all runs"}
+                  </span>
+                </CardTitle>
                 <Link href={`/ai-search/${audit.id}?tab=competitors`}>
                   <Button variant="ghost" size="sm" className="gap-1 text-xs">
                     Все <ArrowUpRight className="h-3 w-3" />
@@ -196,13 +214,18 @@ export function OverviewView({ audit, analysis, onTab, refresh }: OverviewProps)
                 </Link>
               </CardHeader>
               <CardContent>
-                <CompetitorSummary audit={audit} />
+                <CompetitorSummary audit={audit} runId={runId} />
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle className="text-base">Источники</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-base">
+                  Источники
+                  <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-500">
+                    {runId ? "run scope" : "all runs"}
+                  </span>
+                </CardTitle>
                 <Link href={`/ai-search/${audit.id}?tab=sources`}>
                   <Button variant="ghost" size="sm" className="gap-1 text-xs">
                     Все <ArrowUpRight className="h-3 w-3" />
@@ -274,12 +297,13 @@ export function OverviewView({ audit, analysis, onTab, refresh }: OverviewProps)
   );
 }
 
-function CompetitorSummary({ audit }: { audit: AuditDetail }) {
+function CompetitorSummary({ audit, runId }: { audit: AuditDetail; runId: string | null }) {
   const competitors = listValues(audit.competitors);
-  const brandMentioned = audit.responses.filter((r) => analyzeOf(r)?.brandMentioned).length;
+  const scoped = runId ? audit.responses.filter((r) => r.runId === runId) : audit.responses;
+  const brandMentioned = scoped.filter((r) => analyzeOf(r)?.brandMentioned).length;
 
   const agg = new Map<string, { mentioned: number; recommended: number; withBrand: number }>();
-  for (const r of audit.responses) {
+  for (const r of scoped) {
     const a = analyzeOf(r);
     if (!a) continue;
     for (const c of a.competitors) {
@@ -469,10 +493,8 @@ function RunHistory({ audit }: { audit: AuditDetail }) {
 
 function InsightsBlock({
   insights,
-  audit,
 }: {
   insights: { type: string; severity: string; title: string; description: string; evidence?: { stats: string } }[] | undefined;
-  audit: AuditDetail;
 }) {
   if (!insights || insights.length === 0) return null;
   return (
