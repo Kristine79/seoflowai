@@ -41,6 +41,25 @@ export const STATUS_META: Record<string, StatusMeta> = {
   NEEDS_MANUAL: { label: "Требуется человек", tone: "amber", nextAction: "Открыть платформу" },
   NOT_RELEVANT: { label: "Не релевантно", tone: "zinc" },
   NOT_SUPPORTED: { label: "Не поддерживается", tone: "zinc" },
+
+  // AI Search Intelligence (аудиты)
+  AI_AUDIT_DRAFT: { label: "Черновик", tone: "zinc", nextAction: "Заполнить конфигурацию" },
+  AI_AUDIT_READY: { label: "Готов к запуску", tone: "blue", nextAction: "Запустить аудит" },
+  AI_AUDIT_RUNNING: { label: "Выполняется", tone: "blue", nextAction: "Следить за прогрессом" },
+  AI_AUDIT_COMPLETED: { label: "Завершён", tone: "emerald", nextAction: "Изучить результаты" },
+  AI_AUDIT_PARTIAL: { label: "Частично выполнен", tone: "amber", nextAction: "Повторить упавшие промпты" },
+  AI_AUDIT_FAILED: { label: "Ошибка", tone: "rose", nextAction: "Повторить запуск" },
+
+  // Ответы AI Search
+  AI_RESPONSE_PENDING: { label: "Ожидает", tone: "blue" },
+  AI_RESPONSE_SUCCESS: { label: "Получен", tone: "emerald" },
+  AI_RESPONSE_FAILED: { label: "Ошибка", tone: "rose" },
+
+  // Гэпы и действия AI Search
+  AI_GAP_OPEN: { label: "Открыт", tone: "amber" },
+  AI_ACTION_SUGGESTED: { label: "Предложено", tone: "blue" },
+  AI_ACTION_PLANNED: { label: "Запланировано", tone: "blue" },
+  AI_ACTION_DONE: { label: "Выполнено", tone: "emerald" },
 };
 
 export const TONE_CLASSES: Record<StatusTone, { badge: string; dot: string; text: string; surface: string; tileBorder: string }> = {

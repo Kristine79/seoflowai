@@ -143,7 +143,7 @@ export default function CampaignsPage() {
         <div className="flex items-center gap-3">
           <Button variant="outline" onClick={runAudit} className="gap-2">
             <Rocket className="h-4 w-4" />
-            Запустить AI аудит
+            Запустить SEO аудит
           </Button>
           <Button onClick={() => setShowNew(true)} className="gap-2">
             <Plus className="h-4 w-4" />
@@ -416,7 +416,7 @@ export default function CampaignsPage() {
                       <Link href={`/directories?campaignId=${campaign.id}`}>
                         <Button variant="outline" className="gap-2 w-full">
                           <Rocket className="h-4 w-4" />
-                          Запустить AI аудит
+                          Запустить SEO аудит
                         </Button>
                       </Link>
                     )}

@@ -1,9 +1,52 @@
 import OpenAI from "openai";
 
+export interface AiProviderCapabilities {
+  supportsWebSearch: boolean;
+  supportsCitations: boolean;
+  supportsStructuredOutput: boolean;
+  supportsUsage: boolean;
+}
+
 export interface AiProvider {
   name: string;
   model: string;
   client: OpenAI;
+  capabilities: AiProviderCapabilities;
+}
+
+export interface AiCitation {
+  url: string;
+  title: string | null;
+  startIndex: number | null;
+  endIndex: number | null;
+}
+
+/**
+ * Детерминированная оценка возможностей провайдера.
+ * - web_search/citations: модели с префиксом perplexity/ (реальный веб-поиск
+ *   с citations в message.annotations) либо модель с суффиксом :online,
+ *   либо модель из OPENAI_WEB_SEARCH_MODELS (явный override в env).
+ * Никаких предположений для произвольных моделей: неизвестное = не поддерживает.
+ */
+const WEB_SEARCH_MODEL_PREFIXES = ["perplexity/"];
+const WEB_SEARCH_MODEL_SUFFIXES = [":online"];
+
+function detectCapabilities(baseURL: string | undefined, model: string): AiProviderCapabilities {
+  const envWebModels = (process.env.OPENAI_WEB_SEARCH_MODELS ?? "")
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  const modelLc = model.toLowerCase();
+  const webSearch =
+    WEB_SEARCH_MODEL_PREFIXES.some((p) => modelLc.startsWith(p)) ||
+    WEB_SEARCH_MODEL_SUFFIXES.some((s) => modelLc.endsWith(s)) ||
+    envWebModels.includes(modelLc);
+  return {
+    supportsWebSearch: webSearch,
+    supportsCitations: webSearch,
+    supportsStructuredOutput: true,
+    supportsUsage: true,
+  };
 }
 
 /**
@@ -23,6 +66,7 @@ export function loadAiProviders(): AiProvider[] {
       name,
       model,
       client: new OpenAI({ apiKey, baseURL, timeout: 60000, maxRetries: 1 }),
+      capabilities: detectCapabilities(baseURL, model),
     });
   };
   add("primary", "OPENAI_API_KEY", "OPENAI_BASE_URL", "OPENAI_MODEL");
@@ -31,24 +75,71 @@ export function loadAiProviders(): AiProvider[] {
   return providers;
 }
 
+/**
+ * Выделенный search-capable провайдер для source-aware запусков (web_search).
+ * Конфигурация: OPENAI_SEARCH_API_KEY / OPENAI_SEARCH_BASE_URL / OPENAI_SEARCH_MODEL.
+ * Если не заданы — используются существующие OPENAI_API_KEY / OPENAI_BASE_URL
+ * с моделью perplexity/sonar (реальный веб-поиск на OpenRouter).
+ * Никаких изменений .env не требуется; model можно переопределить
+ * через OPENAI_SEARCH_MODEL.
+ */
+export function loadSearchProvider(): AiProvider | null {
+  const apiKey = process.env.OPENAI_SEARCH_API_KEY || process.env.OPENAI_API_KEY;
+  if (!apiKey) return null;
+  const baseURL = process.env.OPENAI_SEARCH_BASE_URL || process.env.OPENAI_BASE_URL || undefined;
+  const model = process.env.OPENAI_SEARCH_MODEL || "perplexity/sonar";
+  const caps = detectCapabilities(baseURL, model);
+  if (!caps.supportsWebSearch) return null;
+  return {
+    name: "search",
+    model,
+    client: new OpenAI({ apiKey, baseURL, timeout: 60000, maxRetries: 1 }),
+    capabilities: caps,
+  };
+}
+
 export interface AiChatResult {
   content: string;
   provider: string;
   model: string;
+  usage?: { promptTokens?: number; completionTokens?: number; totalTokens?: number } | null;
+  /** Реальные citations, возвращённые провайдером (например, message.annotations у perplexity). */
+  citations?: AiCitation[] | null;
 }
+
+type ChatOptions = {
+  response_format?: { type: "json_object" | "text" | "json_schema" };
+  /** web_search: использовать только провайдеров с supportsWebSearch */
+  webSearch?: boolean;
+};
 
 /**
  * Try each configured provider in order until one returns a valid response.
+ * In webSearch mode only providers with supportsWebSearch are used.
  * Throws the last error if all providers fail.
  */
 export async function aiChatCompletion(
   messages: { role: string; content: string }[],
-  opts: { response_format?: { type: "json_object" | "text" | "json_schema" } } = {}
+  opts: ChatOptions = {}
 ): Promise<AiChatResult> {
   const providers = loadAiProviders();
-  if (providers.length === 0) throw new Error("No AI providers configured (OPENAI_API_KEY)");
+  if (providers.length === 0 && !opts.webSearch) {
+    throw new Error("No AI providers configured (OPENAI_API_KEY)");
+  }
+  const candidates = opts.webSearch
+    ? [loadSearchProvider(), ...providers.filter((p) => p.capabilities.supportsWebSearch)].filter(
+        (p): p is AiProvider => p !== null
+      )
+    : providers;
+  if (candidates.length === 0) {
+    throw new Error(
+      opts.webSearch
+        ? "Source data unavailable: no web-search-capable provider is configured (OPENAI_SEARCH_MODEL/perplexity/*)."
+        : "No AI providers configured (OPENAI_API_KEY)"
+    );
+  }
   let lastErr: unknown;
-  for (const p of providers) {
+  for (const p of candidates) {
     try {
       const response = await p.client.chat.completions.create({
         model: p.model,
@@ -58,7 +149,40 @@ export async function aiChatCompletion(
           : {}),
       });
       const content = response.choices[0]?.message?.content;
-      if (content) return { content, provider: p.name, model: p.model };
+      if (content) {
+        const rawMessage = response.choices[0].message as unknown as Record<string, unknown>;
+        const annotations = Array.isArray(rawMessage.annotations) ? rawMessage.annotations : [];
+        const citations: AiCitation[] = annotations
+          .map((a) => {
+            const rec = a && typeof a === "object" ? (a as Record<string, unknown>) : {};
+            const cit =
+              rec.type === "url_citation" &&
+              rec.url_citation &&
+              typeof rec.url_citation === "object"
+                ? (rec.url_citation as Record<string, unknown>)
+                : rec;
+            const url = typeof cit.url === "string" ? cit.url : null;
+            if (!url) return null;
+            return {
+              url,
+              title: typeof cit.title === "string" && cit.title.trim() ? cit.title.trim() : null,
+              startIndex: typeof cit.start_index === "number" ? cit.start_index : null,
+              endIndex: typeof cit.end_index === "number" ? cit.end_index : null,
+            };
+          })
+          .filter((c): c is AiCitation => c !== null);
+        return {
+          content,
+          provider: p.name,
+          model: p.model,
+          usage: {
+            promptTokens: response.usage?.prompt_tokens ?? undefined,
+            completionTokens: response.usage?.completion_tokens ?? undefined,
+            totalTokens: response.usage?.total_tokens ?? undefined,
+          },
+          citations: citations.length > 0 ? citations : null,
+        };
+      }
       lastErr = new Error("empty response");
     } catch (e) {
       lastErr = e;

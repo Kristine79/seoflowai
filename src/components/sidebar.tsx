@@ -21,6 +21,7 @@ const navItems = [
   { href: "/campaigns", label: "Кампании", icon: Briefcase },
   { href: "/directories", label: "Каталоги", icon: ListTree },
   { href: "/audit", label: "SEO Аудит", icon: Search },
+  { href: "/ai-search", label: "AI Search", icon: Sparkles },
   { href: "/content", label: "Генератор контента", icon: FileText },
   { href: "/company", label: "Компания", icon: Building2 },
   { href: "/settings", label: "Настройки", icon: Settings },
@@ -44,7 +45,10 @@ export function Sidebar() {
 
       <nav className="flex-1 space-y-1 p-3">
         {navItems.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive =
+            item.href === "/ai-search"
+              ? pathname === "/ai-search" || pathname.startsWith("/ai-search/")
+              : pathname === item.href;
           return (
             <Link
               key={item.href}

@@ -44,6 +44,28 @@ enum TaskStatus {
   PAYMENT_REQUIRED
 }
 
+enum AiSearchPromptCategory {
+  BRAND
+  PRODUCT
+  CATEGORY
+  BUYER_INTENT
+  USE_CASE
+  COMPARISON
+  ALTERNATIVES
+  PROBLEM_SOLUTION
+  EXPERT_TECHNICAL
+  COMPETITOR
+}
+
+enum AiSearchAuditStatus {
+  DRAFT
+  READY
+  RUNNING
+  COMPLETED
+  PARTIAL
+  FAILED
+}
+
 model Company {
   id          String   @id @default(cuid())
   createdAt   DateTime @default(now())
@@ -69,6 +91,7 @@ model Company {
 
   directories   Directory[]
   campaigns     Campaign[]
+  aiSearchAudits AiSearchAudit[]
 }
 
 model Campaign {
@@ -210,4 +233,168 @@ model AutomationJob {
   directory     Directory @relation(fields: [directoryId], references: [id])
 
   @@index([directoryId])
+}
+
+model AiSearchAudit {
+  id             String             @id @default(cuid())
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  name           String
+  status         AiSearchAuditStatus @default(DRAFT)
+  brand          String
+  website        String?
+  description    String?
+  categoryPhrase String?
+  products       String?
+  market         String?
+  targetAudience String?
+  useCases       String?
+  problems       String?
+  competitors    String?
+  promptLanguage String            @default("en")
+  executedAt     DateTime?
+  completedAt    DateTime?
+  promptCount    Int                @default(0)
+  promptSetVersion Int              @default(1)
+  promptSetHash  String?
+  report         String?
+  reportGeneratedAt DateTime?
+
+  sourceCompanyId String?
+  sourceCompany   Company? @relation(fields: [sourceCompanyId], references: [id])
+
+  prompts   AiSearchPrompt[]
+  responses AiSearchResponse[]
+  runs      AiSearchRun[]
+  gaps      AiSearchGap[]
+  actions   AiSearchAction[]
+  issues    AiSearchIssue[]
+
+  @@index([sourceCompanyId])
+}
+
+model AiSearchRun {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  runNumber   Int      @default(1)
+  mode        String   @default("chat")
+  status      String   @default("RUNNING")
+  startedAt   DateTime?
+  completedAt DateTime?
+  promptSetVersion Int  @default(1)
+  promptSetHash String?
+  providers   Json?
+  error       String?
+
+  auditId   String
+  audit     AiSearchAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+
+  responses AiSearchResponse[]
+
+  @@index([auditId])
+}
+
+model AiSearchPrompt {
+  id          String                @id @default(cuid())
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  auditId     String
+  audit       AiSearchAudit         @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  category    AiSearchPromptCategory
+  templateKey String?
+  text        String
+  enabled     Boolean               @default(true)
+  custom      Boolean               @default(false)
+  position    Int                   @default(0)
+
+  responses AiSearchResponse[]
+
+  @@index([auditId])
+}
+
+model AiSearchResponse {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  auditId     String
+  audit       AiSearchAudit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  runId       String?
+  run         AiSearchRun?  @relation(fields: [runId], references: [id], onDelete: SetNull)
+  promptId    String
+  prompt      AiSearchPrompt @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  status      String    @default("PENDING")
+  error       String?
+  provider    String?
+  model       String?
+  promptText  String?
+  rawResponse String?
+  analysis    Json?
+  positioning Json?
+  citations   Json?
+  usage       Json?
+  latencyMs   Int?
+  webSearchUsed Boolean @default(false)
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  @@index([auditId])
+  @@index([runId])
+  @@index([promptId])
+}
+
+model AiSearchIssue {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  auditId     String
+  audit       AiSearchAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  promptId    String?
+  responseId  String?
+  claim       String
+  status      String   @default("PENDING_REVIEW")
+  note        String?
+  reviewedAt  DateTime?
+
+  @@index([auditId])
+}
+
+model AiSearchGap {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  auditId     String
+  audit       AiSearchAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  type        String
+  severity    String   @default("MEDIUM")
+  title       String
+  description String?
+  hypothesis  String?
+  evidence    Json?
+  status      String   @default("OPEN")
+
+  actions AiSearchAction[]
+
+  @@index([auditId])
+}
+
+model AiSearchAction {
+  id               String   @id @default(cuid())
+  createdAt        DateTime @default(now())
+  auditId          String
+  audit            AiSearchAudit @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  gapId            String?
+  gap              AiSearchGap? @relation(fields: [gapId], references: [id], onDelete: SetNull)
+  priority         String   @default("MEDIUM")
+  problem          String
+  evidence         Json?
+  recommendation   String
+  target           String?
+  expectedPurpose  String?
+  whyThisAction    String?
+  verificationMethod String?
+  status           String   @default("SUGGESTED")
+  note             String?
+  implementedDate  DateTime?
+  affectedUrl      String?
+
+  @@index([auditId])
 }
