@@ -72,18 +72,18 @@ export default function CompanyPage() {
   }
 
   const fields: { key: keyof Company; label: string; placeholder?: string }[] = [
-    { key: "name", label: "Название компании", placeholder: "ITllect" },
-    { key: "legalName", label: "Юридическое название", placeholder: "ITllect LLC" },
-    { key: "website", label: "Веб-сайт", placeholder: "https://itllect.com" },
-    { key: "email", label: "Email", placeholder: "info@itllect.com" },
-    { key: "phone", label: "Телефон", placeholder: "+1 (954) 555-0123" },
-    { key: "address", label: "Адрес", placeholder: "100 N University Dr" },
-    { key: "city", label: "Город", placeholder: "Plantation" },
-    { key: "state", label: "Штат", placeholder: "Florida" },
+    { key: "name", label: "Название компании", placeholder: "Demo Agency" },
+    { key: "legalName", label: "Юридическое название", placeholder: "Demo Agency LLC" },
+    { key: "website", label: "Веб-сайт", placeholder: "https://example.com" },
+    { key: "email", label: "Email", placeholder: "info@example.com" },
+    { key: "phone", label: "Телефон", placeholder: "+1 (555) 555-0123" },
+    { key: "address", label: "Адрес", placeholder: "1 Demo Way" },
+    { key: "city", label: "Город", placeholder: "Springfield" },
+    { key: "state", label: "Штат", placeholder: "IL" },
     { key: "country", label: "Страна", placeholder: "USA" },
-    { key: "founded", label: "Год основания", placeholder: "2015" },
+    { key: "founded", label: "Год основания", placeholder: "2020" },
     { key: "category", label: "Категория", placeholder: "Digital Marketing Agency" },
-    { key: "serviceArea", label: "Регион услуг", placeholder: "United States, Global" },
+    { key: "serviceArea", label: "Регион услуг", placeholder: "United States" },
     { key: "services", label: "Услуги", placeholder: "SEO, PPC, Social Media Marketing" },
     { key: "keywords", label: "Ключевые слова", placeholder: "digital marketing agency, SEO" },
   ];

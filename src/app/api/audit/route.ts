@@ -33,12 +33,12 @@ export async function POST() {
       const prompt = `You are an SEO strategist performing a professional audit for a directory submission campaign.
 
 COMPANY PROFILE:
-- Name: ${company?.name || "ITllect"}
-- Category: ${company?.category || "Digital Marketing Agency"}
-- Services: ${company?.services || "SEO, PPC, Social Media, Web Development, Content Marketing"}
-- Location: ${company?.city || "Plantation"}, ${company?.state || "Florida"}
-- Keywords: ${company?.keywords || "digital marketing, SEO, web development"}
-- Founded: ${company?.founded || "2015"}
+- Name: ${company?.name || "the company"}
+- Category: ${company?.category || "digital marketing agency"}
+- Services: ${company?.services || "SEO, PPC, Social Media"}
+- Location: ${company?.city || "the company's city"}, ${company?.state || "state"}
+- Keywords: ${company?.keywords || "digital marketing, SEO"}
+- 
 
 PLATFORM TO ANALYZE: ${dir.platform}
 URL: ${dir.url || "N/A"}
@@ -68,20 +68,20 @@ Analyze this platform for the company above. Return ONLY valid JSON with this ex
 
   "automationReason": "brief explanation of difficulty specific to this platform",
 
-  "valueReason": "PERSONALIZED explanation. Must mention ${company?.name || "ITllect"} by name and explain why this specific platform matters for their category (${company?.category || "Digital Marketing Agency"}). Example: 'Crunchbase helps ${company?.name || "ITllect"} establish technology credibility as a ${company?.category || "digital marketing agency"} and improves trust for B2B buyers.'",
+  "valueReason": "PERSONALIZED explanation. Must mention ${company?.name || "the company"} by name and explain why this specific platform matters for their category (${company?.category || "Digital Marketing Agency"}). Example: 'Crunchbase helps ${company?.name || "the company"} establish technology credibility as a ${company?.category || "digital marketing agency"} and improves trust for B2B buyers.'",
 
   "requiredAssets": ["list of specific assets needed, e.g. company logo, 200-word description, team photos, etc."],
 
   "duplicateWarning": "warning about duplicate content risks specific to this platform",
 
-  "recommendation": "strategic recommendation specifically for ${company?.name || "ITllect"}",
+  "recommendation": "strategic recommendation specifically for ${company?.name || "the company"}",
 
   "quickWin": "If this is high impact and low effort, explain why it's a quick win. Otherwise return null."
 }
 
 IMPORTANT RULES:
 1. Scores MUST be realistically varied — do not give every platform 85. Range from 30 to 95 depending on fit.
-2. Every explanation must reference ${company?.name || "ITllect"} by name.
+2. Every explanation must reference ${company?.name || "the company"} by name.
 3. Be specific, not generic. Mention the company's services, location, and industry.
 4. Categories like "Medium" are lower fit for an agency — score accordingly (40-60).
 5. High-authority business directories like Yellow Pages score 65-80 for an agency.

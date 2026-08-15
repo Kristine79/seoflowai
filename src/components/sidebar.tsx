@@ -94,12 +94,6 @@ export function Sidebar() {
 
       <div className="space-y-2 border-t border-zinc-100 p-4">
         <HumanActionCount />
-        <div className="rounded-lg border border-zinc-200 bg-surface px-3 py-2.5">
-          <p className="text-xs font-medium text-zinc-500">Поддержка</p>
-          <a href="mailto:info@itllect.com" className="mt-0.5 block text-sm font-medium text-zinc-900 hover:underline">
-            info@itllect.com
-          </a>
-        </div>
       </div>
     </aside>
   );

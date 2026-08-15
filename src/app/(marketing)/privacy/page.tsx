@@ -56,7 +56,7 @@ export default function PrivacyPage() {
             <h2 className="text-base font-semibold text-zinc-900">4. Ваши права</h2>
             <p>
               Вы можете запросить экспорт или удаление своих данных в любой момент, написав на
-              info@itllect.com. Мы отвечаем в течение 30 дней.
+              support@seoflow.ai. Мы отвечаем в течение 30 дней.
             </p>
           </section>
         </div>

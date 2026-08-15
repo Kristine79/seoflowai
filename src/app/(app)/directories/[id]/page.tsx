@@ -876,7 +876,7 @@ export default function DirectoryDetailPage() {
                       submission: { ...dir.submission, listingUrl: e.target.value },
                     })
                   }
-                  placeholder="https://platform.com/company/itllect"
+                  placeholder="https://platform.com/company/your-company"
                   readOnly={isReadonly}
                 />
               </div>

@@ -9,36 +9,36 @@ export async function POST() {
 
   const company = await prisma.company.create({
     data: {
-      name: "ITllect",
-      legalName: "ITllect LLC",
-      website: "https://itllect.com",
-      email: "info@itllect.com",
-      phone: "+1 (954) 555-0123",
-      address: "100 N University Dr",
-      city: "Plantation",
-      state: "Florida",
+      name: "Demo Agency",
+      legalName: "Demo Agency LLC",
+      website: "https://example.com",
+      email: "info@example.com",
+      phone: "+1 (555) 555-0123",
+      address: "1 Demo Way",
+      city: "Springfield",
+      state: "IL",
       country: "USA",
-      founded: "2015",
+      founded: "2020",
       category: "Digital Marketing Agency",
-      serviceArea: "United States, Global",
-      services: "SEO, PPC, Social Media Marketing, Web Development, Content Marketing, Brand Strategy",
-      keywords: "digital marketing agency, SEO services, PPC management, social media marketing, web development, Fort Lauderdale marketing",
-      descriptionShort: "Full-service digital marketing agency specializing in SEO and growth strategies.",
-      descriptionMedium: "ITllect is a Plantation, Florida-based digital marketing agency delivering data-driven SEO, PPC, and social media solutions that drive measurable growth for businesses of all sizes.",
-      descriptionLong: "Founded in 2015, ITllect has grown into a premier digital marketing agency serving clients across the United States. Our team combines creative expertise with data-driven strategies to deliver exceptional results in SEO, paid advertising, social media management, web development, and content marketing. We believe in transparency, measurable outcomes, and building long-term partnerships with our clients.",
+      serviceArea: "United States",
+      services: "SEO, PPC, Social Media Marketing",
+      keywords: "digital marketing agency, SEO services",
+      descriptionShort: "Demo digital marketing agency for product demonstration.",
+      descriptionMedium: "This is a demo company profile used to demonstrate SEOFlow AI capabilities.",
+      descriptionLong: "This is a demo company profile used to demonstrate SEOFlow AI capabilities: campaigns, directory submissions, verification and reporting.",
     },
   });
 
   const campaign = await prisma.campaign.create({
     data: {
-      name: "Q3 2026 Directory Submission",
-      description: "Main directory listing campaign for ITllect",
+      name: "Demo Directory Submission Campaign",
+      description: "Demo campaign to showcase the directory submission workflow",
       companyId: company.id,
     },
   });
 
   const directoryData = [
-    { platform: "Yellow Pages", url: "https://www.yellowpages.com", priority: "MEDIUM" as const, category: "Business Directory", notes: "List as ITllect under Digital Marketing Agency." },
+    { platform: "Yellow Pages", url: "https://www.yellowpages.com", priority: "MEDIUM" as const, category: "Business Directory", notes: "List the company under Digital Marketing Agency." },
     { platform: "Manta", url: "https://www.manta.com", priority: "MEDIUM" as const, category: "Business Directory", notes: "Complete full profile with services." },
     { platform: "GoodFirms", url: "https://www.goodfirms.co", priority: "HIGH" as const, category: "Agency Directory", notes: "High authority B2B agency directory. Prepare detailed portfolio." },
     { platform: "DesignRush", url: "https://www.designrush.com", priority: "HIGH" as const, category: "Agency Directory", notes: "Top B2B agency listing platform." },

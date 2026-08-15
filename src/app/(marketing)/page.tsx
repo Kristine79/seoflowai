@@ -1,6 +1,5 @@
 import { Navbar } from "./components/navbar";
 import { Hero } from "./components/hero";
-import { ProofStrip } from "./components/proof-strip";
 import { CaseStudy } from "./components/case-study";
 import { Problem } from "./components/problem";
 import { Workflow } from "./components/workflow";
@@ -20,7 +19,6 @@ export default function MarketingPage() {
       <Navbar />
       <main>
         <Hero />
-        <ProofStrip />
         <CaseStudy />
         <Problem />
         <Workflow />
