@@ -50,7 +50,7 @@ const STEPS = [
 
 export function Methodology() {
   return (
-    <section id="methodology" className="border-y border-zinc-200 bg-white">
+    <section id="methodology" className="scroll-mt-32 border-y border-zinc-200 bg-white">
       <div className="mx-auto max-w-5xl px-8 py-16 sm:py-20">
         <div className="space-y-10">
           <SectionHeading

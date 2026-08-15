@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Hero } from "./components/hero";
+import { CaseNav } from "./components/case-nav";
 import { Context } from "./components/context";
 import { Methodology } from "./components/methodology";
 import { Results } from "./components/results";
@@ -12,6 +13,7 @@ import { Gaps } from "./components/gaps";
 import { Verification } from "./components/verification";
 import { About } from "./components/about";
 import { Limitations } from "./components/limitations";
+import { Summary } from "./components/summary";
 import { Cta } from "./components/cta";
 
 export default function BolidCaseView() {
@@ -34,6 +36,7 @@ export default function BolidCaseView() {
       </header>
       <main>
         <Hero />
+        <CaseNav />
         <Context />
         <Methodology />
         <Results />
@@ -45,6 +48,7 @@ export default function BolidCaseView() {
         <Verification />
         <About />
         <Limitations />
+        <Summary />
         <Cta />
       </main>
       <footer className="border-t border-zinc-200">

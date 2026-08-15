@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowDown } from "lucide-react";
 import { AUDIT_URL } from "../data";
 import { BlueNote } from "./ui";
 
@@ -52,6 +52,13 @@ export function Hero() {
               className="inline-flex items-center rounded-md border border-zinc-300 bg-white px-4 py-2.5 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-50"
             >
               Методология
+            </a>
+            <a
+              href="#results"
+              className="inline-flex items-center gap-1.5 px-1 py-2.5 text-sm font-semibold text-zinc-500 transition-colors hover:text-blue-700"
+            >
+              Смотреть результаты
+              <ArrowDown className="h-4 w-4" />
             </a>
           </div>
 

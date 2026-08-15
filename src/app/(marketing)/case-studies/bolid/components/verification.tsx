@@ -3,7 +3,7 @@ import { VERIFICATION_RUN2_RUN3, VERIFICATION_SOURCES } from "../data";
 
 export function Verification() {
   return (
-    <section className="mx-auto max-w-5xl px-8 py-16 sm:py-20">
+    <section id="verification" className="mx-auto max-w-5xl scroll-mt-32 px-8 py-16 sm:py-20">
       <div className="space-y-10">
         <SectionHeading
           eyebrow="Verification loop"

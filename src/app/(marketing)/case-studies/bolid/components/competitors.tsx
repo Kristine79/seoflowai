@@ -3,7 +3,7 @@ import { COMPETITORS, COMPETITOR_CASES } from "../data";
 
 export function Competitors() {
   return (
-    <section className="border-y border-zinc-200 bg-white">
+    <section id="competitors" className="scroll-mt-32 border-y border-zinc-200 bg-white">
       <div className="mx-auto max-w-5xl px-8 py-16 sm:py-20">
         <div className="space-y-10">
           <SectionHeading

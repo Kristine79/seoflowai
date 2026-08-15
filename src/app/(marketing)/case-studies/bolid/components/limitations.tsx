@@ -12,7 +12,7 @@ const LIMITATIONS = [
 
 export function Limitations() {
   return (
-    <section className="mx-auto max-w-5xl px-8 py-16 sm:py-20">
+    <section id="limitations" className="mx-auto max-w-5xl scroll-mt-32 px-8 py-16 sm:py-20">
       <div className="space-y-10">
         <SectionHeading
           eyebrow="Limitations"

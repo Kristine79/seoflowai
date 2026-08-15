@@ -3,7 +3,7 @@ import { OFFICIAL_DOMAINS, SOURCE_TYPES, TOP_DOMAINS } from "../data";
 
 export function Sources() {
   return (
-    <section className="mx-auto max-w-5xl px-8 py-16 sm:py-20">
+    <section id="sources" className="mx-auto max-w-5xl scroll-mt-32 px-8 py-16 sm:py-20">
       <div className="space-y-10">
         <SectionHeading
           eyebrow="Source intelligence"
