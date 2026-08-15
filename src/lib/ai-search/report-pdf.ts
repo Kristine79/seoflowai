@@ -1,26 +1,25 @@
-import fs from "node:fs";
-import path from "node:path";
 import { marked, type Tokens } from "marked";
 import pdfMake from "pdfmake/build/pdfmake.js";
 import type { ReportData } from "./report";
 import { generateReport } from "./report-data";
+import { vfs as pdfMakeVfs } from "pdfmake/build/fonts/Roboto.js";
 
 export type { ReportData };
 
 const CONTENT_WIDTH = 595.28 - 84; // A4 − margins 42+42
 
-const FONT_NAMES = {
-  normal: "Roboto-Regular.ttf",
-  bold: "Roboto-Medium.ttf",
-  italics: "Roboto-Italic.ttf",
-  bolditalics: "Roboto-MediumItalic.ttf",
-} as const;
+const FONT_NAMES = [
+  "Roboto-Regular.ttf",
+  "Roboto-Medium.ttf",
+  "Roboto-Italic.ttf",
+  "Roboto-MediumItalic.ttf",
+] as const;
 
 function loadFonts() {
-  const dir = path.join(process.cwd(), "node_modules", "pdfmake", "build", "fonts", "Roboto");
   const storage: Record<string, Buffer> = {};
-  for (const name of Object.values(FONT_NAMES)) {
-    storage[name] = fs.readFileSync(path.join(dir, name));
+  for (const name of FONT_NAMES) {
+    const entry = pdfMakeVfs[name] as { data?: string; encoding?: string } | undefined;
+    storage[name] = Buffer.from(entry?.data ?? "", (entry?.encoding ?? "base64") as BufferEncoding);
   }
   const vfs = (pdfMake as unknown as { virtualfs: { storage: Record<string, Buffer> } }).virtualfs;
   vfs.storage = storage;
