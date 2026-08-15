@@ -6,10 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { AttentionBlock, type AttentionItem } from "@/components/attention-block";
-import { FileText, Play, ArrowUpRight, History, AlertTriangle, RotateCcw, Loader2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { FileText, Play, ArrowUpRight, History, AlertTriangle, RotateCcw, Loader2, ChevronDown, FileDown } from "lucide-react";
 import { useState } from "react";
 import type { AuditDetail, AiSearchMetrics, RunLike } from "./shared";
 import { analyzeOf, fmtDate, fmtRate, listValues } from "./shared";
+import { reportBaseName as reportBaseNameFn } from "@/lib/ai-search/filename";
 
 type OverviewProps = {
   audit: AuditDetail;
@@ -34,7 +41,8 @@ function MetricTile({ label, value, definition }: { label: string; value: string
 }
 
 export function OverviewView({ audit, analysis, onTab, refresh, runId, runs, latestRun }: OverviewProps) {
-  const [reportState, setReportState] = useState<"idle" | "loading" | "done">("idle");
+  const [exporting, setExporting] = useState<"idle" | "pdf" | "md">("idle");
+  const [exportError, setExportError] = useState<string | null>(null);
   const metrics: AiSearchMetrics | null = analysis?.metrics ?? null;
   const gaps = analysis?.gaps ?? [];
   const selectedRun = runs.find((r) => r.id === runId) ?? null;
@@ -45,23 +53,47 @@ export function OverviewView({ audit, analysis, onTab, refresh, runId, runs, lat
   const successCount = metrics?.success ?? 0;
   const notEnough = successCount === 0;
 
-  const generateReport = async () => {
-    setReportState("loading");
-    const res = await fetch(`/api/ai-search/${audit.id}/report`, { method: "POST" });
-    if (res.ok) {
+  const reportBaseName = reportBaseNameFn(audit.brand);
+
+  const downloadBlob = (blob: Blob, filename: string) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  };
+
+  const generatePdf = async () => {
+    setExporting("pdf");
+    setExportError(null);
+    try {
+      const res = await fetch(`/api/ai-search/${audit.id}/report/pdf`, { method: "POST" });
+      if (!res.ok) throw new Error("PDF failed");
+      const blob = await res.blob();
+      downloadBlob(blob, `${reportBaseName}.pdf`);
+    } catch {
+      setExportError("Не удалось подготовить PDF. Попробуйте ещё раз.");
+    }
+    setExporting("idle");
+  };
+
+  const generateMarkdown = async () => {
+    setExporting("md");
+    setExportError(null);
+    try {
+      const res = await fetch(`/api/ai-search/${audit.id}/report`, { method: "POST" });
+      if (!res.ok) throw new Error("Markdown failed");
       const data = await res.json();
       const blob = new Blob([data.report], { type: "text/markdown" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `AI_SEARCH_AUDIT_REPORT_${audit.brand.replace(/[^\wа-яА-ЯёЁ-]+/g, "_")}.md`;
-      a.click();
-      URL.revokeObjectURL(url);
-      setReportState("done");
+      downloadBlob(blob, `${reportBaseName}.md`);
       refresh();
-    } else {
-      setReportState("idle");
+    } catch {
+      setExportError("Не удалось подготовить Markdown. Попробуйте ещё раз.");
     }
+    setExporting("idle");
   };
 
   const attention: AttentionItem[] = [
@@ -116,20 +148,44 @@ export function OverviewView({ audit, analysis, onTab, refresh, runId, runs, lat
       <Card>
         <CardHeader className="flex flex-row items-center justify-between gap-4">
           <CardTitle className="text-base">AI Search Intelligence</CardTitle>
-          <div className="flex items-center gap-2">
-            <StatusBadge status={audit.status} />
-            <Button variant="outline" size="sm" onClick={() => onTab("prompts")} className="gap-1.5">
-              <Play className="h-3.5 w-3.5" />
-              Запустить
-            </Button>
-            <Button size="sm" onClick={generateReport} disabled={reportState === "loading"} className="gap-1.5">
-              {reportState === "loading" ? (
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-              ) : (
-                <FileText className="h-3.5 w-3.5" />
-              )}
-              Отчёт .md
-            </Button>
+          <div className="flex flex-col items-end gap-1.5">
+            <div className="flex items-center gap-2">
+              <StatusBadge status={audit.status} />
+              <Button variant="outline" size="sm" onClick={() => onTab("prompts")} className="gap-1.5">
+                <Play className="h-3.5 w-3.5" />
+                Запустить
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" disabled={exporting !== "idle"} className="gap-1.5">
+                    {exporting !== "idle" ? (
+                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    ) : (
+                      <FileText className="h-3.5 w-3.5" />
+                    )}
+                    {exporting === "pdf"
+                      ? "Подготовка PDF…"
+                      : exporting === "md"
+                        ? "Подготовка Markdown…"
+                        : "Отчёт"}
+                    <ChevronDown className="h-3.5 w-3.5 opacity-60" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem disabled={exporting !== "idle"} onSelect={generatePdf}>
+                    <FileDown className="h-4 w-4 text-zinc-500" />
+                    Скачать PDF
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled={exporting !== "idle"} onSelect={generateMarkdown}>
+                    <FileText className="h-4 w-4 text-zinc-500" />
+                    Скачать Markdown
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            {exportError && (
+              <p className="max-w-xs text-right text-xs text-rose-600">{exportError}</p>
+            )}
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
