@@ -88,9 +88,10 @@ Intent coverage (mentioned prompts / total prompts), web-search run (Run #2):
 | **Expert / Technical** | **2** | **0/2** | **2 prompts** |
 | Competitor | 5 | 5/5 | — |
 
-- **Observation, not verdict:** the «Use Case», «Problem / Solution» and
-  «Expert / Technical» intents show a gap **in all three runs** — this is not a
-  measurement fluctuation of a single run, it is a stable observed pattern.
+- **Observation, not verdict:** for the «Use Case», «Problem / Solution» and
+  «Expert / Technical» intents the gap was observed across all three runs,
+  although repeated AI measurements naturally vary. This suggests a persistent
+  pattern within this prompt set.
 - The finding is a fact about the prompt set + providers used, **not** a claim
   that "AI doesn't know БОЛИД" — brand/product/comparison intents are solid.
 
@@ -178,10 +179,10 @@ BOLID positioning (top phrases by frequency):
 - **Buyer criteria mentioned in BOLID context:** цена (4), масштабируемость (3),
   стоимость владения (3), интеграции (3).
 
-**Observed positioning contrast:** in «Use Case» / «Problem / Solution» prompts
-AI fills the answer with competitors (RUBEZH was recommended in a use-case prompt)
-because the factual basis about БОЛИД's use cases is not present in the sources AI
-retrieves — while in direct brand prompts the positioning is rich and consistent.
+**Observed pattern:** in «Use Case» / «Problem / Solution» prompts, competitors
+appeared more often while БОЛИД was not mentioned. This suggests a potential
+opportunity to strengthen retrievable, use-case-oriented information about БОЛИД
+solutions.
 
 ---
 
@@ -195,12 +196,12 @@ retrieves — while in direct brand prompts the positioning is rich and consiste
 - **Evidence:** «Какое решение … подходит для охраны промышленных объектов?»,
   «…для пожарной безопасности торговых центров», «Как компании на практике
   внедряют…?» — no БОЛИД mention; RUBEZH recommended in the first prompt.
-- **Hypothesis:** potential information / content opportunity — AI lacks
-  retrievable content describing БОЛИД solutions for specific object types.
-- **Action:** publish content covering БОЛИД solutions by object type
-  (промышленные объекты, торговые центры, офисы, ЖКХ) with use-case descriptions
-  and implementation cases on official domains; make it visible in indexed pages,
-  not only in catalogs.
+- **Hypothesis:** there may be an opportunity to strengthen retrievable,
+  use-case-oriented information about БОЛИД solutions for specific object types
+  (hypothesis requiring verification, not an established cause).
+- **Action:** Publish / expand use-case-oriented materials by object type
+  (промышленные объекты, торговые центры, офисы, ЖКХ) with concrete solution
+  descriptions and implementation cases on official domains.
 - **Verification:** repeat the same 34-prompt run (Run #4) after 2–4 weeks and
   compare the Use Case intent coverage.
 
@@ -209,8 +210,9 @@ retrieves — while in direct brand prompts the positioning is rich and consiste
 - **Evidence:** «Как решить проблему: противопожарная защита объектов…»,
   «…организация контроля доступа…», «Какие типовые проблемы возникают…» — no
   БОЛИД mention in any run.
-- **Hypothesis:** AI cannot connect БОЛИД to problem-solution narratives
-  (integration, protection specifics) because such content is not retrievable.
+- **Hypothesis:** there may be an opportunity to strengthen problem-solution
+  narratives connecting БОЛИД solutions with specific integration and protection
+  scenarios (hypothesis requiring verification, not an established cause).
 - **Action:** create problem/solution-style materials (integration guides,
   retrofit scenarios, compliance cases) with БОЛИД as the answer, published on
   official domains and industry platforms (habr.com, профильные порталы),
@@ -221,9 +223,11 @@ retrieves — while in direct brand prompts the positioning is rich and consiste
 
 - **Evidence:** «Какие технические требования предъявляются…», «Какие технические
   характеристики наиболее важны…» — no БОЛИД mention; only general technical
-  answers.
-- **Hypothesis:** a documentation/technical gap — AI cites documentation sources
-  sparsely (документация: только 2 упоминания).
+  answers. Documentation sources were cited sparsely — only 2 source mentions in
+  Run #2.
+- **Hypothesis:** there may be an opportunity to strengthen retrievable technical
+  documentation and reference material (hypothesis requiring verification, not an
+  established cause).
 - **Action:** publish technical requirements & characteristic materials
   (spectra of line parameters, certifications, ГОСТ-based compliance tables)
   on bolid.ru/antares.bolid.ru so they can be cited.
@@ -244,7 +248,7 @@ AI answer variability.
 | Top-3 Rate | 20.6% | 17.6% | −3 pp |
 | Citation Rate | 100% | 100% | 0 pp |
 | Official Source Rate | 7.9% | 7.3% | −0.6 pp |
-| Official source mentions | 22 → 21 | | −1 |
+| Official source mentions | 22 | 21 | −1 |
 | Competitor-only responses | 2 | 0 | −2 |
 
 Intent-level (observed change):
@@ -264,10 +268,10 @@ Sources & positioning changes:
 - Positioning phrases (top lists): 25 new, 25 removed, 20 increased, 20 decreased —
   normal volatility of AI phrasing between runs.
 
-**Conclusion of the verification run:** gaps in «Use Case» / «Problem / Solution» /
-«Expert / Technical» intents remained stable across both web-search runs —
-the observed intent-level gaps are not artifacts of one run. Recommendation and
-Top-3 rates moved within ±3 pp — within the observed variability band.
+**Conclusion of the verification run:** Run #3 shows that the observed gaps
+persist across repeated measurements. The observed intent-level gaps persisted
+across the repeated web-search runs, while other metrics varied. Recommendation
+and Top-3 rates moved by ±3 pp between the repeated runs.
 
 ---
 
@@ -282,11 +286,12 @@ This case demonstrates the full AI Search Intelligence workflow applied to АО 
 - **EVIDENCE** — every number is backed by run data and citations; official source
   mentions, positioning phrases, competitor mentions are extracted per-answer.
 - **DIAGNOSE** — observed intent-level gaps identified (Use Case, Problem/Solution,
-  Expert/Technical), stable across runs.
+  Expert/Technical), persisting across measured runs.
 - **ACTION** — hypotheses and content actions per gap, with explicit «requires
   verification» framing.
-- **VERIFY** — Run #3 confirms the gaps; the same prompt set is the repeatable
-  verification instrument (re-run after 2–4 weeks produces a comparable baseline).
+- **VERIFY** — Run #3 shows that the observed gaps persist across repeated
+  measurements; the same prompt set is the repeatable verification instrument
+  (re-run after 2–4 weeks produces a comparable baseline).
 - **COMPARE** — source intelligence (277 mentions / 157 domains), competitor
   intelligence (PERCo, Sigur, RusGuard, Parsec, RUBEZH), and AI positioning are
   compared between runs in one place.
